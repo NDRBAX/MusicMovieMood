@@ -13,14 +13,12 @@ import LoginScreen from "./screens/Login";
 
 // Import icons
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 
 // Menu components
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const BottomNavigator = () => {
-  const [active, setActive] = useState(false);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
