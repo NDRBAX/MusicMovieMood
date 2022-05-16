@@ -69,28 +69,17 @@ const HomeMovie = ({ navigation }) => {
 			<Tab.Screen
 				name="Movie"
 				component={MovieScreen}
-				options={({ navigation }) => ({
-					tabBarIcon: props => (
-						<TouchableOpacity onPress={() => navigation.navigate('Music')}>
-							<Ionicons name="musical-notes" size={50} color="red" />
-						</TouchableOpacity>
-					),
-				})}
+
+				// options={({ navigation }) => ({
+				//   tabBarIcon: (props) => (
+				//     <TouchableOpacity onPress={() => navigation.navigate("Music")}>
+				//       <Ionicons name="musical-notes" size={50} color="red" />
+				//     </TouchableOpacity>
+				//   ),
+				// })}
 			/>
-			<Tab.Screen
-				name="Music"
-				component={MovieScreen}
-				options={({ navigation }) => ({
-					tabBarIcon: props => (
-						<TouchableOpacity
-							onPress={() => navigation.navigate('Movie')}
-							style={styles.tryone}
-						>
-							<Ionicons name="musical-notes" size={50} color="red" />
-						</TouchableOpacity>
-					),
-				})}
-			/>
+
+			<Tab.Screen name="Music" component={MusicScreen} />
 		</Tab.Navigator>
 	);
 };

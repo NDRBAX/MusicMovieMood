@@ -6,7 +6,7 @@ import { removeFromWishlist } from '../movie/movieSlice';
 
 export default function Wishlist({ navigation }) {
 	// extract data from the Redux store state
-	const wishlist = useSelector(state => state.wishlist);
+	const wishlist = useSelector(state => state.movie);
 	// returns a reference to the dispatch function from the Redux store
 	const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ export default function Wishlist({ navigation }) {
 			<Text h4 style={{ textAlign: 'center' }}>
 				Wishlist
 			</Text>
-			{wishlist?.movies.map((movie, i) => (
+			{wishlist.movies.map((movie, i) => (
 				<Card key={i}>
 					<Card.Image />
 					<Text>{movie.title}</Text>
