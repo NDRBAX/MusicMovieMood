@@ -23,10 +23,32 @@ const HomeMovie = ({ navigation }) => {
     <Tab.Navigator
       initialRouteName="Movie"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) => {
+        tabBarIcon: ({ focused, color }) => {
           let iconName;
           if (route.name == "Movie") {
-            iconName = null;
+            iconName = focused
+              ? null &&
+                navigation.setOptions(
+                  { tabBarVisible: false },
+                  {
+                    tabBarButton: () => (
+                      <View style={{ width: 0, height: 0 }}></View>
+                    ),
+                  }
+                )
+              : "ios-film";
+          } else if (route.name == "Music") {
+            iconName = focused
+              ? null &&
+                navigation.setOptions(
+                  { tabBarVisible: false },
+                  {
+                    tabBarButton: () => (
+                      <View style={{ width: 0, height: 0 }}></View>
+                    ),
+                  }
+                )
+              : "musical-notes";
           }
           return <Ionicons name={iconName} size={35} color={color} />;
         },
@@ -36,7 +58,7 @@ const HomeMovie = ({ navigation }) => {
       })}
       tabBarOptions={{
         // activeTintColor: "#009788",
-        inactiveTintColor: "transparent",
+        inactiveTintColor: "#009788",
         style: {
           backgroundColor: "transparent",
           height: 90,
@@ -47,14 +69,17 @@ const HomeMovie = ({ navigation }) => {
       <Tab.Screen
         name="Movie"
         component={MovieScreen}
-        options={({ navigation }) => ({
-          tabBarIcon: (props) => (
-            <TouchableOpacity onPress={() => navigation.navigate("Music")}>
-              <Ionicons name="musical-notes" size={50} color="red" />
-            </TouchableOpacity>
-          ),
-        })}
+
+        // options={({ navigation }) => ({
+        //   tabBarIcon: (props) => (
+        //     <TouchableOpacity onPress={() => navigation.navigate("Music")}>
+        //       <Ionicons name="musical-notes" size={50} color="red" />
+        //     </TouchableOpacity>
+        //   ),
+        // })}
       />
+
+      <Tab.Screen name="Music" component={MusicScreen} />
     </Tab.Navigator>
   );
 };
@@ -64,7 +89,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomeMovie" component={HomeMovie} />
-        <Stack.Screen name="Music" component={MusicScreen} />
+        {/* <Stack.Screen name="Music" component={MusicScreen} /> */}
         <Stack.Screen name="Wishlist" component={WishlistScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />

@@ -1,11 +1,11 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { Icon, Text } from "react-native-elements";
+import { Button, Icon, Text } from "react-native-elements";
 // Import icons
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function Movie(props) {
+export default function Movie({props, navigation}) {
   return (
     <ScrollView style={{ marginTop: 40 }}>
       <View
@@ -16,6 +16,7 @@ export default function Movie(props) {
           marginRight: 20,
         }}
       >
+      
         <Icon
           style={{ marginRight: 5 }}
           name="heart-circle"
