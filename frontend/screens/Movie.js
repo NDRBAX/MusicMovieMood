@@ -16,21 +16,18 @@ export default function Movie(props) {
           marginRight: 20,
         }}
       >
-        <Icon style={{marginRight:5}}
+        <Icon
+          style={{ marginRight: 5 }}
           name="heart-circle"
           type="ionicon"
           buttonStyle={{ backgroundColor: "#009788" }}
-          onPress={() =>
-            props.navigation.navigate("BottomNavigator", { screen: "Wishlist" })
-          }
+          onPress={() => props.navigation.navigate("Wishlist")}
         />
         <Icon
           name="account"
           type="material-community"
           buttonStyle={{ backgroundColor: "#009788" }}
-          onPress={() =>
-            props.navigation.navigate("BottomNavigator", { screen: "Settings" })
-          }
+          onPress={() => props.navigation.navigate("Settings")}
         />
       </View>
       <Text h4 style={{ textAlign: "center" }}>

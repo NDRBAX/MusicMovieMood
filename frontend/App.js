@@ -1,4 +1,4 @@
-import { LogBox, View } from "react-native";
+import { LogBox, StyleSheet, TouchableOpacity, View } from "react-native";
 LogBox.ignoreLogs(["Warning: ..."]);
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -18,66 +18,42 @@ import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const BottomNavigator = () => {
+const HomeMovie = ({ navigation }) => {
   return (
     <Tab.Navigator
+      initialRouteName="Movie"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           let iconName;
-
           if (route.name == "Movie") {
-            iconName = "musical-notes";
-          } else if (route.name == "Music") {
-            iconName = "ios-film";
-          } else if (route.name == "Wishlist") {
-            iconName = "ios-film";
-          } else if (route.name == "Settings") {
-            iconName = "ios-film";
+            iconName = null;
           }
           return <Ionicons name={iconName} size={35} color={color} />;
         },
+        tabBarLabel: () => {
+          return null;
+        },
       })}
       tabBarOptions={{
-        activeTintColor: "#009788",
-        inactiveTintColor: "#FFFFFF",
+        // activeTintColor: "#009788",
+        inactiveTintColor: "transparent",
         style: {
-          backgroundColor: "rgba(52, 52, 52, 0)",
+          backgroundColor: "transparent",
+          height: 90,
+          padding: 10,
         },
       }}
     >
       <Tab.Screen
         name="Movie"
         component={MovieScreen}
-        options={{
-          tabBarLabel: () => {
-            return null;
-          },
-        }}
-      />
-
-      <Tab.Screen
-        name="Music"
-        component={MusicScreen}
-        options={{
-          tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
-          tabBarVisible: false, //hide tab bar on this screen
-        }}
-      />
-      <Tab.Screen
-        name="Wishlist"
-        component={WishlistScreen}
-        options={{
-          tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
-          tabBarVisible: false, //hide tab bar on this screen
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
-          tabBarVisible: false, //hide tab bar on this screen
-        }}
+        options={({ navigation }) => ({
+          tabBarIcon: (props) => (
+            <TouchableOpacity onPress={() => navigation.navigate("Music")}>
+              <Ionicons name="musical-notes" size={50} color="red" />
+            </TouchableOpacity>
+          ),
+        })}
       />
     </Tab.Navigator>
   );
@@ -87,9 +63,21 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+        <Stack.Screen name="HomeMovie" component={HomeMovie} />
         <Stack.Screen name="Music" component={MusicScreen} />
+        <Stack.Screen name="Wishlist" component={WishlistScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarItemContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+});
