@@ -18,13 +18,13 @@ export default function Music(props) {
           marginRight: 20,
         }}
       >
-        <Icon
+        {/* <Icon
           style={{ marginRight: 5 }}
           name="heart-circle"
           type="ionicon"
           buttonStyle={{ backgroundColor: "#009788" }}
           onPress={() => props.navigation.navigate("Wishlist")}
-        />
+        /> */}
         <Icon
           name="account"
           type="material-community"

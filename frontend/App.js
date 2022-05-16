@@ -11,24 +11,44 @@ import WishlistScreen from './screens/Wishlist';
 import SettingsScreen from './screens/Settings';
 import LoginScreen from './screens/Login';
 
+//REDUX
+import store from './store';
+import { Provider } from 'react-redux';
+
 // Import icons
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
 
 // Menu components
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const HomeMovie = ({ navigation }) => {
-	const [visible, setVisible] = useState(false);
 	return (
 		<Tab.Navigator
 			initialRouteName="Movie"
 			screenOptions={({ route }) => ({
-				tabBarIcon: ({ color }) => {
+				tabBarIcon: ({ focused, color }) => {
 					let iconName;
 					if (route.name == 'Movie') {
-						iconName = null;
+						iconName = focused
+							? null &&
+							  navigation.setOptions(
+									{ tabBarVisible: false },
+									{
+										tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
+									},
+							  )
+							: 'ios-film';
+					} else if (route.name == 'Music') {
+						iconName = focused
+							? null &&
+							  navigation.setOptions(
+									{ tabBarVisible: false },
+									{
+										tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
+									},
+							  )
+							: 'musical-notes';
 					}
 					return <Ionicons name={iconName} size={35} color={color} />;
 				},
@@ -38,7 +58,7 @@ const HomeMovie = ({ navigation }) => {
 			})}
 			tabBarOptions={{
 				// activeTintColor: "#009788",
-				inactiveTintColor: 'transparent',
+				inactiveTintColor: 'red',
 				style: {
 					backgroundColor: 'transparent',
 					height: 90,
@@ -77,15 +97,17 @@ const HomeMovie = ({ navigation }) => {
 
 export default function App() {
 	return (
-		<NavigationContainer>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="HomeMovie" component={HomeMovie} />
-				<Stack.Screen name="Music" component={MusicScreen} />
-				<Stack.Screen name="Wishlist" component={WishlistScreen} />
-				<Stack.Screen name="Login" component={LoginScreen} />
-				<Stack.Screen name="Settings" component={SettingsScreen} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<Provider store={store}>
+			<NavigationContainer>
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					<Stack.Screen name="HomeMovie" component={HomeMovie} />
+					{/* <Stack.Screen name="Music" component={MusicScreen} /> */}
+					<Stack.Screen name="Wishlist" component={WishlistScreen} />
+					<Stack.Screen name="Login" component={LoginScreen} />
+					<Stack.Screen name="Settings" component={SettingsScreen} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		</Provider>
 	);
 }
 
@@ -95,8 +117,5 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 10,
-	},
-	tryone: {
-		display: 'none',
 	},
 });
