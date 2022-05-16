@@ -25,61 +25,25 @@ const Stack = createStackNavigator();
 const HomeMovie = ({ navigation }) => {
 	return (
 		<Tab.Navigator
-			initialRouteName="Movie"
 			screenOptions={({ route }) => ({
-				tabBarIcon: ({ focused, color }) => {
+				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
-					if (route.name == 'Movie') {
-						iconName = focused
-							? null &&
-							  navigation.setOptions(
-									{ tabBarVisible: false },
-									{
-										tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
-									},
-							  )
-							: 'ios-film';
-					} else if (route.name == 'Music') {
-						iconName = focused
-							? null &&
-							  navigation.setOptions(
-									{ tabBarVisible: false },
-									{
-										tabBarButton: () => <View style={{ width: 0, height: 0 }}></View>,
-									},
-							  )
-							: 'musical-notes';
+
+					if (route.name === 'Music') {
+						iconName = focused ? 'ios-film' : 'ios-film';
+					} else if (route.name === 'Movie') {
+						iconName = focused ? 'musical-notes' : 'musical-notes';
 					}
-					return <Ionicons name={iconName} size={35} color={color} />;
+
+					// You can return any component that you like here!
+					return <Ionicons name={iconName} size={size} color={color} />;
 				},
-				tabBarLabel: () => {
-					return null;
-				},
+				tabBarActiveTintColor: 'tomato',
+				tabBarInactiveTintColor: 'gray',
 			})}
-			tabBarOptions={{
-				// activeTintColor: "#009788",
-				inactiveTintColor: 'red',
-				style: {
-					backgroundColor: 'transparent',
-					height: 90,
-					padding: 10,
-				},
-			}}
 		>
-			<Tab.Screen
-				name="Movie"
-				component={MovieScreen}
-
-				// options={({ navigation }) => ({
-				//   tabBarIcon: (props) => (
-				//     <TouchableOpacity onPress={() => navigation.navigate("Music")}>
-				//       <Ionicons name="musical-notes" size={50} color="red" />
-				//     </TouchableOpacity>
-				//   ),
-				// })}
-			/>
-
 			<Tab.Screen name="Music" component={MusicScreen} />
+			<Tab.Screen name="Movie" component={MovieScreen} />
 		</Tab.Navigator>
 	);
 };
