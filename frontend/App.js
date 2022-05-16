@@ -11,6 +11,10 @@ import WishlistScreen from "./screens/Wishlist";
 import SettingsScreen from "./screens/Settings";
 import LoginScreen from "./screens/Login";
 
+//REDUX
+import store from "./redux/store";
+import { Provider } from "react-redux";
+
 // Import icons
 import { Ionicons } from "@expo/vector-icons";
 
@@ -58,7 +62,7 @@ const HomeMovie = ({ navigation }) => {
       })}
       tabBarOptions={{
         // activeTintColor: "#009788",
-        inactiveTintColor: "#009788",
+        inactiveTintColor: "red",
         style: {
           backgroundColor: "transparent",
           height: 90,
@@ -86,15 +90,17 @@ const HomeMovie = ({ navigation }) => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="HomeMovie" component={HomeMovie} />
-        {/* <Stack.Screen name="Music" component={MusicScreen} /> */}
-        <Stack.Screen name="Wishlist" component={WishlistScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="HomeMovie" component={HomeMovie} />
+          {/* <Stack.Screen name="Music" component={MusicScreen} /> */}
+          <Stack.Screen name="Wishlist" component={WishlistScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
