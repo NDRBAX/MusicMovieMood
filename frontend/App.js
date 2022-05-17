@@ -22,39 +22,39 @@ import { Ionicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const HomeMovie = ({ navigation }) => {
-	return (
-		<Tab.Navigator
-			screenOptions={({ route }) => ({
-				tabBarIcon: ({ focused, color, size }) => {
-					let iconName;
+// const HomeMovie = ({ navigation }) => {
+// 	return (
+// 		<Tab.Navigator
+// 			screenOptions={({ route }) => ({
+// 				tabBarIcon: ({ focused, color, size }) => {
+// 					let iconName;
 
-					if (route.name === 'Music') {
-						iconName = focused ? 'ios-film' : 'ios-film';
-					} else if (route.name === 'Movie') {
-						iconName = focused ? 'musical-notes' : 'musical-notes';
-					}
+// 					if (route.name === 'Music') {
+// 						iconName = focused ? 'ios-film' : 'ios-film';
+// 					} else if (route.name === 'Movie') {
+// 						iconName = focused ? 'musical-notes' : 'musical-notes';
+// 					}
 
-					// You can return any component that you like here!
-					return <Ionicons name={iconName} size={size} color={color} />;
-				},
-				tabBarActiveTintColor: 'tomato',
-				tabBarInactiveTintColor: 'gray',
-			})}
-		>
-			<Tab.Screen name="Music" component={MusicScreen} />
-			<Tab.Screen name="Movie" component={MovieScreen} />
-		</Tab.Navigator>
-	);
-};
+// 					// You can return any component that you like here!
+// 					return <Ionicons name={iconName} size={size} color={color} />;
+// 				},
+// 				tabBarActiveTintColor: 'tomato',
+// 				tabBarInactiveTintColor: 'gray',
+// 			})}
+// 		>
+// 			{/* <Tab.Screen name="Music" component={MusicScreen} /> */}
+// 			<Tab.Screen name="Movie" component={MovieScreen} />
+// 		</Tab.Navigator>
+// 	);
+// };
 
 export default function App() {
 	return (
 		<Provider store={store}>
 			<NavigationContainer>
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					<Stack.Screen name="HomeMovie" component={HomeMovie} />
-					{/* <Stack.Screen name="Music" component={MusicScreen} /> */}
+					<Stack.Screen name="Movie" component={MovieScreen} />
+					<Stack.Screen name="Music" component={MusicScreen} />
 					<Stack.Screen name="Wishlist" component={WishlistScreen} />
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="Settings" component={SettingsScreen} />
