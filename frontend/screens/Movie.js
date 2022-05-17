@@ -10,6 +10,7 @@ import {
 import { Button, Icon, Text } from 'react-native-elements';
 // Import icons
 import { Ionicons } from '@expo/vector-icons';
+import TextCustom from '../components/TextCustom';
 
 const Movie = (props, { navigation }) => {
 	return (
@@ -39,20 +40,20 @@ const Movie = (props, { navigation }) => {
 						name="account"
 						color="white"
 						type="material-community"
-						// buttonStyle={{ backgroundColor: '#009788' }}
 						onPress={() => props.navigation.navigate('Settings')}
 					/>
 				</View>
 				<ScrollView style={{ marginTop: 30 }}>
-					<Text h4 style={{ textAlign: 'center', color: 'white' }}>
+					<TextCustom fontSize="24" fontWeight="bold">
 						Movie
-					</Text>
+					</TextCustom>
+					<View></View>
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.music_btn}
 					onPress={() => props.navigation.navigate('Music')}
 				>
-					<Image source={require('../assets/images/btnMusic.png')} />
+					<Image style={styles.stretch} source={require('../assets/images/music_btn.png')} />
 				</TouchableOpacity>
 			</ImageBackground>
 		</View>
@@ -76,6 +77,11 @@ const styles = StyleSheet.create({
 	},
 	music_btn: {
 		marginBottom: 20,
+	},
+	stretch: {
+		width: 80,
+		height: 80,
+		resizeMode: 'stretch',
 	},
 });
 

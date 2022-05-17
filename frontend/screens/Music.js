@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { Button, Icon, Text } from 'react-native-elements';
-
+import TextCustom from '../components/TextCustom';
 // Import icons
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -46,9 +46,9 @@ const Music = props => {
 					/>
 				</View>
 				<ScrollView style={{ marginTop: 40 }}>
-					<Text h4 style={{ textAlign: 'center', color: 'white' }}>
+					<TextCustom fontSize="24" fontWeight="bold">
 						Music
-					</Text>
+					</TextCustom>
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.music_btn}
