@@ -10,10 +10,10 @@ const options = {
   },
 };
 
-/* GET home page. */
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
+//search music top
 router.get("/top", async function (req, res, next) {
   var topRaw = await request(
     "GET",
@@ -24,15 +24,40 @@ router.get("/top", async function (req, res, next) {
   top = await JSON.parse(top);
   res.json(top);
 });
-router.get("/filter/mood/:mood", async function (req, res, next) {
+//filter music by mood
+router.get("/mood/:mood", async function (req, res, next) {
   //mood: happy,sad,chill,sleep,romance,dance
   var moodRaw = await request(
     "GET",
-    `https://spotify23.p.rapidapi.com/search/?q=genre%3A${req.params.mood}&type=track&offset=0&limit=10&numberOfTopResults=5`,
+    `https://spotify23.p.rapidapi.com/search/?q=genre%3A${req.params.mood}&type=tracks&offset=0&limit=10`,
     options
   );
   var mood = await moodRaw.body;
   mood = await JSON.parse(mood);
   res.json(mood.tracks);
+});
+//filter music by ambiance
+router.get("/ambiance/:ambi", async function (req, res, next) {
+  //ambiance: study, party, summer, rainy-day, work-out, acoustic
+  var ambiRaw = await request(
+    "GET",
+    `https://spotify23.p.rapidapi.com/search/?q=genre%3A${req.params.ambi}&type=tracks&offset=0&limit=10`,
+    options
+  );
+  var ambi = await ambiRaw.body;
+  ambi = await JSON.parse(ambi);
+  res.json(ambi.tracks);
+});
+//filter music by genre
+router.get("/genre/:genre", async function (req, res, next) {
+  //genre: pop, rock, latino, edm, hip-hop, r-n-b, jazz, soul,classical, indie
+  var genreRaw = await request(
+    "GET",
+    `https://spotify23.p.rapidapi.com/search/?q=genre%3A${req.params.genre}&type=tracks&offset=0&limit=10`,
+    options
+  );
+  var genre = await genreRaw.body;
+  genre = await JSON.parse(genre);
+  res.json(genre.tracks);
 });
 module.exports = router;
