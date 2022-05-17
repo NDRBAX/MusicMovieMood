@@ -1,14 +1,20 @@
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import TextCustom from './TextCustom';
-
-let filterList = [{ name: 'mood', img: require('../assets/images/movie_filter_mood_white.png') }];
+import { filterMovieList } from '../data/filters';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSelectedFilter } from '../features/movie/movieSlice';
+import { useState } from 'react';
 
 const Filter = props => {
+	const [isActive, setIsActive] = useState(false);
+	const { selectedFilters } = useSelector(state => state.movie);
+	const dispatch = useDispatch();
 	const { name, src } = props;
-	let uriImg = filterList.find(item => item.name === name).img;
+
+	let uriImg = filterMovieList.find(item => item.name === name).img;
 
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity onPress={() => dispatch(toggleSelectedFilter(name))}>
 			<View
 				style={{
 					flex: 1,
@@ -29,7 +35,6 @@ const styles = StyleSheet.create({
 		width: 65,
 		height: 65,
 		resizeMode: 'stretch',
-		marginBottom: 10,
 	},
 });
 

@@ -15,6 +15,7 @@ const movieSlice = createSlice({
 				year: '2020',
 			},
 		],
+		selectedFilters: [],
 	},
 	reducers: {
 		//ADD MOVIE TO WISHLIST
@@ -25,8 +26,15 @@ const movieSlice = createSlice({
 		removeFromWishlist: (state, action) => {
 			state.movies = state.movies.filter(movie => movie._id !== action.payload._id);
 		},
+		toggleSelectedFilter: (state, { payload }) => {
+			if (!state.selectedFilters.includes(payload)) {
+				state.selectedFilters = [...state.selectedFilters, payload];
+			} else {
+				state.selectedFilters = state.selectedFilters.filter(filter => filter !== payload);
+			}
+		},
 	},
 });
 
-export const { addToWishlist, removeFromWishlist } = movieSlice.actions;
+export const { addToWishlist, removeFromWishlist, toggleSelectedFilter } = movieSlice.actions;
 export default movieSlice.reducer;
