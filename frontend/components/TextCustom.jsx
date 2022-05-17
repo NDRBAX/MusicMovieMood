@@ -3,7 +3,8 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 
 const TextCustom = props => {
-	const { fontSize, fontWeight, children } = props;
+	const { fontSize, fontWeight, children, style } = props;
+	console.log(fontSize, fontWeight);
 	let [fontsLoaded] = useFonts({
 		Lato_300Light,
 		Lato_400Regular,
@@ -25,6 +26,7 @@ const TextCustom = props => {
 				fontFamily: fw,
 				fontSize: parseInt(fontSize) || 14,
 				textAlign: 'center',
+				...style,
 			}}
 		>
 			{children}

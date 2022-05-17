@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	ScrollView,
 	View,
@@ -6,13 +6,19 @@ import {
 	Image,
 	TouchableOpacity,
 	ImageBackground,
+	Text,
 } from 'react-native';
-import { Button, Icon, Text } from 'react-native-elements';
-// Import icons
-import { Ionicons } from '@expo/vector-icons';
+
+import { Card, Icon } from 'react-native-elements';
+
+import Filter from '../components/Filter';
+import MovieHomeItem from '../components/MovieHomeItem';
+
 import TextCustom from '../components/TextCustom';
 
 const Movie = (props, { navigation }) => {
+	const [selectedIndexes, setSelectedIndexes] = useState([0, 2, 3]);
+
 	return (
 		<View style={styles.container}>
 			<ImageBackground
@@ -43,11 +49,63 @@ const Movie = (props, { navigation }) => {
 						onPress={() => props.navigation.navigate('Settings')}
 					/>
 				</View>
-				<ScrollView style={{ marginTop: 30 }}>
-					<TextCustom fontSize="24" fontWeight="bold">
-						Movie
+
+				<ScrollView
+					style={{
+						marginTop: 30,
+						width: '100%',
+					}}
+				>
+					<View style={styles.filters}>
+						<Filter name="mood" />
+						<Filter name="mood" />
+						<Filter name="mood" />
+					</View>
+
+					{/* list film partie 1 */}
+					<TextCustom
+						fontSize="15"
+						fontWeight="light"
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
+					>
+						Films
 					</TextCustom>
-					<View></View>
+
+					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+						<MovieHomeItem />
+						<MovieHomeItem />
+						<MovieHomeItem />
+
+						<TouchableOpacity
+							style={{ height: 175, width: 112, borderRadius: 30, marginHorizontal: 10 }}
+						>
+							<Text
+								style={{
+									position: 'absolute',
+									zIndex: 88,
+									bottom: 0,
+									color: 'white',
+									textAlign: 'center',
+									width: '100%',
+									backgroundColor: 'rgba(0,0,0,0.5)',
+									borderBottomLeftRadius: 10,
+									borderBottomRightRadius: 10,
+								}}
+							>
+								Batman
+							</Text>
+
+							<Image
+								source={{ uri: 'https://picsum.photos/200/300' }}
+								style={{
+									borderRadius: 10,
+									height: 175,
+									width: 112,
+								}}
+								resizeMode="cover"
+							/>
+						</TouchableOpacity>
+					</ScrollView>
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.music_btn}
@@ -82,6 +140,17 @@ const styles = StyleSheet.create({
 		width: 80,
 		height: 80,
 		resizeMode: 'stretch',
+	},
+	stretchFilter: {
+		width: 65,
+		height: 65,
+		resizeMode: 'stretch',
+		marginBottom: 10,
+	},
+	filters: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
 	},
 });
 
