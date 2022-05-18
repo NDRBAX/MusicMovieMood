@@ -4,23 +4,30 @@ import { filterMovieList } from '../data/filters';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSelectedFilter } from '../features/movie/movieSlice';
 import { useEffect, useState } from 'react';
+import { toggleSmiley, addPublicFilter, addWhereFilter } from '../features/movie/movieSlice';
 
 const Filter = props => {
 	const [isActive, setIsActive] = useState(false);
-	const { selectedFilters } = useSelector(state => state.movie);
+	const { selectedFilters, moodFilter } = useSelector(state => state.movie);
 	const dispatch = useDispatch();
-	const { name, src } = props;
+	const { name } = props;
 
 	useEffect(() => {
-		if (selectedFilters.includes(name)) {
-			setIsActive(true);
-		}
-		if (!selectedFilters.includes(name)) {
-			setIsActive(false);
+		if (name == 'mood') {
+			if (selectedFilters.includes(name) && moodFilter != '') {
+				setIsActive(true);
+			} else {
+				setIsActive(false);
+			}
+		} else {
+			if (selectedFilters.includes(name)) {
+				setIsActive(true);
+			}
+			if (!selectedFilters.includes(name)) {
+				setIsActive(false);
+			}
 		}
 	}, [selectedFilters]);
-
-	console.log(isActive);
 
 	let uriImg;
 
@@ -28,7 +35,22 @@ const Filter = props => {
 	!isActive && (uriImg = filterMovieList.find(item => item.name === name).img);
 
 	return (
-		<TouchableOpacity onPress={() => dispatch(toggleSelectedFilter(name))}>
+		<TouchableOpacity
+			onPress={() => {
+				if (name == 'public') {
+					dispatch(toggleSelectedFilter(name));
+					dispatch(addPublicFilter());
+				}
+				if (name == 'ou?') {
+					dispatch(toggleSelectedFilter(name));
+					dispatch(addWhereFilter());
+				}
+
+				if (name == 'mood') {
+					dispatch(toggleSmiley());
+				}
+			}}
+		>
 			<View
 				style={{
 					flex: 1,

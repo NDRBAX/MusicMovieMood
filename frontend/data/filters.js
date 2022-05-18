@@ -5,7 +5,7 @@ export const filterMovieList = [
 		activeImg: require('../assets/images/movie_filter_mood_p.png'),
 	},
 	{
-		name: 'Public',
+		name: 'public',
 		img: require('../assets/images/movie_filter_public_white.png'),
 		activeImg: require('../assets/images/movie_filter_public_p.png'),
 	},

@@ -5,7 +5,7 @@ import { useFonts } from 'expo-font';
 
 const TextCustom = props => {
 	const { fontSize, fontWeight, children, style } = props;
-	console.log(fontSize, fontWeight);
+
 	let [fontsLoaded] = useFonts({
 		Lato_300Light: require('../assets/Lato-Light.ttf'),
 		Lato_400Regular: require('../assets/Lato-Regular.ttf'),
