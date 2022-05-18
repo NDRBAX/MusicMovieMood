@@ -1,14 +1,15 @@
-import { Text } from 'react-native';
-import AppLoading from 'expo-app-loading';
-import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
+import { Text, ActivityIndicator } from 'react-native';
+// import AppLoading from 'expo-app-loading';
+// import { useFonts, Lato_300Light, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
+import { useFonts } from 'expo-font';
 
 const TextCustom = props => {
 	const { fontSize, fontWeight, children, style } = props;
 	console.log(fontSize, fontWeight);
 	let [fontsLoaded] = useFonts({
-		Lato_300Light,
-		Lato_400Regular,
-		Lato_700Bold,
+		Lato_300Light: require('../assets/Lato-Light.ttf'),
+		Lato_400Regular: require('../assets/Lato-Regular.ttf'),
+		Lato_700Bold: require('../assets/Lato-Bold.ttf'),
 	});
 	let fw = '';
 
@@ -17,8 +18,9 @@ const TextCustom = props => {
 	fontWeight == 'light' && (fw = 'Lato_300Light');
 
 	if (!fontsLoaded) {
-		return <AppLoading />;
+		return <ActivityIndicator size="large" />;
 	}
+
 	return (
 		<Text
 			style={{
