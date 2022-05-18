@@ -2,32 +2,27 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import TextCustom from './TextCustom';
 import { filterMovieList } from '../data/filters';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSelectedFilter } from '../features/movie/movieSlice';
+
 import { useEffect, useState } from 'react';
 import { toggleSmiley, addPublicFilter, addWhereFilter } from '../features/movie/movieSlice';
 
 const Filter = props => {
 	const [isActive, setIsActive] = useState(false);
-	const { selectedFilters, moodFilter } = useSelector(state => state.movie);
+	const { moodFilter, publicFilter, whereFilter } = useSelector(state => state.movie);
 	const dispatch = useDispatch();
 	const { name } = props;
 
 	useEffect(() => {
 		if (name == 'mood') {
-			if (selectedFilters.includes(name) && moodFilter != '') {
-				setIsActive(true);
-			} else {
-				setIsActive(false);
-			}
-		} else {
-			if (selectedFilters.includes(name)) {
-				setIsActive(true);
-			}
-			if (!selectedFilters.includes(name)) {
-				setIsActive(false);
-			}
+			moodFilter != '' ? setIsActive(true) : setIsActive(false);
 		}
-	}, [selectedFilters]);
+		if (name == 'public') {
+			publicFilter ? setIsActive(true) : setIsActive(false);
+		}
+		if (name == 'ou?') {
+			whereFilter ? setIsActive(true) : setIsActive(false);
+		}
+	}, [whereFilter, publicFilter, moodFilter]);
 
 	let uriImg;
 
@@ -38,11 +33,9 @@ const Filter = props => {
 		<TouchableOpacity
 			onPress={() => {
 				if (name == 'public') {
-					dispatch(toggleSelectedFilter(name));
 					dispatch(addPublicFilter());
 				}
 				if (name == 'ou?') {
-					dispatch(toggleSelectedFilter(name));
 					dispatch(addWhereFilter());
 				}
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	ScrollView,
 	View,
@@ -9,29 +9,20 @@ import {
 	Text,
 } from 'react-native';
 
-import { Button, Overlay, Icon } from 'react-native-elements';
-
+import { Overlay, Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-
 import Filter from '../components/Filter';
 import MovieHomeItem from '../components/MovieHomeItem';
-
 import TextCustom from '../components/TextCustom';
+import SmileyItem from '../components/SmileyItem';
+import { smileyMovieList } from '../data/smiley';
 import { filterMovieList } from '../data/filters';
-import {
-	toggleSmiley,
-	addMoodFilter,
-	toggleSelectedFilter,
-	removeMoodFilter,
-} from '../features/movie/movieSlice';
+import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
-	const { selectedFilters, displaySmiley } = useSelector(state => state.movie);
+	const { displaySmiley } = useSelector(state => state.movie);
 
 	const dispatch = useDispatch();
-
-	console.log('-----------------------selectedFilters');
-	console.log(selectedFilters);
 
 	return (
 		<View style={styles.container}>
@@ -78,68 +69,19 @@ const Movie = (props, { navigation }) => {
 							dispatch(removeMoodFilter());
 						}}
 					>
-						<View style={{ height: 190, width: 266 }}>
+						<View style={{ height: 190, width: 240, paddingTop: 12 }}>
 							<View
 								style={{
 									flex: 1,
 									flexDirection: 'row',
 									justifyContent: 'center',
+
+									flexWrap: 'wrap',
 								}}
 							>
-								<TouchableOpacity
-									onPress={() => {
-										console.log('happy');
-										dispatch(addMoodFilter('happy'));
-										dispatch(toggleSelectedFilter('mood'));
-										dispatch(toggleSmiley());
-									}}
-								>
-									<Image
-										style={styles.smiley}
-										source={require('../assets/images/smiley/laught.png')}
-									/>
-								</TouchableOpacity>
-								<TouchableOpacity
-									onPress={() => {
-										console.log('sad');
-										dispatch(addMoodFilter('sad'));
-										dispatch(toggleSelectedFilter('mood'));
-										dispatch(toggleSmiley());
-									}}
-								>
-									<Image
-										style={styles.smiley}
-										source={require('../assets/images/smiley/sad.png')}
-									/>
-								</TouchableOpacity>
-
-								<TouchableOpacity
-									onPress={() => {
-										console.log('love');
-										dispatch(addMoodFilter('love'));
-										dispatch(toggleSelectedFilter('mood'));
-										dispatch(toggleSmiley());
-									}}
-								>
-									<Image
-										style={styles.smiley}
-										source={require('../assets/images/smiley/love.png')}
-									/>
-								</TouchableOpacity>
-							</View>
-							<View style={{ flex: 1, flexDirection: 'row' }}>
-								<Image
-									style={styles.smiley}
-									source={require('../assets/images/smiley/fear.png')}
-								/>
-								<Image
-									style={styles.smiley}
-									source={require('../assets/images/smiley/curious.png')}
-								/>
-								<Image
-									style={styles.smiley}
-									source={require('../assets/images/smiley/furious.png')}
-								/>
+								{smileyMovieList.map((smiley, i) => (
+									<SmileyItem name={smiley.name} key={smiley.name + i} />
+								))}
 							</View>
 						</View>
 					</Overlay>
@@ -237,21 +179,11 @@ const styles = StyleSheet.create({
 		height: 80,
 		resizeMode: 'stretch',
 	},
-	// stretchFilter: {
-	// 	width: 65,
-	// 	height: 65,
-	// 	resizeMode: 'stretch',
-	// 	marginBottom: 10,
-	// },
+
 	filters: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-	},
-	smiley: {
-		height: 50,
-		width: 50,
-		margin: 20,
 	},
 });
 
