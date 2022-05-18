@@ -10,14 +10,21 @@ import {
 } from 'react-native';
 
 import { Card, Icon } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Filter from '../components/Filter';
 import MovieHomeItem from '../components/MovieHomeItem';
 
 import TextCustom from '../components/TextCustom';
+import { filterMovieList } from '../data/filters';
+import { addSelectedFilter, removeSelectedFilter } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
-	const [selectedIndexes, setSelectedIndexes] = useState([0, 2, 3]);
+	const { selectedFilters } = useSelector(state => state.movie);
+	const dispatch = useDispatch();
+
+	console.log('-----------------------selectedFilters');
+	console.log(selectedFilters);
 
 	return (
 		<View style={styles.container}>
@@ -57,9 +64,10 @@ const Movie = (props, { navigation }) => {
 					}}
 				>
 					<View style={styles.filters}>
-						<Filter name="mood" />
-						<Filter name="mood" />
-						<Filter name="mood" />
+						{filterMovieList.map((it, index) => {
+							const { name } = it;
+							return <Filter name={name} index key={index} />;
+						})}
 					</View>
 
 					{/* list film partie 1 */}
@@ -141,12 +149,12 @@ const styles = StyleSheet.create({
 		height: 80,
 		resizeMode: 'stretch',
 	},
-	stretchFilter: {
-		width: 65,
-		height: 65,
-		resizeMode: 'stretch',
-		marginBottom: 10,
-	},
+	// stretchFilter: {
+	// 	width: 65,
+	// 	height: 65,
+	// 	resizeMode: 'stretch',
+	// 	marginBottom: 10,
+	// },
 	filters: {
 		flex: 1,
 		flexDirection: 'row',

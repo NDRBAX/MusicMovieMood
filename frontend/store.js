@@ -1,4 +1,4 @@
-import movieReducer from './movie/movieSlice';
+import movieReducer from './features/movie/movieSlice';
 
 //REDUX
 import { configureStore } from '@reduxjs/toolkit';

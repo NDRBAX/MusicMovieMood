@@ -3,7 +3,7 @@ import { ScrollView, ImageBackground, StyleSheet, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import TextCustom from '../components/TextCustom';
-import { removeFromWishlist } from '../movie/movieSlice';
+import { removeFromWishlist } from '../features/movie/movieSlice';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
