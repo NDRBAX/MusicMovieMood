@@ -51,12 +51,6 @@ const styles = StyleSheet.create({
 		resizeMode: 'stretch',
 		paddingHorizontal: 20,
 	},
-	stretchFilterActive: {
-		width: 120,
-		height: 120,
-		resizeMode: 'stretch',
-		backgroundColor: 'violet',
-	},
 });
 
 export default Filter;

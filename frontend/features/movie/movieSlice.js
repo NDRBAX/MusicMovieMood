@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const movieSlice = createSlice({
 	name: 'movie',
 	initialState: {
-		movies: [
+		wishList: [
 			{
 				title: 'Le renard fou',
 				length: '2h10',
