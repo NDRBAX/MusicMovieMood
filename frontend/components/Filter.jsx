@@ -27,9 +27,6 @@ const Filter = props => {
 	isActive && (uriImg = filterMovieList.find(item => item.name === name).activeImg);
 	!isActive && (uriImg = filterMovieList.find(item => item.name === name).img);
 
-	// let uriImgActive = filterMovieList.find(item => item.name === name).activeImg;
-	// let uriImg = filterMovieList.find(item => item.name === name).img;
-
 	return (
 		<TouchableOpacity onPress={() => dispatch(toggleSelectedFilter(name))}>
 			<View
@@ -37,13 +34,10 @@ const Filter = props => {
 					flex: 1,
 					flexDirection: 'column',
 					alignItems: 'center',
-					// paddingHorizontal: 20,
+					paddingHorizontal: 20,
 				}}
 			>
-				<Image
-					style={isActive ? styles.stretchFilterActive : styles.stretchFilter}
-					source={uriImg}
-				/>
+				<Image style={styles.stretchFilter} source={uriImg} />
 				<TextCustom fontSize="14">{name}</TextCustom>
 			</View>
 		</TouchableOpacity>
