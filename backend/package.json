@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
@@ -14,6 +15,7 @@
     "http-errors": "~1.6.3",
     "mongoose": "^6.3.3",
     "morgan": "~1.9.1",
-    "sync-request": "^6.1.0"
+    "sync-request": "^6.1.0",
+    "uid2": "^1.0.0"
   }
 }
