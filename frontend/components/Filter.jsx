@@ -3,7 +3,7 @@ import TextCustom from './TextCustom';
 import { filterMovieList } from '../data/filters';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSelectedFilter } from '../features/movie/movieSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Filter = props => {
 	const [isActive, setIsActive] = useState(false);
@@ -11,7 +11,24 @@ const Filter = props => {
 	const dispatch = useDispatch();
 	const { name, src } = props;
 
-	let uriImg = filterMovieList.find(item => item.name === name).img;
+	useEffect(() => {
+		if (selectedFilters.includes(name)) {
+			setIsActive(true);
+		}
+		if (!selectedFilters.includes(name)) {
+			setIsActive(false);
+		}
+	}, [selectedFilters]);
+
+	console.log(isActive);
+
+	let uriImg;
+
+	isActive && (uriImg = filterMovieList.find(item => item.name === name).activeImg);
+	!isActive && (uriImg = filterMovieList.find(item => item.name === name).img);
+
+	// let uriImgActive = filterMovieList.find(item => item.name === name).activeImg;
+	// let uriImg = filterMovieList.find(item => item.name === name).img;
 
 	return (
 		<TouchableOpacity onPress={() => dispatch(toggleSelectedFilter(name))}>
@@ -20,10 +37,13 @@ const Filter = props => {
 					flex: 1,
 					flexDirection: 'column',
 					alignItems: 'center',
-					paddingHorizontal: 20,
+					// paddingHorizontal: 20,
 				}}
 			>
-				<Image style={styles.stretchFilter} source={uriImg} />
+				<Image
+					style={isActive ? styles.stretchFilterActive : styles.stretchFilter}
+					source={uriImg}
+				/>
 				<TextCustom fontSize="14">{name}</TextCustom>
 			</View>
 		</TouchableOpacity>
@@ -35,6 +55,13 @@ const styles = StyleSheet.create({
 		width: 65,
 		height: 65,
 		resizeMode: 'stretch',
+		paddingHorizontal: 20,
+	},
+	stretchFilterActive: {
+		width: 120,
+		height: 120,
+		resizeMode: 'stretch',
+		backgroundColor: 'violet',
 	},
 });
 

@@ -66,8 +66,6 @@ const Movie = (props, { navigation }) => {
 					<View style={styles.filters}>
 						{filterMovieList.map((it, index) => {
 							const { name } = it;
-							console.log('******************');
-							console.log(name);
 							return <Filter name={name} index key={index} />;
 						})}
 					</View>
@@ -151,12 +149,12 @@ const styles = StyleSheet.create({
 		height: 80,
 		resizeMode: 'stretch',
 	},
-	stretchFilter: {
-		width: 65,
-		height: 65,
-		resizeMode: 'stretch',
-		marginBottom: 10,
-	},
+	// stretchFilter: {
+	// 	width: 65,
+	// 	height: 65,
+	// 	resizeMode: 'stretch',
+	// 	marginBottom: 10,
+	// },
 	filters: {
 		flex: 1,
 		flexDirection: 'row',
