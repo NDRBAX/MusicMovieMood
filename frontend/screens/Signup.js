@@ -4,22 +4,22 @@ import {
   Text,
   View,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../features/login/tokenSlice";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 
-import Input from "../components/Inputs";
-import Submit from "../components/Submit";
-import { Image } from "react-native-elements";
+import { Button, Image, Input } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Signup = (props, { navigation }) => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
-  const [passwordMatch, setPasswordMatch] = useState(false);
+
   const [userExists, setUserExists] = useState(false);
   const [listErrorsSignup, setErrorsSignup] = useState([]);
 
@@ -28,25 +28,39 @@ const Signup = (props, { navigation }) => {
 
   // SIGNUP
   let handleSubmitSignup = async () => {
-    const data = await fetch("/signup", {
+    const data = await fetch("http://192.168.1.10:3000/users/signup", {
       method: "POST",
       headers: { "Content-type": "application/x-www-form-urlencoded" },
-      body: `emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}`,
+      body: `emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&confirmPasswordFromFront=${signupConfirmPassword}`,
     });
 
-    const body = await data.JSON();
+    const body = await data.json();
 
-    if (signupPassword !== signupConfirmPassword) {
-      setPasswordMatch(false);
-    } else if (!body.result) {
-      setErrorsSignup(body.errors);
-    } else {
+    if (body.result) {
+      setUserExists(true);
       dispatch(addToken(body.token));
-      setUserExists = true;
+      // Alert.alert(
+      //   "Votre compte a été crée !",
+      //   "Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood",
+      //   [
+      //     {
+      //       text: "Fermer",
+      //       onPress: () => console.log("Cancel Pressed"),
+      //       style: "cancel",
+      //     },
+      //     {
+      //       text: "OK",
+      //       onPress: () =>
+      //         props.navigation.navigate("Movie") && console.log("OK Pressed"),
+      //     },
+      //   ]
+      // );
+    } else {
+      setErrorsSignup(body.errors);
     }
   };
   let tabErrorsSignup = listErrorsSignup.map((error, index) => {
-    return <Text>{error}</Text>;
+    return <Text style={{color: "white"}}>{error}</Text>;
   });
 
   return (
@@ -76,34 +90,36 @@ const Signup = (props, { navigation }) => {
           </Text>
 
           <Input
-            name="Email"
-            icon="envelope"
+            placeholder="Email"
+            leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
+            inputStyle={{ color: "white" }}
             onChangeText={(value) => setSignupEmail(value)}
             value={signupEmail}
           />
           <Input
-            name="Mot de passe"
-            icon="lock"
-            pass={true}
+            placeholder="Mot de passe"
+            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            inputStyle={{ color: "white" }}
+            secureTextEntry={true}
             onChangeText={(value) => setSignupPassword(value)}
             value={signupPassword}
           />
           <Input
-            name="Confirmer le mot de passe"
-            icon="lock"
-            pass={true}
+            placeholder="Confirmer le mot de passe"
+            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            inputStyle={{ color: "white" }}
+            secureTextEntry={true}
             onChangeText={(value) => setSignupConfirmPassword(value)}
             value={signupConfirmPassword}
           />
           {tabErrorsSignup}
-          <Submit
-            color="#E74680"
+
+          <Button
+            buttonStyle={{ backgroundColor: "#E74680", width: "70%" }}
             title="S'inscrire"
             onPress={() => handleSubmitSignup()}
           />
-          {passwordMatch && (
-            <Text> Les mots de passe ne correspondent pas. </Text>
-          )}
+
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.textBody}>Vous avez déjà un compte? </Text>
             <Text
@@ -140,14 +156,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     width: "100%",
   },
-  login: {
-    flex: 1,
-    alignItems: "center",
-  },
   image: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  login: {
+    // marginHorizontal: "10%",
   },
   logo: {
     width: 400,

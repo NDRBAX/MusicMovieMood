@@ -9,11 +9,6 @@ const movieSlice = createSlice({
         length: "2h10",
         year: "2020",
       },
-      {
-        title: "Le renard fou",
-        length: "2h10",
-        year: "2020",
-      },
     ],
     selectedFilters: [],
   },

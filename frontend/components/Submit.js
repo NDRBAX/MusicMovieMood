@@ -5,6 +5,7 @@ const Submit = (props) => {
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: props.color }]}
+      onPress={props}
     >
       <Text style={styles.submitText}> {props.title} </Text>
     </TouchableOpacity>
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     alignSelf: "center",
-    padding:10
+    padding: 10,
   },
 });
 

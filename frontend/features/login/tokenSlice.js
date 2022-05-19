@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const tokenSlice = createSlice({
   name: "token",
   initialState: {
-    token: [],
+    token: "",
   },
   reducers: {
     addToken: (state, action) => {
-      state.token.push(action.payload);
+      state.token = action.payload;
     },
-    removeToken: (state, action) => {
-      state.token = state.token.filter((x) => x !== action.payload);
+    removeToken: (state) => {
+      state.token = "";
     },
   },
 });
