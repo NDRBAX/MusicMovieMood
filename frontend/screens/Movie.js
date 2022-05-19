@@ -27,7 +27,6 @@ const Movie = (props, { navigation }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		console.log('uuuuuuuse effffect');
 		const getMovies = async () => {
 			try {
 				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
@@ -36,15 +35,18 @@ const Movie = (props, { navigation }) => {
 						adultFilter: false,
 					},
 				});
-				console.log(mov.data);
+				// console.log(mov.data);
 				setMovies(mov.data);
-				console.log(movies[0]);
+				// console.log(movies[0]);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		getMovies();
 	}, []);
+
+	const displaynbMovies = nb =>
+		movies?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
 
 	return (
 		<View style={styles.container}>
@@ -126,47 +128,26 @@ const Movie = (props, { navigation }) => {
 					<TextCustom
 						fontSize="15"
 						fontWeight="light"
-						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 40, marginBottom: 10 }}
 					>
 						Films
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						<MovieHomeItem />
-						<MovieHomeItem />
-						<MovieHomeItem />
+						{displaynbMovies(3)}
+					</ScrollView>
 
-						<TouchableOpacity
-							style={{ height: 175, width: 112, borderRadius: 30, marginHorizontal: 10 }}
-						>
-							<Text
-								style={{
-									position: 'absolute',
-									zIndex: 88,
-									bottom: 0,
-									color: 'white',
-									textAlign: 'center',
-									width: '100%',
-									backgroundColor: 'rgba(0,0,0,0.5)',
-									borderBottomLeftRadius: 10,
-									borderBottomRightRadius: 10,
-								}}
-							>
-								{movies[0]?.title}
-							</Text>
+					{/* list film partie 2 */}
+					<TextCustom
+						fontSize="15"
+						fontWeight="light"
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 60, marginBottom: 10 }}
+					>
+						Selection utilisateurs
+					</TextCustom>
 
-							<Image
-								source={{
-									uri: `https://image.tmdb.org/t/p/w500/${movies[0]?.backdrop_path}`,
-								}}
-								style={{
-									borderRadius: 10,
-									height: 175,
-									width: 112,
-								}}
-								resizeMode="cover"
-							/>
-						</TouchableOpacity>
+					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+						{displaynbMovies(6)}
 					</ScrollView>
 				</ScrollView>
 				<TouchableOpacity
