@@ -2,7 +2,7 @@ export const smileyMovieList = [
 	{
 		name: 'laught',
 		img: require('../assets/images/smiley/laught.png'),
-		idGenre: '35,16,10751', // 35:Comedy, 16:Animation, 10751:Family
+		idGenre: '35,16', // 35:Comedy, 16:Animation, 10751:Family
 	},
 	{
 		name: 'love',

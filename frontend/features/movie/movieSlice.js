@@ -53,6 +53,8 @@ const movieSlice = createSlice({
 		},
 		addPublicFilter(state) {
 			state.publicFilter = !state.publicFilter;
+			state.publicFilter === true && (state.moodGenre = '10751');
+			state.publicFilter === false && (state.moodGenre = '');
 		},
 
 		addWhereFilter(state) {
