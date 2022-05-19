@@ -11,6 +11,7 @@ const options = {
 };
 
 //tables filtre
+var resTop = [];
 var resMood = [];
 var resAmbiance = [];
 var resGenre = [];
@@ -32,7 +33,14 @@ router.get("/getTop", async function (req, res, next) {
   );
   var top = await topRaw.body;
   top = await JSON.parse(top);
-  res.json(top);
+  for (let i = 0; i < 10; i++) {
+    resTop.push({
+      id: top.content[i].track_id,
+      track: top.content[i].track_title,
+      cover: top.content[i].thumbnail,
+    });
+  }
+  res.json(resTop);
 });
 
 //filter music by mood
@@ -58,12 +66,10 @@ router.get("/mood/:mood", async function (req, res, next) {
     resMood.push({
       id: mood.tracks.items[i].data.id,
       track: mood.tracks.items[i].data.name,
-      artist: mood.tracks.items[i].data.artists.items[0].profile.name,
-      album: mood.tracks.items[i].data.albumOfTrack.name,
       cover: mood.tracks.items[i].data.albumOfTrack.coverArt.sources[0].url,
     });
   }
-  res.json(mood.tracks);
+  res.json({ result: true, filter: resMood });
 });
 
 //filter music by ambiance
@@ -80,12 +86,10 @@ router.get("/ambiance/:ambi", async function (req, res, next) {
     resAmbiance.push({
       id: ambi.tracks.items[i].data.id,
       track: ambi.tracks.items[i].data.name,
-      artist: ambi.tracks.items[i].data.artists.items[0].profile.name,
-      album: ambi.tracks.items[i].data.albumOfTrack.name,
       cover: ambi.tracks.items[i].data.albumOfTrack.coverArt.sources[0].url,
     });
   }
-  res.json(ambi.tracks);
+  res.json({ result: true, filter: resAmbiance });
 });
 
 //filter music by genre
@@ -102,13 +106,10 @@ router.get("/genre/:genre", async function (req, res, next) {
     resGenre.push({
       id: genre.tracks.items[i].data.id,
       track: genre.tracks.items[i].data.name,
-      artist: genre.tracks.items[i].data.artists.items[0].profile.name,
-      album: genre.tracks.items[i].data.albumOfTrack.name,
       cover: genre.tracks.items[i].data.albumOfTrack.coverArt.sources[0].url,
     });
   }
-  console.log(resGenre);
-  res.json(genre.tracks);
+  res.json({ result: true, filter: resGenre });
 });
 
 //music details
@@ -132,14 +133,15 @@ router.get("/getPlaylist", async function (req, res, next) {
   );
   var playL = await playLRaw.body;
   playL = await JSON.parse(playL);
-  playlists = playL.playlists.items.map((e) => {
-    return {
-      id: e.data.uri.replace(/^spotify:playlist:/, ""),
-      name: e.data.name,
-      image: e.data.images.items[0].sources[0].url,
-    };
-  });
-  console.log(playlists);
-  res.json(playL);
+  for (let i = 0; i < playL.playlists.items.length; i++) {
+    if (playL.playlists.items[i].data.images) {
+      playlists.push({
+        url: playL.playlists.items[i].data.uri, //url menant à l'app spotify
+        name: playL.playlists.items[i].data.name,
+        image: playL.playlists.items[i].data.images.items[0].sources[0].url,
+      });
+    }
+  }
+  res.json(playlists);
 });
 module.exports = router;
