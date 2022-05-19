@@ -15,6 +15,9 @@ const movieSlice = createSlice({
 				year: '2020',
 			},
 		],
+		moviesFetch: [],
+		moviesNow: [],
+		moviesPopular: [],
 		moodFilter: '',
 		moodGenre: '',
 		publicFilter: false,
@@ -40,11 +43,6 @@ const movieSlice = createSlice({
 			console.log(action.payload);
 			const { name, genre } = action.payload;
 
-			console.log('**************mood');
-			console.log(name);
-			console.log('**************genre');
-			console.log(genre);
-
 			state.moodFilter = name;
 			state.moodGenre = genre;
 		},
@@ -60,6 +58,12 @@ const movieSlice = createSlice({
 		addWhereFilter(state) {
 			state.whereFilter = !state.whereFilter;
 		},
+		addMovieFetch(state, { payload }) {
+			state.moviesFetch = payload;
+		},
+		addMoviePopularFetch(state, { payload }) {
+			state.moviesPopular = payload;
+		},
 	},
 });
 
@@ -71,5 +75,7 @@ export const {
 	addPublicFilter,
 	addWhereFilter,
 	removeMoodFilter,
+	addMovieFetch,
+	addMoviePopularFetch,
 } = movieSlice.actions;
 export default movieSlice.reducer;

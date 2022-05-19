@@ -18,21 +18,21 @@ import SmileyItem from '../components/SmileyItem';
 import axios from 'axios';
 import { smileyMovieList } from '../data/smiley';
 import { filterMovieList } from '../data/filters';
-import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
+import {
+	toggleSmiley,
+	removeMoodFilter,
+	addMovieFetch,
+	addMoviePopularFetch,
+} from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
 	const [isLoading, setLoading] = useState(true);
-	const [movies, setMovies] = useState([]);
-	const { displaySmiley, whereFilter, publicFilter, moodFilter, moodGenre } = useSelector(
-		state => state.movie,
-	);
+	const { displaySmiley, whereFilter, publicFilter, moviesFetch, moodGenre, moviesPopular } =
+		useSelector(state => state.movie);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const getMovies = async () => {
-			console.log('je fetch les movies ta race');
-			console.log('---------------publicFilter');
-			console.log(publicFilter);
 			try {
 				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
 					params: {
@@ -41,9 +41,7 @@ const Movie = (props, { navigation }) => {
 						whereFilter: whereFilter,
 					},
 				});
-
-				setMovies(mov.data);
-				console.log(movies[0]);
+				dispatch(addMovieFetch(mov.data));
 			} catch (err) {
 				console.log(err);
 			}
@@ -51,8 +49,24 @@ const Movie = (props, { navigation }) => {
 		getMovies();
 	}, [publicFilter, whereFilter, moodGenre]);
 
-	const displayNbMovies = nb =>
-		movies?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
+	useEffect(() => {
+		const getMoviesPopular = async () => {
+			try {
+				const mov = await axios.get('http://192.168.1.21:3000/movie/getMoviesPopular');
+				dispatch(addMoviePopularFetch(mov.data));
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getMoviesPopular();
+	}, []);
+
+	console.log('moviesFetch-----------------------------------------------');
+	console.log(moviesFetch);
+	console.log(moviesFetch.length);
+
+	const displayNbMovies = (nb, list) =>
+		list?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
 
 	return (
 		<View style={styles.container}>
@@ -140,10 +154,10 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displayNbMovies(3)}
+						{displayNbMovies(3, moviesFetch)}
 					</ScrollView>
 
-					{/* list film partie 2 */}
+					{/* list film partie 2 selection users*/}
 					<TextCustom
 						fontSize="15"
 						fontWeight="light"
@@ -153,7 +167,7 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displayNbMovies(6)}
+						{displayNbMovies(6, moviesPopular)}
 					</ScrollView>
 				</ScrollView>
 				<TouchableOpacity

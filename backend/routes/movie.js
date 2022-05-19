@@ -4,29 +4,32 @@ var request = require('sync-request');
 var router = express.Router();
 
 const baseUrl = 'https://api.themoviedb.org/3/';
-// let adultFilter = false;
-// let genre = null;
-// let sort_by = null;
-
-//todo  :
-//groupe genre a definir pour smiley.
-//request nb de page par rapport au nombre de result (front?)
 
 //get movies, filtres adult, smiley, genre.
 router.get('/getMovies', async function (req, res, next) {
 	const { genres, adultFilter, whereFilter } = req.query;
 
-	let certificate = '&certification_country=FR&certification=10';
 	console.log(genres);
 	console.log(adultFilter);
 	console.log(whereFilter);
-	if (!adultFilter) {
+
+	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
+
+	// const url3 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=10&include_adult=${adultFilter}&page=1`;
+
+	// const url2 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=${certificate}&sort_by=popularity.desc&include_adult=${adultFilter}&page=1`;
+
+	try {
+		const response = await request('GET', url);
+		const movies = JSON.parse(response.body).results;
+		res.json(movies);
+	} catch (err) {
+		console.log(err);
 	}
-	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&page=1`;
+});
 
-	const url3 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=10&include_adult=${adultFilter}&page=1`;
-
-	const url2 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=${certificate}&sort_by=popularity.desc&include_adult=${adultFilter}&page=1`;
+router.get('/getMoviesPopular', async function (req, res, next) {
+	let url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&sort_by=popularity.desc&page=1`;
 
 	try {
 		const response = await request('GET', url);
