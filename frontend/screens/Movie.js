@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	ScrollView,
 	View,
@@ -15,14 +15,36 @@ import Filter from '../components/Filter';
 import MovieHomeItem from '../components/MovieHomeItem';
 import TextCustom from '../components/TextCustom';
 import SmileyItem from '../components/SmileyItem';
+import axios from 'axios';
 import { smileyMovieList } from '../data/smiley';
 import { filterMovieList } from '../data/filters';
 import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
+	const [isLoading, setLoading] = useState(true);
+	const [movies, setMovies] = useState([]);
 	const { displaySmiley } = useSelector(state => state.movie);
-
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		console.log('uuuuuuuse effffect');
+		const getMovies = async () => {
+			try {
+				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
+					params: {
+						genre: 37,
+						adultFilter: false,
+					},
+				});
+				console.log(mov.data);
+				setMovies(mov.data);
+				console.log(movies[0]);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getMovies();
+	}, []);
 
 	return (
 		<View style={styles.container}>
@@ -130,11 +152,13 @@ const Movie = (props, { navigation }) => {
 									borderBottomRightRadius: 10,
 								}}
 							>
-								Batman
+								{movies[0]?.title}
 							</Text>
 
 							<Image
-								source={{ uri: 'https://picsum.photos/200/300' }}
+								source={{
+									uri: `https://image.tmdb.org/t/p/w500/${movies[0]?.backdrop_path}`,
+								}}
 								style={{
 									borderRadius: 10,
 									height: 175,
