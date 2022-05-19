@@ -18,7 +18,6 @@ router.post("/signup", async function (req, res, next) {
   });
 
   if (
-    req.body.usernameFromFront == "" ||
     req.body.emailFromFront == "" ||
     req.body.passwordFromFront == ""
   ) {
@@ -27,7 +26,6 @@ router.post("/signup", async function (req, res, next) {
 
   if (errors.length == 0) {
     var newUser = new userModel({
-      username: req.body.usernameFromFront,
       email: req.body.emailFromFront,
       password: req.body.passwordFromFront,
       password: hash,
@@ -41,7 +39,7 @@ router.post("/signup", async function (req, res, next) {
       token = saveUser.token;
     }
   }
-  res.json({ result, saveUser, error, token });
+  res.json({ result, saveUser, errors, token });
 });
 
 // SIGNIN
