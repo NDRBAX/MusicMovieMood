@@ -23,7 +23,7 @@ import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
 const Movie = (props, { navigation }) => {
 	const [isLoading, setLoading] = useState(true);
 	const [movies, setMovies] = useState([]);
-	const { displaySmiley, whereFilter, publicFilter, moodFilter } = useSelector(
+	const { displaySmiley, whereFilter, publicFilter, moodFilter, moodGenre } = useSelector(
 		state => state.movie,
 	);
 	const dispatch = useDispatch();
@@ -36,13 +36,12 @@ const Movie = (props, { navigation }) => {
 			try {
 				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
 					params: {
-						// genre: moodFilter != '' ? moodFilter : '',
-						genre: 878,
+						genres: moodGenre,
 						adultFilter: publicFilter,
 						whereFilter: whereFilter,
 					},
 				});
-				// console.log(mov.data);
+
 				setMovies(mov.data);
 				console.log(movies[0]);
 			} catch (err) {
@@ -50,7 +49,7 @@ const Movie = (props, { navigation }) => {
 			}
 		};
 		getMovies();
-	}, [publicFilter]);
+	}, [publicFilter, whereFilter, moodGenre]);
 
 	const displayNbMovies = nb =>
 		movies?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);

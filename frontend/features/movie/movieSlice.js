@@ -16,6 +16,7 @@ const movieSlice = createSlice({
 			},
 		],
 		moodFilter: '',
+		moodGenre: '',
 		publicFilter: false,
 		whereFilter: false,
 		displaySmiley: false,
@@ -34,8 +35,18 @@ const movieSlice = createSlice({
 			state.displaySmiley = !state.displaySmiley;
 		},
 
-		addMoodFilter(state, { payload }) {
-			state.moodFilter = payload;
+		addMoodFilter(state, action) {
+			//plutot un toggle
+			console.log(action.payload);
+			const { name, genre } = action.payload;
+
+			console.log('**************mood');
+			console.log(name);
+			console.log('**************genre');
+			console.log(genre);
+
+			state.moodFilter = name;
+			state.moodGenre = genre;
 		},
 		removeMoodFilter(state) {
 			state.moodFilter = '';

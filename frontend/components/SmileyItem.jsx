@@ -8,10 +8,13 @@ const SmileyItem = ({ name }) => {
 	const dispatch = useDispatch();
 
 	let uriImg = smileyMovieList.find(item => item.name === name).img;
+	let genre = smileyMovieList.find(item => item.name === name).idGenre;
+	console.log('--------------grenre');
+	console.log(genre);
 	return (
 		<TouchableOpacity
 			onPress={() => {
-				dispatch(addMoodFilter(name));
+				dispatch(addMoodFilter({ name, genre }));
 				dispatch(toggleSmiley());
 			}}
 		>

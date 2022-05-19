@@ -4,88 +4,9 @@ var request = require('sync-request');
 var router = express.Router();
 
 const baseUrl = 'https://api.themoviedb.org/3/';
-let adultFilter = false;
-let genre = null;
-let sort_by = null;
-
-const movieGenre = [
-	{
-		id: 28,
-		name: 'Action',
-	},
-	{
-		id: 12,
-		name: 'Aventure',
-	},
-	{
-		id: 16,
-		name: 'Animation',
-	},
-	{
-		id: 35,
-		name: 'Comédie',
-	},
-	{
-		id: 80,
-		name: 'Crime',
-	},
-	{
-		id: 99,
-		name: 'Documentaire',
-	},
-	{
-		id: 18,
-		name: 'Drame',
-	},
-	{
-		id: 10751,
-		name: 'Familial',
-	},
-	{
-		id: 14,
-		name: 'Fantastique',
-	},
-	{
-		id: 36,
-		name: 'Histoire',
-	},
-	{
-		id: 27,
-		name: 'Horreur',
-	},
-	{
-		id: 10402,
-		name: 'Musique',
-	},
-	{
-		id: 9648,
-		name: 'Mystère',
-	},
-	{
-		id: 10749,
-		name: 'Romance',
-	},
-	{
-		id: 878,
-		name: 'Science-Fiction',
-	},
-	{
-		id: 10770,
-		name: 'Téléfilm',
-	},
-	{
-		id: 53,
-		name: 'Thriller',
-	},
-	{
-		id: 10752,
-		name: 'Guerre',
-	},
-	{
-		id: 37,
-		name: 'Western',
-	},
-];
+// let adultFilter = false;
+// let genre = null;
+// let sort_by = null;
 
 //todo  :
 //groupe genre a definir pour smiley.
@@ -93,14 +14,20 @@ const movieGenre = [
 
 //get movies, filtres adult, smiley, genre.
 router.get('/getMovies', async function (req, res, next) {
-	const { genre, adultFilter, whereFilter } = req.query;
-	console.log(genre);
+	const { genres, adultFilter, whereFilter } = req.query;
+
+	let certificate = '&certification_country=FR&certification=10';
+	console.log(genres);
 	console.log(adultFilter);
 	console.log(whereFilter);
-	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genre}&page=1`;
-	console.log(
-		`${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genre}&page=1`,
-	);
+	if (!adultFilter) {
+	}
+	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&page=1`;
+
+	const url3 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=10&include_adult=${adultFilter}&page=1`;
+
+	const url2 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=${certificate}&sort_by=popularity.desc&include_adult=${adultFilter}&page=1`;
+
 	try {
 		const response = await request('GET', url);
 		const movies = JSON.parse(response.body).results;
