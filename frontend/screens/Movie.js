@@ -23,29 +23,36 @@ import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
 const Movie = (props, { navigation }) => {
 	const [isLoading, setLoading] = useState(true);
 	const [movies, setMovies] = useState([]);
-	const { displaySmiley } = useSelector(state => state.movie);
+	const { displaySmiley, whereFilter, publicFilter, moodFilter } = useSelector(
+		state => state.movie,
+	);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const getMovies = async () => {
+			console.log('je fetch les movies ta race');
+			console.log('---------------publicFilter');
+			console.log(publicFilter);
 			try {
 				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
 					params: {
-						genre: 37,
-						adultFilter: false,
+						// genre: moodFilter != '' ? moodFilter : '',
+						genre: 878,
+						adultFilter: publicFilter,
+						whereFilter: whereFilter,
 					},
 				});
 				// console.log(mov.data);
 				setMovies(mov.data);
-				// console.log(movies[0]);
+				console.log(movies[0]);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		getMovies();
-	}, []);
+	}, [publicFilter]);
 
-	const displaynbMovies = nb =>
+	const displayNbMovies = nb =>
 		movies?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
 
 	return (
@@ -134,7 +141,7 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displaynbMovies(3)}
+						{displayNbMovies(3)}
 					</ScrollView>
 
 					{/* list film partie 2 */}
@@ -147,7 +154,7 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displaynbMovies(6)}
+						{displayNbMovies(6)}
 					</ScrollView>
 				</ScrollView>
 				<TouchableOpacity

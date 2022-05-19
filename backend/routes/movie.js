@@ -93,12 +93,21 @@ const movieGenre = [
 
 //get movies, filtres adult, smiley, genre.
 router.get('/getMovies', async function (req, res, next) {
-	const { genre, adultFilter } = req.query;
+	const { genre, adultFilter, whereFilter } = req.query;
 	console.log(genre);
+	console.log(adultFilter);
+	console.log(whereFilter);
 	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genre}&page=1`;
-	const response = await request('GET', url);
-	const movies = JSON.parse(response.body).results;
-	res.json(movies);
+	console.log(
+		`${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genre}&page=1`,
+	);
+	try {
+		const response = await request('GET', url);
+		const movies = JSON.parse(response.body).results;
+		res.json(movies);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 //get providers rent and buy
