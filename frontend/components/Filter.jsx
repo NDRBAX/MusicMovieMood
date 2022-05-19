@@ -1,14 +1,49 @@
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import TextCustom from './TextCustom';
+import { filterMovieList } from '../data/filters';
+import { useDispatch, useSelector } from 'react-redux';
 
-let filterList = [{ name: 'mood', img: require('../assets/images/movie_filter_mood_white.png') }];
+import { useEffect, useState } from 'react';
+import { toggleSmiley, addPublicFilter, addWhereFilter } from '../features/movie/movieSlice';
 
 const Filter = props => {
-	const { name, src } = props;
-	let uriImg = filterList.find(item => item.name === name).img;
+	const [isActive, setIsActive] = useState(false);
+	const { moodFilter, publicFilter, whereFilter } = useSelector(state => state.movie);
+	const dispatch = useDispatch();
+	const { name } = props;
+
+	useEffect(() => {
+		if (name == 'mood') {
+			moodFilter != '' ? setIsActive(true) : setIsActive(false);
+		}
+		if (name == 'public') {
+			publicFilter ? setIsActive(true) : setIsActive(false);
+		}
+		if (name == 'ou?') {
+			whereFilter ? setIsActive(true) : setIsActive(false);
+		}
+	}, [whereFilter, publicFilter, moodFilter]);
+
+	let uriImg;
+
+	isActive && (uriImg = filterMovieList.find(item => item.name === name).activeImg);
+	!isActive && (uriImg = filterMovieList.find(item => item.name === name).img);
 
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity
+			onPress={() => {
+				if (name == 'public') {
+					dispatch(addPublicFilter());
+				}
+				if (name == 'ou?') {
+					dispatch(addWhereFilter());
+				}
+
+				if (name == 'mood') {
+					dispatch(toggleSmiley());
+				}
+			}}
+		>
 			<View
 				style={{
 					flex: 1,
@@ -29,7 +64,7 @@ const styles = StyleSheet.create({
 		width: 65,
 		height: 65,
 		resizeMode: 'stretch',
-		marginBottom: 10,
+		paddingHorizontal: 20,
 	},
 });
 

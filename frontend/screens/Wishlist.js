@@ -3,13 +3,13 @@ import { ScrollView, ImageBackground, StyleSheet, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import TextCustom from '../components/TextCustom';
-import { removeFromWishlist } from '../movie/movieSlice';
+import { removeFromWishlist } from '../features/movie/movieSlice';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Wishlist({ navigation }) {
 	// extract data from the Redux store state
-	const wishlist = useSelector(state => state.movie);
+	const { wishList } = useSelector(state => state.movie);
 	// returns a reference to the dispatch function from the Redux store
 	const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ export default function Wishlist({ navigation }) {
 				<TextCustom fontSize="22" fontWeight="bold">
 					Wishlist
 				</TextCustom>
-				{wishlist.movies.map((movie, i) => (
+				{wishList.map((movie, i) => (
 					<Card key={i}>
 						<Card.Image />
 						<Text>{movie.title}</Text>

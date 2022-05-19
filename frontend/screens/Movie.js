@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	ScrollView,
 	View,
@@ -9,15 +9,20 @@ import {
 	Text,
 } from 'react-native';
 
-import { Card, Icon } from 'react-native-elements';
-
+import { Overlay, Icon } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import Filter from '../components/Filter';
 import MovieHomeItem from '../components/MovieHomeItem';
-
 import TextCustom from '../components/TextCustom';
+import SmileyItem from '../components/SmileyItem';
+import { smileyMovieList } from '../data/smiley';
+import { filterMovieList } from '../data/filters';
+import { toggleSmiley, removeMoodFilter } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
-	const [selectedIndexes, setSelectedIndexes] = useState([0, 2, 3]);
+	const { displaySmiley } = useSelector(state => state.movie);
+
+	const dispatch = useDispatch();
 
 	return (
 		<View style={styles.container}>
@@ -50,6 +55,38 @@ const Movie = (props, { navigation }) => {
 					/>
 				</View>
 
+				<View>
+					<Overlay
+						overlayStyle={{
+							backgroundColor: 'rgba(117, 103, 129, .8)',
+							borderRadius: 10,
+							top: -130,
+							left: -10,
+						}}
+						isVisible={displaySmiley}
+						onBackdropPress={() => {
+							dispatch(toggleSmiley());
+							dispatch(removeMoodFilter());
+						}}
+					>
+						<View style={{ height: 190, width: 240, paddingTop: 12 }}>
+							<View
+								style={{
+									flex: 1,
+									flexDirection: 'row',
+									justifyContent: 'center',
+
+									flexWrap: 'wrap',
+								}}
+							>
+								{smileyMovieList.map((smiley, i) => (
+									<SmileyItem name={smiley.name} key={smiley.name + i} />
+								))}
+							</View>
+						</View>
+					</Overlay>
+				</View>
+
 				<ScrollView
 					style={{
 						marginTop: 30,
@@ -57,9 +94,10 @@ const Movie = (props, { navigation }) => {
 					}}
 				>
 					<View style={styles.filters}>
-						<Filter name="mood" />
-						<Filter name="mood" />
-						<Filter name="mood" />
+						{filterMovieList.map((it, index) => {
+							const { name } = it;
+							return <Filter name={name} index key={index} />;
+						})}
 					</View>
 
 					{/* list film partie 1 */}
@@ -141,12 +179,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		resizeMode: 'stretch',
 	},
-	stretchFilter: {
-		width: 65,
-		height: 65,
-		resizeMode: 'stretch',
-		marginBottom: 10,
-	},
+
 	filters: {
 		flex: 1,
 		flexDirection: 'row',
