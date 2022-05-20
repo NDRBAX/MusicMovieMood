@@ -1,10 +1,35 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
-import { addToWishlist } from '../features/movie/movieSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist, removeFromWishlist } from '../features/movie/movieSlice';
+import axios from 'axios';
 
 const MovieHomeItem = ({ movie }) => {
+	const { wishList } = useSelector(state => state.movie);
+	const getMovies = async id => {
+		try {
+			const mov = await axios.get('http://192.168.1.21:3000/movie/getDetailsMovies', {
+				params: {
+					id,
+				},
+			});
+			// console.log(mov.data);
+			dispatch(
+				addToWishlist({
+					title: mov.data.title,
+					backdrop_path: mov.data.poster_path,
+					id: mov.data.id,
+					runtime: mov.data.runtime,
+					year: new Date(mov.data.release_date).getFullYear(),
+					genres: mov.data.genres,
+				}),
+			);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const dispatch = useDispatch();
 	return (
 		<View style={styles.container}>
@@ -43,14 +68,21 @@ const MovieHomeItem = ({ movie }) => {
 				<TouchableOpacity
 					onPress={() => {
 						console.log('add');
-						dispatch(addToWishlist(movie.id));
+						// getMovies(movie?.id);
+						wishList.some(item => item.id === movie?.id)
+							? dispatch(removeFromWishlist(movie?.id))
+							: getMovies(movie?.id);
 					}}
 				>
 					<Icon
 						style={{ marginHorizontal: 5 }}
-						name="ios-heart-outline"
+						name={
+							wishList.some(item => item.id === movie?.id)
+								? 'ios-heart'
+								: 'ios-heart-outline'
+						}
 						type="ionicon"
-						color="white"
+						color={wishList.some(item => item.id === movie?.id) ? '#E74680' : 'white'}
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity>

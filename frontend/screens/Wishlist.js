@@ -1,47 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, ImageBackground, StyleSheet, View, Image } from 'react-native';
-import { Button, Card, Text } from 'react-native-elements';
+
 import { useDispatch, useSelector } from 'react-redux';
 import TextCustom from '../components/TextCustom';
 import { removeFromWishlist } from '../features/movie/movieSlice';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import axios from 'axios';
+import { Icon } from 'react-native-elements';
 
 export default function Wishlist({ navigation }) {
 	const { wishList } = useSelector(state => state.movie);
-	const [wishListMovie, setWishListMovie] = useState([]);
 
 	const dispatch = useDispatch();
+	console.log(wishList);
 
-	useEffect(() => {
-		const getMovies = async id => {
-			try {
-				const mov = await axios.get('http://192.168.1.21:3000/movie/getDetailsMovies', {
-					params: {
-						id,
-					},
-				});
-				console.log(mov.data);
-				setWishListMovie([
-					...wishListMovie,
-					{
-						title: mov.data.title,
-						backdrop_path: mov.data.poster_path,
-						id: mov.data.id,
-						runtime: mov.data.runtime,
-						date: mov.data.release_date,
-					},
-				]);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		wishList.map(movie => getMovies(movie));
-	}, []);
-
-	console.log('""""""""""""""""""""""""wishlist');
-	console.log(wishListMovie);
+	useEffect(() => {}, [wishList]);
 
 	return (
 		<ImageBackground
@@ -55,35 +28,86 @@ export default function Wishlist({ navigation }) {
 				</TouchableOpacity>
 
 				<TextCustom fontSize="22" fontWeight="bold">
-					Wishlist
+					WishList
 				</TextCustom>
+				{wishList.length == 0 && (
+					<TextCustom style={{ paddingHorizontal: 20, marginTop: 20 }}>
+						Sorry, pas encore de porno gay hardcore sneakers en stock !
+					</TextCustom>
+				)}
 				<View>
-					{wishListMovie.map((movie, i) => (
-						// <Card key={i}>
-						// 	<Card.Image
-						// 		source={{
-						// 			uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
-						// 		}}
-						// 	/>
-						// 	<Text>{movie.title}</Text>
-						// 	<Text>{movie.release_date}</Text>
-						// 	<Text>{movie.runtime}</Text>
-						// 	<Button
-						// 		onPress={() => dispatch(removeFromWishlist(movie))}
-						// 		title=" Remove from wishlist"
-						// 	/>
-						// </Card>
-						<View style={{ with: '100%', height: 150, flex: 1 }}>
+					{wishList.map((movie, i) => (
+						<View style={styles.movieItem}>
 							<Image
-								style={{
-									borderRadius: 10,
-									height: 175,
-									width: 112,
-								}}
+								style={styles.imgMovie}
 								resizeMode="cover"
 								source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }}
 							/>
-							<TextCustom>{movie.title}</TextCustom>
+							<View style={styles.movieInfo}>
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'flex-start',
+									}}
+								>
+									<TextCustom
+										fontSize="18"
+										fontWeight="bold"
+										style={{
+											marginTop: 10,
+											marginBottom: 7,
+											textAlign: 'left',
+											maxWidth: 250,
+										}}
+									>
+										{movie.title}
+									</TextCustom>
+									<TouchableOpacity
+										style={styles.delete}
+										onPress={() => {
+											console.log(movie.id);
+											dispatch(removeFromWishlist(movie.id));
+										}}
+									>
+										<Icon name="closecircleo" color="#fff" type="antdesign" />
+									</TouchableOpacity>
+								</View>
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										marginEnd: 10,
+										alignItems: 'center',
+									}}
+								>
+									<TextCustom style={{ textAlign: 'left', marginBottom: 7 }}>
+										Durée du film : {movie.runtime} min
+									</TextCustom>
+									<TextCustom
+										fontWeight="light"
+										style={{ textAlign: 'left', marginBottom: 7 }}
+									>
+										{movie.year}
+									</TextCustom>
+								</View>
+
+								<View style={{ flexDirection: 'row', flexWrap: 'wrap', textAlign: 'left' }}>
+									{movie?.genres.map(el => (
+										<View
+											style={{
+												backgroundColor: 'rgba(255,255,255,0.2)',
+												borderRadius: 10,
+												paddingHorizontal: 5,
+												marginHorizontal: 2,
+												marginVertical: 2,
+											}}
+										>
+											<TextCustom fontSize="12">{el.name} </TextCustom>
+										</View>
+									))}
+								</View>
+							</View>
 						</View>
 					))}
 				</View>
@@ -97,7 +121,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 40,
 		width: '100%',
-		backgroundColor: 'pink',
 	},
 	imagebg: {
 		flex: 1,
@@ -108,4 +131,20 @@ const styles = StyleSheet.create({
 		width: '100%',
 		marginLeft: 20,
 	},
+	imgMovie: { borderRadius: 0, height: 120, width: 112 },
+	movieItem: {
+		with: '100%',
+		height: 120,
+		flex: 1,
+		backgroundColor: 'rgba(255,255,255,0.1)',
+		marginVertical: 5,
+		flexDirection: 'row',
+	},
+	movieInfo: {
+		flex: 1,
+		justifyContent: 'flex-start',
+		marginLeft: 10,
+		zIndex: 1,
+	},
+	delete: { marginEnd: 8, marginTop: 6 },
 });

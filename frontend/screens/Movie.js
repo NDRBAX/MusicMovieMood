@@ -25,7 +25,6 @@ import {
 } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
-	const [isLoading, setLoading] = useState(true);
 	const { displaySmiley, whereFilter, publicFilter, moviesFetch, moodGenre, moviesPopular } =
 		useSelector(state => state.movie);
 	const dispatch = useDispatch();
@@ -40,7 +39,7 @@ const Movie = (props, { navigation }) => {
 						whereFilter: whereFilter,
 					},
 				});
-				console.log(mov.data);
+				// console.log(mov.data);
 				dispatch(addMovieFetch(mov.data));
 			} catch (err) {
 				console.log(err);
