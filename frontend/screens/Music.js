@@ -15,7 +15,7 @@ import Filter from "../components/Filter_music";
 import MusicHomeItem from "../components/MusicHomeItem";
 import TextCustom from "../components/TextCustom";
 import SmileyItem from "../components/SmileyItem_music";
-import { smileyMusicList } from "../data/smiley";
+import { smileyMusicMoodList } from "../data/smiley";
 import { filterMusicList } from "../data/filters";
 import { toggleSmiley, removeMoodFilter } from "../features/music/musicSlice";
 
@@ -23,8 +23,14 @@ const Music = (props, { navigation }) => {
   const [listTop, setTop] = useState([]);
   const [listPlayL, setPlaylist] = useState([]);
   const { displaySmiley } = useSelector((state) => state.music);
+  const { moodList, moodFilter, moodPlaylist } = useSelector(
+    (state) => state.music
+  );
   var musics = [];
   var playlists = [];
+  var musicsFilter = [];
+  var playlistsFilter = [];
+
   const dispatch = useDispatch();
 
   async function getTop() {
@@ -41,12 +47,25 @@ const Music = (props, { navigation }) => {
     getTop();
   }, []);
   //music and playlist
-  musics = listTop.map((e, i) => {
-    return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
-  });
-  playlists = listPlayL.map((e, i) => {
-    return <MusicHomeItem key={i} title={e.name} url={e.image} />;
-  });
+  if (!moodFilter) {
+    musics = listTop.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlists = listPlayL.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
+    playlistsFilter = [];
+    musicsFilter = [];
+  } else {
+    musicsFilter = moodList.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlistsFilter = moodPlaylist.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
+    musics = [];
+    playlists = [];
+  }
 
   return (
     <View style={styles.container}>
@@ -103,7 +122,7 @@ const Music = (props, { navigation }) => {
                   flexWrap: "wrap",
                 }}
               >
-                {smileyMusicList.map((smiley, i) => (
+                {smileyMusicMoodList.map((smiley, i) => (
                   <SmileyItem name={smiley.name} key={smiley.name + i} />
                 ))}
               </View>
@@ -128,6 +147,7 @@ const Music = (props, { navigation }) => {
           </TextCustom>
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
             {musics}
+            {musicsFilter}
           </ScrollView>
           <TextCustom
             fontSize="15"
@@ -138,6 +158,7 @@ const Music = (props, { navigation }) => {
           </TextCustom>
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
             {playlists}
+            {playlistsFilter}
           </ScrollView>
         </ScrollView>
         <TouchableOpacity

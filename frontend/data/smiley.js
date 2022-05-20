@@ -25,7 +25,7 @@ export const smileyMovieList = [
   },
 ];
 
-export const smileyMusicList = [
+export const smileyMusicMoodList = [
   {
     name: "happy",
     img: require("../assets/images/smiley/smiley.png"),
@@ -43,7 +43,7 @@ export const smileyMusicList = [
     img: require("../assets/images/smiley/love.png"),
   },
   {
-    name: "energetic",
+    name: "metal",
     img: require("../assets/images/smiley/furious.png"),
   },
   {
