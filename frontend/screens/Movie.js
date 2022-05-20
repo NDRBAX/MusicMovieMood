@@ -92,9 +92,9 @@ const Movie = (props, { navigation }) => {
 						onPress={() => props.navigation.navigate('Wishlist')}
 					/>
 					<Icon
-						name="account"
+						name="settings"
 						color="white"
-						type="material-community"
+						type="ionicons"
 						onPress={() => props.navigation.navigate('Settings')}
 					/>
 				</View>

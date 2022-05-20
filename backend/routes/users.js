@@ -17,17 +17,19 @@ router.post("/signup", async function (req, res, next) {
     email: req.body.emailFromFront,
   });
 
-  if (
-    req.body.usernameFromFront == "" ||
-    req.body.emailFromFront == "" ||
-    req.body.passwordFromFront == ""
-  ) {
+  if (data != null) {
+    errors.push("Il existe déjà un compte avec cet adresse email");
+  }
+  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
     errors.push("Veuillez remplir tous les champs.");
   }
 
+  if (req.body.passwordFromFront !== req.body.confirmPasswordFromFront) {
+    errors.push("Les mots de passe ne correspondent pas");
+  }
+  var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
   if (errors.length == 0) {
     var newUser = new userModel({
-      username: req.body.usernameFromFront,
       email: req.body.emailFromFront,
       password: req.body.passwordFromFront,
       password: hash,
@@ -41,14 +43,14 @@ router.post("/signup", async function (req, res, next) {
       token = saveUser.token;
     }
   }
-  res.json({ result, saveUser, error, token });
+  res.json({ result, saveUser, errors, token });
 });
 
 // SIGNIN
 router.post("/signin", async function (req, res, next) {
-  let errors = [];
   let result = false;
   let user = null;
+  let errors = [];
   let token = null;
 
   if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
@@ -59,6 +61,7 @@ router.post("/signin", async function (req, res, next) {
     user = await userModel.findOne({
       email: req.body.emailFromFront,
     });
+    console.log(user);
     if (user) {
       if (bcrypt.compareSync(req.body.passwordFromFront, user.password)) {
         result = true;
@@ -119,7 +122,9 @@ router.delete("/wishlist", async function (req, res) {
   var user = await userModel.findOne({ token: req.body.token });
 
   if (user !== null) {
-    user.wishlist = user.wishlist.filter((movie) => movie.title !== req.body.title);
+    user.wishlist = user.wishlist.filter(
+      (movie) => movie.title !== req.body.title
+    );
 
     var userUpdated = await user.save();
     if (userUpdated) {
