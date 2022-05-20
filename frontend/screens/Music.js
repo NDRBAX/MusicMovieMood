@@ -34,20 +34,21 @@ const Music = (props, { navigation }) => {
 
   const dispatch = useDispatch();
 
-  async function getTop() {
-    var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
-    var top = await topRaw.json();
-    setTop(top);
-    var playTopRaw = await fetch(
-      "http://192.168.0.19:3000/music/getPlaylist?filter=top"
-    );
-    var playTop = await playTopRaw.json();
-    setPlaylist(playTop);
-  }
   useEffect(() => {
+    async function getTop() {
+      var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
+      var top = await topRaw.json();
+      setTop(top);
+      var playTopRaw = await fetch(
+        "http://192.168.0.19:3000/music/getPlaylist?filter=top"
+      );
+      var playTop = await playTopRaw.json();
+      setPlaylist(playTop);
+    }
     getTop();
   }, []);
 
+  //useEffect pour filtre
   //music and playlist
   if (!moodFilter) {
     musics = listTop.map((e, i) => {

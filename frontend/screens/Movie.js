@@ -172,7 +172,7 @@ const Movie = (props, { navigation }) => {
           </TextCustom>
 
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {displayNbMovies(3, moviesFetch)}
+            {displayNbMovies(5, moviesFetch)}
           </ScrollView>
 
           {/* list film partie 2 selection users*/}
@@ -190,7 +190,7 @@ const Movie = (props, { navigation }) => {
           </TextCustom>
 
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {displayNbMovies(6, moviesPopular)}
+            {displayNbMovies(8, moviesPopular)}
           </ScrollView>
         </ScrollView>
         <TouchableOpacity
