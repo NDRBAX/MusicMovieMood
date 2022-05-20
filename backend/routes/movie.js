@@ -13,11 +13,10 @@ router.get('/getMovies', async function (req, res, next) {
 	console.log(adultFilter);
 	console.log(whereFilter);
 
-	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
+	// const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
+	const url = `https://api.themoviedb.org/3/discover/movie?api_key=f0929bf9c301536f2f4ad539f4689057&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
 
-	// const url3 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=10&include_adult=${adultFilter}&page=1`;
-
-	// const url2 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=${certificate}&sort_by=popularity.desc&include_adult=${adultFilter}&page=1`;
+	console.log(url);
 
 	try {
 		const response = await request('GET', url);
@@ -29,8 +28,8 @@ router.get('/getMovies', async function (req, res, next) {
 });
 
 router.get('/getMoviesPopular', async function (req, res, next) {
-	let url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&sort_by=popularity.desc&page=1`;
-
+	// var url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&sort_by=popularity.desc&page=1`;
+	var url = `https://api.themoviedb.org/3/discover/movie?api_key=f0929bf9c301536f2f4ad539f4689057&language=fr-FR&include_adult=false&with_genres=35,16&sort_by=vote_count.desc&page=1`;
 	try {
 		const response = await request('GET', url);
 		const movies = JSON.parse(response.body).results;
@@ -46,6 +45,7 @@ router.get('/getProviders', async function (req, res, next) {
 	//test
 	let id = '628';
 	const url = `${baseUrl}movie/${id}/watch/providers?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&sort_by=${sort_by}&page=1`;
+
 	const response = await request('GET', url);
 	const { FR } = JSON.parse(response.body).results;
 	console.log(FR);

@@ -2,7 +2,7 @@ export const smileyMovieList = [
 	{
 		name: 'laught',
 		img: require('../assets/images/smiley/laught.png'),
-		idGenre: '35,16', // 35:Comedy, 16:Animation, 10751:Family
+		idGenre: '35', // 35:Comedy, 16:Animation, 10751:Family
 	},
 	{
 		name: 'love',
@@ -12,7 +12,7 @@ export const smileyMovieList = [
 	{
 		name: 'sad',
 		img: require('../assets/images/smiley/sad.png'),
-		idGenre: '27,18,10752', // 27:Horror, 18:Drame,10752:War
+		idGenre: '27,18', // 27:Horror, 18:Drame,10752:War
 	},
 	{
 		name: 'fear',
@@ -22,12 +22,12 @@ export const smileyMovieList = [
 	{
 		name: 'concern',
 		img: require('../assets/images/smiley/concern.png'),
-		idGenre: '27,53,878,9648,80', // 27:Horror, 53:Thriller,878:Science Fiction,9648:Mystery,80:Crime
+		idGenre: '53,9648,80', // 27:Horror, 53:Thriller,878:Science Fiction,9648:Mystery,80:Crime
 	},
 	{
 		name: 'action',
 		img: require('../assets/images/smiley/action.png'),
-		idGenre: '28,12,16,35,80,37,14', // 28:Action, 12:Adventure, 16:Animation, 35:Comedy, 80:Crime, 37:Western, 14:Fantasy
+		idGenre: '28', // 28:Action, 12:Adventure, 16:Animation, 35:Comedy, 37:Western, 14:Fantasy
 	},
 ];
 

@@ -1,0 +1,6 @@
+music
+method: 'GET',
+headers: {
+'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
+'X-RapidAPI-Key': '27dfa0e280msh434d18a1bd060a7p1c9fc2jsnb29f00bc57e1',
+},
