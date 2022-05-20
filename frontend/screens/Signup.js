@@ -28,7 +28,7 @@ const Signup = (props, { navigation }) => {
 
   // SIGNUP
   let handleSubmitSignup = async () => {
-    const data = await fetch("http://192.168.1.10:3000/users/signup", {
+    const data = await fetch("http://192.168.0.19:3000/users/signup", {
       method: "POST",
       headers: { "Content-type": "application/x-www-form-urlencoded" },
       body: `emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&confirmPasswordFromFront=${signupConfirmPassword}`,
@@ -60,7 +60,7 @@ const Signup = (props, { navigation }) => {
     }
   };
   let tabErrorsSignup = listErrorsSignup.map((error, index) => {
-    return <Text style={{color: "white"}}>{error}</Text>;
+    return <Text style={{ color: "white" }}>{error}</Text>;
   });
 
   return (

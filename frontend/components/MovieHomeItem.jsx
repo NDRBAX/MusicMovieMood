@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
-const MovieHomeItem = () => {
+const MovieHomeItem = ({ movie }) => {
 	return (
 		<TouchableOpacity style={{ height: 175, width: 112, borderRadius: 30, marginHorizontal: 10 }}>
 			<Text
@@ -17,16 +17,17 @@ const MovieHomeItem = () => {
 					borderBottomRightRadius: 10,
 				}}
 			>
-				Batman
+				{movie?.title}
 			</Text>
 
 			<Image
-				source={{ uri: 'https://picsum.photos/200/300' }}
+				source={{
+					uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
+				}}
 				style={{
 					borderRadius: 10,
 					height: 175,
 					width: 112,
-					paddingHorizontal: 10,
 				}}
 				resizeMode="cover"
 			/>
