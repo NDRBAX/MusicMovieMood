@@ -41,6 +41,7 @@ const Movie = (props, { navigation }) => {
 						whereFilter: whereFilter,
 					},
 				});
+				console.log(mov.data);
 				dispatch(addMovieFetch(mov.data));
 			} catch (err) {
 				console.log(err);
@@ -61,9 +62,9 @@ const Movie = (props, { navigation }) => {
 		getMoviesPopular();
 	}, []);
 
-	console.log('moviesFetch-----------------------------------------------');
-	console.log(moviesFetch);
-	console.log(moviesFetch.length);
+	// console.log('moviesFetch-----------------------------------------------');
+	// console.log(moviesFetch);
+	// console.log(moviesFetch.length);
 
 	const displayNbMovies = (nb, list) =>
 		list?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
