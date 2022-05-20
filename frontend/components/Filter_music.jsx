@@ -1,19 +1,19 @@
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import TextCustom from "./TextCustom";
-import { filterMovieList } from "../data/filters";
+import { filterMusicList } from "../data/filters";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 import {
   toggleSmiley,
-  addPublicFilter,
-  addWhereFilter,
-} from "../features/movie/movieSlice";
+  addAmbianceFilter,
+  addGenreFilter,
+} from "../features/music/musicSlice";
 
 const Filter = (props) => {
   const [isActive, setIsActive] = useState(false);
-  const { moodFilter, publicFilter, whereFilter } = useSelector(
-    (state) => state.movie
+  const { moodFilter, ambianceFilter, genreFilter } = useSelector(
+    (state) => state.music
   );
   const dispatch = useDispatch();
   const { name } = props;
@@ -22,29 +22,29 @@ const Filter = (props) => {
     if (name == "mood") {
       moodFilter != "" ? setIsActive(true) : setIsActive(false);
     }
-    if (name == "public") {
-      publicFilter ? setIsActive(true) : setIsActive(false);
+    if (name == "ambiance") {
+      ambianceFilter ? setIsActive(true) : setIsActive(false);
     }
-    if (name == "ou?") {
-      whereFilter ? setIsActive(true) : setIsActive(false);
+    if (name == "genre") {
+      genreFilter ? setIsActive(true) : setIsActive(false);
     }
-  }, [whereFilter, publicFilter, moodFilter]);
+  }, [ambianceFilter, moodFilter, genreFilter]);
 
   let uriImg;
 
   isActive &&
-    (uriImg = filterMovieList.find((item) => item.name === name).activeImg);
+    (uriImg = filterMusicList.find((item) => item.name === name).activeImg);
   !isActive &&
-    (uriImg = filterMovieList.find((item) => item.name === name).img);
+    (uriImg = filterMusicList.find((item) => item.name === name).img);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        if (name == "public") {
-          dispatch(addPublicFilter());
+        if (name == "ambiance") {
+          dispatch(addAmbianceFilter());
         }
-        if (name == "ou?") {
-          dispatch(addWhereFilter());
+        if (name == "genre") {
+          dispatch(addGenreFilter());
         }
 
         if (name == "mood") {

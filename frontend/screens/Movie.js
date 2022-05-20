@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
 		height: 80,
 		resizeMode: 'stretch',
 	},
-
 	filters: {
 		flex: 1,
 		flexDirection: 'row',

@@ -109,3 +109,30 @@ const movieGenre = [
 		name: 'Western',
 	},
 ];
+
+export const smileyMusicMoodList = [
+	{
+		name: 'happy',
+		img: require('../assets/images/smiley/smiley.png'),
+	},
+	{
+		name: 'sad',
+		img: require('../assets/images/smiley/sad.png'),
+	},
+	{
+		name: 'chill',
+		img: require('../assets/images/smiley/concern.png'),
+	},
+	{
+		name: 'love',
+		img: require('../assets/images/smiley/love.png'),
+	},
+	{
+		name: 'metal',
+		img: require('../assets/images/smiley/furious.png'),
+	},
+	{
+		name: 'dance',
+		img: require('../assets/images/smiley/concern.png'),
+	},
+];
