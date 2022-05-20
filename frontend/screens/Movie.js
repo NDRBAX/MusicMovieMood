@@ -72,9 +72,9 @@ const Movie = (props, { navigation }) => {
     getMoviesPopular();
   }, []);
 
-  console.log("moviesFetch-----------------------------------------------");
-  console.log(moviesFetch);
-  console.log(moviesFetch.length);
+  // console.log('moviesFetch-----------------------------------------------');
+  // console.log(moviesFetch);
+  // console.log(moviesFetch.length);
 
   const displayNbMovies = (nb, list) =>
     list

@@ -27,13 +27,9 @@ const Music = (props, { navigation }) => {
     (state) => state.music
   );
 
-  console.log("musics");
   var musics = [];
-  console.log("palylist");
   var playlists = [];
-  console.log("musicsFilter");
   var musicsFilter = [];
-  console.log("palylistFilter");
   var playlistsFilter = [];
 
   const dispatch = useDispatch();
@@ -41,7 +37,6 @@ const Music = (props, { navigation }) => {
   async function getTop() {
     var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
     var top = await topRaw.json();
-    console.log("-----------------------------");
     setTop(top);
     var playTopRaw = await fetch(
       "http://192.168.0.19:3000/music/getPlaylist?filter=top"
@@ -52,10 +47,6 @@ const Music = (props, { navigation }) => {
   useEffect(() => {
     getTop();
   }, []);
-
-  console.log(playlists);
-  console.log(musics);
-  console.log(playlistsFilter);
 
   //music and playlist
   if (!moodFilter) {
