@@ -1,17 +1,47 @@
-import React from 'react';
-import { ScrollView, ImageBackground, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, ImageBackground, StyleSheet, View, Image } from 'react-native';
 import { Button, Card, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import TextCustom from '../components/TextCustom';
 import { removeFromWishlist } from '../features/movie/movieSlice';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 export default function Wishlist({ navigation }) {
-	// extract data from the Redux store state
 	const { wishList } = useSelector(state => state.movie);
-	// returns a reference to the dispatch function from the Redux store
+	const [wishListMovie, setWishListMovie] = useState([]);
+
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const getMovies = async id => {
+			try {
+				const mov = await axios.get('http://192.168.1.21:3000/movie/getDetailsMovies', {
+					params: {
+						id,
+					},
+				});
+				console.log(mov.data);
+				setWishListMovie([
+					...wishListMovie,
+					{
+						title: mov.data.title,
+						backdrop_path: mov.data.poster_path,
+						id: mov.data.id,
+						runtime: mov.data.runtime,
+						date: mov.data.release_date,
+					},
+				]);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		wishList.map(movie => getMovies(movie));
+	}, []);
+
+	console.log('""""""""""""""""""""""""wishlist');
+	console.log(wishListMovie);
 
 	return (
 		<ImageBackground
@@ -27,18 +57,36 @@ export default function Wishlist({ navigation }) {
 				<TextCustom fontSize="22" fontWeight="bold">
 					Wishlist
 				</TextCustom>
-				{wishList.map((movie, i) => (
-					<Card key={i}>
-						<Card.Image />
-						<Text>{movie.title}</Text>
-						<Text>{movie.year}</Text>
-						<Text>{movie.length}</Text>
-						<Button
-							onPress={() => dispatch(removeFromWishlist(movie))}
-							title=" Remove from wishlist"
-						/>
-					</Card>
-				))}
+				<View>
+					{wishListMovie.map((movie, i) => (
+						// <Card key={i}>
+						// 	<Card.Image
+						// 		source={{
+						// 			uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
+						// 		}}
+						// 	/>
+						// 	<Text>{movie.title}</Text>
+						// 	<Text>{movie.release_date}</Text>
+						// 	<Text>{movie.runtime}</Text>
+						// 	<Button
+						// 		onPress={() => dispatch(removeFromWishlist(movie))}
+						// 		title=" Remove from wishlist"
+						// 	/>
+						// </Card>
+						<View style={{ with: '100%', height: 150, flex: 1 }}>
+							<Image
+								style={{
+									borderRadius: 10,
+									height: 175,
+									width: 112,
+								}}
+								resizeMode="cover"
+								source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }}
+							/>
+							<TextCustom>{movie.title}</TextCustom>
+						</View>
+					))}
+				</View>
 			</ScrollView>
 		</ImageBackground>
 	);
@@ -49,6 +97,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 40,
 		width: '100%',
+		backgroundColor: 'pink',
 	},
 	imagebg: {
 		flex: 1,

@@ -9,15 +9,7 @@ const baseUrl = 'https://api.themoviedb.org/3/';
 router.get('/getMovies', async function (req, res, next) {
 	const { genres, adultFilter, whereFilter } = req.query;
 
-	console.log(genres);
-	console.log(adultFilter);
-	console.log(whereFilter);
-
 	const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
-
-	// const url3 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=10&include_adult=${adultFilter}&page=1`;
-
-	// const url2 = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&with_genres=${genres}&certification_country=FR&certification=${certificate}&sort_by=popularity.desc&include_adult=${adultFilter}&page=1`;
 
 	try {
 		const response = await request('GET', url);
@@ -59,6 +51,18 @@ router.get('/getNowPlaying', async function (req, res, next) {
 	const movieListPlaying = JSON.parse(response.body).results;
 	console.log(movieListPlaying);
 	res.json(movieListPlaying);
+});
+
+router.get('/getDetailsMovies', async function (req, res, next) {
+	const { id } = req.query;
+	const url = `${baseUrl}movie/${id}?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&region=FR`;
+	try {
+		const response = await request('GET', url);
+		const movieDetails = JSON.parse(response.body);
+		res.json(movieDetails);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 https: module.exports = router;

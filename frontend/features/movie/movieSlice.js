@@ -4,16 +4,16 @@ const movieSlice = createSlice({
 	name: 'movie',
 	initialState: {
 		wishList: [
-			{
-				title: 'Le renard fou',
-				length: '2h10',
-				year: '2020',
-			},
-			{
-				title: 'Le renard fou',
-				length: '2h10',
-				year: '2020',
-			},
+			// {
+			// 	title: 'Le renard fou',
+			// 	length: '2h10',
+			// 	year: '2020',
+			// },
+			// {
+			// 	title: 'Le renard fou',
+			// 	length: '2h10',
+			// 	year: '2020',
+			// },
 		],
 		moviesFetch: [],
 		moviesNow: [],
@@ -26,8 +26,9 @@ const movieSlice = createSlice({
 	},
 	reducers: {
 		//ADD MOVIE TO WISHLIST
-		addToWishlist: (state, action) => {
-			state.movies.push(action.payload);
+		addToWishlist: (state, { payload }) => {
+			!state.wishList.includes(payload) && (state.wishList = [...state.wishList, payload]);
+			console.log(state.wishList);
 		},
 		//REMOVE ITEM FROM WISHLIST
 		removeFromWishlist: (state, action) => {
