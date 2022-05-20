@@ -9,8 +9,8 @@ const SmileyItem = ({ name }) => {
 
 	let uriImg = smileyMovieList.find(item => item.name === name).img;
 	let genre = smileyMovieList.find(item => item.name === name).idGenre;
-	console.log('--------------grenre');
-	console.log(genre);
+	// console.log('--------------grenre');
+	// console.log(genre);
 	return (
 		<TouchableOpacity
 			onPress={() => {

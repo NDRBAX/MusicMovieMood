@@ -6,7 +6,6 @@ import {
 	Image,
 	TouchableOpacity,
 	ImageBackground,
-	Text,
 } from 'react-native';
 
 import { Overlay, Icon } from 'react-native-elements';
@@ -162,7 +161,7 @@ const Movie = (props, { navigation }) => {
 					<TextCustom
 						fontSize="15"
 						fontWeight="light"
-						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 60, marginBottom: 10 }}
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 45, marginBottom: 10 }}
 					>
 						Selection utilisateurs
 					</TextCustom>
