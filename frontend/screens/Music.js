@@ -32,16 +32,17 @@ const Music = (props, { navigation }) => {
 	const dispatch = useDispatch();
 
 	async function getTop() {
-		var topRaw = await fetch('http://192.168.0.19:3000/music/getTop');
+		var topRaw = await fetch('http://192.168.1.21:3000/music/getTop');
 		var top = await topRaw.json();
 		setTop(top);
-		var playTopRaw = await fetch('http://192.168.0.19:3000/music/getPlaylist?filter=top');
+		var playTopRaw = await fetch('http://192.168.1.21:3000/music/getPlaylist?filter=top');
 		var playTop = await playTopRaw.json();
 		setPlaylist(playTop);
 	}
 	useEffect(() => {
 		getTop();
 	}, []);
+
 	//music and playlist
 	if (!moodFilter) {
 		musics = listTop.map((e, i) => {
@@ -177,34 +178,7 @@ const Music = (props, { navigation }) => {
 						{playlistsFilter}
 					</ScrollView>
 				</ScrollView>
-				{/*
-				<ScrollView style={{ marginTop: 40, width: '100%' }}>
-					<View style={styles.filters}>
-						<Filter name="mood" />
-						<Filter name="mood" />
-						<Filter name="mood" />
-					</View>
-					<TextCustom
-						fontSize="15"
-						fontWeight="light"
-						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
-					>
-						Musiques
-					</TextCustom>
-					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{musics}
-					</ScrollView>
-					<TextCustom
-						fontSize="15"
-						fontWeight="light"
-						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
-					>
-						Playlists
-					</TextCustom>
-					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{playlists}
-					</ScrollView>
-				</ScrollView> */}
+
 				<TouchableOpacity
 					style={styles.music_btn}
 					onPress={() => props.navigation.navigate('Movie')}
@@ -214,22 +188,6 @@ const Music = (props, { navigation }) => {
 			</ImageBackground>
 		</View>
 	);
-
-	//       </View>
-
-	//       <TouchableOpacity
-	//         style={styles.music_btn}
-	//         onPress={() => props.navigation.navigate("Movie")}
-	//       >
-	//         <Image
-	//           source={require("../assets/images/movie_btn.png")}
-	//           style={styles.stretch}
-	//         />
-	//       </TouchableOpacity>
-
-	//     </ImageBackground>
-	//   </View>
-	// );
 };
 
 const styles = StyleSheet.create({
