@@ -1,15 +1,15 @@
 import movieReducer from "./features/movie/movieSlice";
-import tokenReducer from "./features/login/tokenSlice"
-
+import musicReducer from "./features/music/musicSlice";
+import tokenReducer from "./features/login/tokenSlice";
 //REDUX
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
   reducer: {
     movie: movieReducer,
-	token: tokenReducer,
     // movielist: movielistReducer,
-    // musiclist: musiclistReducer,
+    music: musicReducer,
+    token: tokenReducer,
   },
 });
 

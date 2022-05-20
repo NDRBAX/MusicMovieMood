@@ -6,22 +6,62 @@ import {
 	Image,
 	TouchableOpacity,
 	ImageBackground,
-	Text,
 } from 'react-native';
 
-import { Card, Icon } from 'react-native-elements';
+import { Overlay, Icon } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Filter from '../components/Filter';
+import Filter from '../components/Filter_music';
 import MusicHomeItem from '../components/MusicHomeItem';
-
 import TextCustom from '../components/TextCustom';
-// Import icons
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import SmileyItem from '../components/SmileyItem_music';
+import { smileyMusicMoodList } from '../data/smiley';
+import { filterMusicList } from '../data/filters';
+import { toggleSmiley, removeMoodFilter } from '../features/music/musicSlice';
 
 const Music = (props, { navigation }) => {
 	const [listTop, setTop] = useState([]);
 	const [listPlayL, setPlaylist] = useState([]);
+	const { displaySmiley } = useSelector(state => state.music);
+	const { moodList, moodFilter, moodPlaylist } = useSelector(state => state.music);
+	var musics = [];
+	var playlists = [];
+	var musicsFilter = [];
+	var playlistsFilter = [];
+
+	const dispatch = useDispatch();
+
+	async function getTop() {
+		var topRaw = await fetch('http://192.168.0.19:3000/music/getTop');
+		var top = await topRaw.json();
+		setTop(top);
+		var playTopRaw = await fetch('http://192.168.0.19:3000/music/getPlaylist?filter=top');
+		var playTop = await playTopRaw.json();
+		setPlaylist(playTop);
+	}
+	useEffect(() => {
+		getTop();
+	}, []);
+	//music and playlist
+	if (!moodFilter) {
+		musics = listTop.map((e, i) => {
+			return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+		});
+		playlists = listPlayL.map((e, i) => {
+			return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+		});
+		playlistsFilter = [];
+		musicsFilter = [];
+	} else {
+		musicsFilter = moodList.map((e, i) => {
+			return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+		});
+		playlistsFilter = moodPlaylist.map((e, i) => {
+			return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+		});
+		musics = [];
+		playlists = [];
+	}
 
 	useEffect(() => {
 		async function getTop() {
@@ -73,6 +113,71 @@ const Music = (props, { navigation }) => {
 					/>
 				</View>
 
+				<View>
+					<Overlay
+						overlayStyle={{
+							backgroundColor: 'rgba(117, 103, 129, .8)',
+							borderRadius: 10,
+							top: -130,
+							left: -10,
+						}}
+						isVisible={displaySmiley}
+						onBackdropPress={() => {
+							dispatch(toggleSmiley());
+							dispatch(removeMoodFilter());
+						}}
+					>
+						<View style={{ height: 190, width: 240, paddingTop: 12 }}>
+							<View
+								style={{
+									flex: 1,
+									flexDirection: 'row',
+									justifyContent: 'center',
+
+									flexWrap: 'wrap',
+								}}
+							>
+								{smileyMusicMoodList.map((smiley, i) => (
+									<SmileyItem name={smiley.name} key={smiley.name + i} />
+								))}
+							</View>
+						</View>
+					</Overlay>
+				</View>
+
+				<ScrollView style={{ marginTop: 30, width: '100%' }}>
+					<View style={styles.filters}>
+						{filterMusicList.map((it, index) => {
+							const { name } = it;
+							return <Filter name={name} index key={index} />;
+						})}
+					</View>
+
+					{/*list music*/}
+					<TextCustom
+						fontSize="15"
+						fontWeight="light"
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
+					>
+						Musiques
+					</TextCustom>
+					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+						{musics}
+						{musicsFilter}
+					</ScrollView>
+					<TextCustom
+						fontSize="15"
+						fontWeight="light"
+						style={{ textAlign: 'left', paddingLeft: 15, marginTop: 30 }}
+					>
+						Playlists
+					</TextCustom>
+					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+						{playlists}
+						{playlistsFilter}
+					</ScrollView>
+				</ScrollView>
+				{/*
 				<ScrollView style={{ marginTop: 40, width: '100%' }}>
 					<View style={styles.filters}>
 						<Filter name="mood" />
@@ -99,7 +204,7 @@ const Music = (props, { navigation }) => {
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
 						{playlists}
 					</ScrollView>
-				</ScrollView>
+				</ScrollView> */}
 				<TouchableOpacity
 					style={styles.music_btn}
 					onPress={() => props.navigation.navigate('Movie')}
@@ -109,6 +214,22 @@ const Music = (props, { navigation }) => {
 			</ImageBackground>
 		</View>
 	);
+
+	//       </View>
+
+	//       <TouchableOpacity
+	//         style={styles.music_btn}
+	//         onPress={() => props.navigation.navigate("Movie")}
+	//       >
+	//         <Image
+	//           source={require("../assets/images/movie_btn.png")}
+	//           style={styles.stretch}
+	//         />
+	//       </TouchableOpacity>
+
+	//     </ImageBackground>
+	//   </View>
+	// );
 };
 
 const styles = StyleSheet.create({

@@ -44,6 +44,7 @@ router.get('/getTop', async function (req, res, next) {
 });
 
 //filter music by mood
+<<<<<<< HEAD
 router.get('/mood/:mood', async function (req, res, next) {
 	//mood: happy, sad, chill, love, dance, metal (filtre energetic)
 	if (req.params.mood === 'happy' || req.params.mood === 'love') {
@@ -59,6 +60,22 @@ router.get('/mood/:mood', async function (req, res, next) {
 			options,
 		);
 	}
+=======
+router.get("/mood/:mood", async function (req, res, next) {
+  if (req.params.mood === "happy" || req.params.mood === "love") {
+    var moodRaw = await request(
+      "GET",
+      `https://spotify23.p.rapidapi.com/search/?q=${req.params.mood}&type=tracks&offset=0&limit=10`,
+      options
+    );
+  } else {
+    var moodRaw = await request(
+      "GET",
+      `https://spotify23.p.rapidapi.com/search/?q=genre%3A${req.params.mood}&type=tracks&offset=0&limit=10`,
+      options
+    );
+  }
+>>>>>>> filter_music
 
 	var mood = await moodRaw.body;
 	mood = await JSON.parse(mood);
