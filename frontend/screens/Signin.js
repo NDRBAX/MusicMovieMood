@@ -8,12 +8,11 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../features/login/tokenSlice";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 
-import Input from "../components/Inputs";
-import Submit from "../components/Submit";
-import { Image } from "react-native-elements";
+import { Button, Image, Input } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Signin = (props, { navigation }) => {
   const [signinEmail, setSigninEmail] = useState("");
@@ -26,24 +25,26 @@ const Signin = (props, { navigation }) => {
 
   // SIGNIN
   let handleSubmitSignin = async () => {
-    const data = await fetch("/signin", {
+    const data = await fetch("http://192.168.1.10:3000/users/signin", {
       method: "POST",
       headers: { "Content-type": "application/x-www-form-urlencoded" },
-      body: `emailFromFront=${setSigninEmail}&passwordFromFront=${setSigninPassword}`,
+      body: `emailFromFront=${signinEmail}&passwordFromFront=${signinPassword}`,
     });
 
-    const body = await data.JSON();
+    const body = await data.json();
+    console.log("USER ------------" + body.user);
+    console.log("RESULT ------------" + body.result);
+    console.log("TOKEN *************" + body.token);
 
     if (body.result) {
       dispatch(addToken(body.token));
-      setUserExists = true;
+      setUserExists(true);
     } else {
-      setErrorsSignin(body.error);
+      setErrorsSignin(body.errors);
     }
   };
-
   let tabErrorsSignin = listErrorsSignin.map((error, index) => {
-    return <Text>{error}</Text>;
+    return <Text style={{ color: "white" }}>{error}</Text>;
   });
 
   return (
@@ -67,21 +68,23 @@ const Signin = (props, { navigation }) => {
             style={styles.logo}
           />
           <Input
-            name="Email"
-            icon="envelope"
+            placeholder="Email"
+            leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
+            inputStyle={{ color: "white" }}
             onChangeText={(value) => setSigninEmail(value)}
             value={signinEmail}
           />
           <Input
-            name="Mot de passe"
-            icon="lock"
-            pass={true}
+            placeholder="Mot de passe"
+            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            inputStyle={{ color: "white" }}
+            secureTextEntry={true}
             onChangeText={(value) => setSigninPassword(value)}
             value={signinPassword}
           />
           {tabErrorsSignin}
-          <Submit
-            color="#E74680"
+          <Button
+            buttonStyle={{ backgroundColor: "#E74680", width: "70%" }}
             title="Se connecter"
             onPress={() => handleSubmitSignin()}
           />
@@ -115,8 +118,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   login: {
-    flex: 1,
-    alignItems: "center",
+    // marginHorizontal: "10%",
   },
   image: {
     flex: 1,
