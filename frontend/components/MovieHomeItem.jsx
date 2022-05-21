@@ -2,11 +2,11 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, removeFromWishlist } from '../features/movie/movieSlice';
+import { addToBlackList, addToWishlist, removeFromWishlist } from '../features/movie/movieSlice';
 import axios from 'axios';
 
 const MovieHomeItem = ({ movie }) => {
-	const { wishList } = useSelector(state => state.movie);
+	const { wishList, blackList } = useSelector(state => state.movie);
 	const getMovies = async id => {
 		try {
 			const mov = await axios.get('http://192.168.1.21:3000/movie/getDetailsMovies', {
@@ -67,8 +67,6 @@ const MovieHomeItem = ({ movie }) => {
 			<View style={styles.btn_action}>
 				<TouchableOpacity
 					onPress={() => {
-						console.log('add');
-						// getMovies(movie?.id);
 						wishList.some(item => item.id === movie?.id)
 							? dispatch(removeFromWishlist(movie?.id))
 							: getMovies(movie?.id);
@@ -85,7 +83,15 @@ const MovieHomeItem = ({ movie }) => {
 						color={wishList.some(item => item.id === movie?.id) ? '#E74680' : 'white'}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => {
+						console.log('degage');
+						console.log(movie?.id);
+						dispatch(addToBlackList(movie?.id));
+						console.log('------------------------------blacklist');
+						console.log(blackList);
+					}}
+				>
 					<Icon
 						style={{ marginHorizontal: 5 }}
 						name="minus-circle"

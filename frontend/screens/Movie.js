@@ -22,11 +22,19 @@ import {
 	removeMoodFilter,
 	addMovieFetch,
 	addMoviePopularFetch,
+	addToBlackList,
 } from '../features/movie/movieSlice';
 
 const Movie = (props, { navigation }) => {
-	const { displaySmiley, whereFilter, publicFilter, moviesFetch, moodGenre, moviesPopular } =
-		useSelector(state => state.movie);
+	const {
+		displaySmiley,
+		whereFilter,
+		publicFilter,
+		moviesFetch,
+		moodGenre,
+		moviesPopular,
+		blackList,
+	} = useSelector(state => state.movie);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -65,7 +73,14 @@ const Movie = (props, { navigation }) => {
 	// console.log(moviesFetch.length);
 
 	const displayNbMovies = (nb, list) =>
-		list?.slice(0, nb).map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
+		list
+			?.slice(0, nb)
+			.map(
+				(movie, index) =>
+					!blackList.some(it => it == movie.id) && (
+						<MovieHomeItem movie={movie} key={movie.id} />
+					),
+			);
 
 	return (
 		<View style={styles.container}>
@@ -118,7 +133,6 @@ const Movie = (props, { navigation }) => {
 									flex: 1,
 									flexDirection: 'row',
 									justifyContent: 'center',
-
 									flexWrap: 'wrap',
 								}}
 							>
@@ -153,7 +167,7 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displayNbMovies(5, moviesFetch)}
+						{displayNbMovies(10, moviesFetch)}
 					</ScrollView>
 
 					{/* list film partie 2 selection users*/}
@@ -166,7 +180,7 @@ const Movie = (props, { navigation }) => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displayNbMovies(8, moviesPopular)}
+						{displayNbMovies(15, moviesPopular)}
 					</ScrollView>
 				</ScrollView>
 				<TouchableOpacity

@@ -14,7 +14,7 @@ export default function Wishlist({ navigation }) {
 	const dispatch = useDispatch();
 	console.log(wishList);
 
-	useEffect(() => {}, [wishList]);
+	// useEffect(() => {}, [wishList]);
 
 	return (
 		<ImageBackground
