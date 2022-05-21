@@ -12,7 +12,7 @@ export default function Wishlist({ navigation }) {
 	const { wishList } = useSelector(state => state.movie);
 
 	const dispatch = useDispatch();
-	console.log(wishList);
+	// console.log(wishList);
 
 	useEffect(() => {}, [wishList]);
 
@@ -66,7 +66,6 @@ export default function Wishlist({ navigation }) {
 									<TouchableOpacity
 										style={styles.delete}
 										onPress={() => {
-											console.log(movie.id);
 											dispatch(removeFromWishlist(movie.id));
 										}}
 									>

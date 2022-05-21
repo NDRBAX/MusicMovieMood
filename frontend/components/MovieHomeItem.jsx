@@ -67,8 +67,6 @@ const MovieHomeItem = ({ movie }) => {
 			<View style={styles.btn_action}>
 				<TouchableOpacity
 					onPress={() => {
-						console.log('add');
-						// getMovies(movie?.id);
 						wishList.some(item => item.id === movie?.id)
 							? dispatch(removeFromWishlist(movie?.id))
 							: getMovies(movie?.id);
