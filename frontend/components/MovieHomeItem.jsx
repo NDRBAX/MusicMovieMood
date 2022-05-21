@@ -85,11 +85,9 @@ const MovieHomeItem = ({ movie }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
-						console.log('degage');
-						console.log(movie?.id);
 						dispatch(addToBlackList(movie?.id));
-						console.log('------------------------------blacklist');
-						console.log(blackList);
+						// console.log('------------------------------blacklist');
+						// console.log(blackList);
 					}}
 				>
 					<Icon

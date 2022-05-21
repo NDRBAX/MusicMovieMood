@@ -26,8 +26,6 @@ const movieSlice = createSlice({
 		//ADD MOVIE TO WISHLIST
 		addToWishlist: (state, { payload }) => {
 			!state.wishList.includes(payload.id) && (state.wishList = [...state.wishList, payload]);
-			console.log('-------------state.wishList');
-			console.log(state.wishList);
 		},
 		//REMOVE ITEM FROM WISHLIST
 		removeFromWishlist: (state, { payload }) => {
