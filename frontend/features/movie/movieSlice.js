@@ -12,6 +12,7 @@ const movieSlice = createSlice({
 			// title: 'Toy Story',
 			// year: 1995,
 		],
+		blackList: [], //juste les ids
 		moviesFetch: [],
 		moviesNow: [],
 		moviesPopular: [],
@@ -39,7 +40,6 @@ const movieSlice = createSlice({
 
 		addMoodFilter(state, action) {
 			//plutot un toggle
-
 			const { name, genre } = action.payload;
 			state.moodFilter = name;
 			state.moodGenre = genre;
@@ -62,6 +62,9 @@ const movieSlice = createSlice({
 		addMoviePopularFetch(state, { payload }) {
 			state.moviesPopular = payload;
 		},
+		addToBlackList(state, { payload }) {
+			!state.blackList.includes(payload) && (state.blackList = [...state.blackList, payload]);
+		},
 	},
 });
 
@@ -75,5 +78,6 @@ export const {
 	removeMoodFilter,
 	addMovieFetch,
 	addMoviePopularFetch,
+	addToBlackList,
 } = movieSlice.actions;
 export default movieSlice.reducer;
