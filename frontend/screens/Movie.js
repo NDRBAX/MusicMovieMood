@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
 	ScrollView,
 	View,
@@ -22,10 +22,9 @@ import {
 	removeMoodFilter,
 	addMovieFetch,
 	addMoviePopularFetch,
-	addToBlackList,
 } from '../features/movie/movieSlice';
 
-const Movie = (props, { navigation }) => {
+const Movie = props => {
 	const {
 		displaySmiley,
 		whereFilter,

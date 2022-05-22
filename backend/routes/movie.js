@@ -34,16 +34,16 @@ router.get('/getMoviesPopular', async function (req, res, next) {
 });
 
 //get providers rent and buy
-router.get('/getProviders', async function (req, res, next) {
-	// const { id } = req.query;
-	//test
-	let id = '628';
-	const url = `${baseUrl}movie/${id}/watch/providers?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&sort_by=${sort_by}&page=1`;
-
-	const response = await request('GET', url);
-	const { FR } = JSON.parse(response.body).results;
-	console.log(FR);
-	res.json(FR);
+router.get('/findProvider', async function (req, res, next) {
+	const { id } = req.query;
+	var url2 = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=f0929bf9c301536f2f4ad539f4689057`;
+	try {
+		const response = await request('GET', url2);
+		const providers = JSON.parse(response.body);
+		res.json(providers.results.FR);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 //get list of  movies in theaters
@@ -55,13 +55,41 @@ router.get('/getNowPlaying', async function (req, res, next) {
 	res.json(movieListPlaying);
 });
 
-router.get('/getDetailsMovies', async function (req, res, next) {
+router.get('/getDetailsMoviesForWishlist', async function (req, res, next) {
 	const { id } = req.query;
+	const url = `https://api.themoviedb.org/3/movie/${id}?api_key=f0929bf9c301536f2f4ad539f4689057`;
+	console.log(url);
+	try {
+		const response = await request('GET', url);
+		const movieDetails = JSON.parse(response.body);
+		res.json(movieDetails);
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+router.get('/getDetailsMovies/:id', async function (req, res, next) {
+	const { id } = req.params;
 	const url = `${baseUrl}movie/${id}?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&region=FR`;
 	try {
 		const response = await request('GET', url);
 		const movieDetails = JSON.parse(response.body);
 		res.json(movieDetails);
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+router.get('/getActorMovies/:id', async function (req, res, next) {
+	const { id } = req.params;
+	const url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=f0929bf9c301536f2f4ad539f4689057`;
+	// const url = `${baseUrl}movie/${id}?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&region=FR`;
+	// console.log(url);
+	try {
+		const response = await request('GET', url);
+		const movieActors = JSON.parse(response.body);
+		var actors = movieActors.cast.splice(0, 10);
+		res.json(actors);
 	} catch (err) {
 		console.log(err);
 	}
