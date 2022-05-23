@@ -1,12 +1,11 @@
 import {
-	Button,
 	Image,
 	ImageBackground,
 	ScrollView,
 	StyleSheet,
-	Text,
 	TouchableOpacity,
 	View,
+	Linking,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -14,11 +13,24 @@ import axios from 'axios';
 import TextCustom from '../components/TextCustom';
 import { Icon } from 'react-native-elements';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist, removeFromWishlist, addMovieWatched } from '../features/movie/movieSlice';
+import { providersUrlList } from '../data/providers';
+
 const MovieDetail = ({ route, navigation }) => {
 	const [movie, setMovie] = useState([]);
 	const [actors, setActors] = useState([]);
 	const [providers, setProviders] = useState([]);
 	const { id } = route.params;
+	const dispatch = useDispatch();
+	const { wishList } = useSelector(state => state.movie);
+
+	const handleProviderUrl = idProvider => {
+		const url = providersUrlList.find(provider => provider.id === idProvider).url;
+
+		dispatch(addMovieWatched(movie.id));
+		Linking.openURL(url);
+	};
 
 	useEffect(() => {
 		const getMovieDetail = async () => {
@@ -55,13 +67,12 @@ const MovieDetail = ({ route, navigation }) => {
 		getProv();
 	}, []);
 
-	console.log(movie);
+	// console.log(movie);
 	// console.log(actors);
 	// console.log(providers);
 
 	const displayStars = num => {
 		num = Math.round(num / 2);
-
 		let stars = [];
 		for (let i = 0; i < 5; i++) {
 			if (i < num) {
@@ -79,8 +90,34 @@ const MovieDetail = ({ route, navigation }) => {
 				);
 			}
 		}
-
 		return stars;
+	};
+
+	const getMovies = async id => {
+		console.log('get movmov');
+		try {
+			const movie = await axios.get(
+				'http://192.168.1.21:3000/movie/getDetailsMoviesForWishlist',
+				{
+					params: {
+						id,
+					},
+				},
+			);
+
+			dispatch(
+				addToWishlist({
+					title: movie.data.title,
+					backdrop_path: movie.data.poster_path,
+					id: movie.data.id,
+					runtime: movie.data.runtime,
+					year: new Date(movie.data.release_date).getFullYear(),
+					genres: movie.data.genres,
+				}),
+			);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -93,10 +130,30 @@ const MovieDetail = ({ route, navigation }) => {
 				<TouchableOpacity style={styles.back_btn} onPress={() => navigation.goBack()}>
 					<AntDesign name="arrowleft" size={24} color="white" />
 				</TouchableOpacity>
-				<TextCustom fontSize="22" fontWeight="bold" style={{ marginBottom: 15, marginTop: -5 }}>
+				<TextCustom fontSize="22" fontWeight="bold" style={{ marginBottom: 15, marginTop: 5 }}>
 					{movie.title}
 				</TextCustom>
-
+				<View style={styles.btn_heart}>
+					<TouchableOpacity
+						onPress={() => {
+							console.log('coeur');
+							wishList.some(item => item.id === movie?.id)
+								? dispatch(removeFromWishlist(movie?.id))
+								: getMovies(movie?.id);
+						}}
+					>
+						<Icon
+							style={{ marginHorizontal: 5 }}
+							name={
+								wishList.some(item => item.id === movie?.id)
+									? 'ios-heart'
+									: 'ios-heart-outline'
+							}
+							type="ionicon"
+							color="#E74680"
+						/>
+					</TouchableOpacity>
+				</View>
 				<Image
 					source={{
 						uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
@@ -108,17 +165,42 @@ const MovieDetail = ({ route, navigation }) => {
 					}}
 					resizeMode="cover"
 				/>
-				<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-					{providers?.buy?.map((el, i) => (
-						<View key={el?.provider_id}>
-							<Image
-								style={{ height: 80, width: 110, borderRadius: 10, marginHorizontal: 5 }}
-								source={{ uri: `https://image.tmdb.org/t/p/w500/${el?.logo_path}` }}
-								resizeMode="contain"
-							/>
-						</View>
-					))}
-				</ScrollView>
+				{providers?.buy && (
+					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+						{providers?.buy?.map((el, i) => (
+							<View key={el?.provider_id}>
+								<TouchableOpacity
+									onPress={() => {
+										handleProviderUrl(el?.provider_id);
+									}}
+								>
+									<Image
+										style={{
+											height: 80,
+											width: 110,
+											borderRadius: 10,
+											marginHorizontal: 5,
+										}}
+										source={{ uri: `https://image.tmdb.org/t/p/w500/${el?.logo_path}` }}
+										resizeMode="contain"
+									/>
+								</TouchableOpacity>
+							</View>
+						))}
+					</ScrollView>
+				)}
+				{!providers?.buy && (
+					<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+						<Icon
+							style={{ marginRight: 10 }}
+							name="movie-filter"
+							type="Materialcommunityicons"
+							color="white"
+						/>
+						<TextCustom>En salle actuellement</TextCustom>
+					</View>
+				)}
+
 				<View
 					style={{
 						flexDirection: 'row',
@@ -131,11 +213,12 @@ const MovieDetail = ({ route, navigation }) => {
 				</View>
 				<View>
 					<TextCustom style={{ marginBottom: 6 }}>
-						Année : {new Date(movie?.release_date).getFullYear()}
+						Année : {new Date(movie?.release_date).getFullYear()} - Durée: {movie?.runtime}
+						min
 					</TextCustom>
 
 					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-						{movie?.genres?.map(el => (
+						{movie?.genres?.map((el, i) => (
 							<TextCustom
 								fontSize="13"
 								style={{
@@ -144,6 +227,7 @@ const MovieDetail = ({ route, navigation }) => {
 									paddingHorizontal: 5,
 									marginHorizontal: 5,
 								}}
+								key={el?.name + i}
 							>
 								{el.name}
 							</TextCustom>
@@ -208,5 +292,11 @@ const styles = StyleSheet.create({
 	back_btn: {
 		width: '100%',
 		marginLeft: 20,
+	},
+	btn_heart: {
+		position: 'absolute',
+		right: 20,
+		top: 80,
+		zIndex: 99,
 	},
 });

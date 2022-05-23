@@ -58,17 +58,29 @@ const MovieHomeItem = ({ movie }) => {
 					{movie?.title}
 				</Text>
 
-				<Image
-					source={{
-						uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
-					}}
-					style={{
-						borderRadius: 10,
-						height: 175,
-						width: 112,
-					}}
-					resizeMode="cover"
-				/>
+				{movie?.backdrop_path != null ? (
+					<Image
+						source={{
+							uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
+						}}
+						style={{
+							borderRadius: 10,
+							height: 175,
+							width: 112,
+						}}
+						resizeMode="cover"
+					/>
+				) : (
+					<Image
+						source={require('../assets/images/movie_default.jpg')}
+						style={{
+							borderRadius: 10,
+							height: 175,
+							width: 112,
+						}}
+						resizeMode="cover"
+					/>
+				)}
 			</TouchableOpacity>
 			<View style={styles.btn_action}>
 				<TouchableOpacity

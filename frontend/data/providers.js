@@ -1,0 +1,15 @@
+export const providersUrlList = [
+	{ id: 8, url: 'https://www.netflix.com/fr/' },
+	{ id: 68, url: 'https://www.microsoft.com/fr-fr/store/movies-and-tv' },
+	{ id: 239, url: 'https://www.universcine.com' },
+	{ id: 4, url: 'https://www.lacinetek.com/fr' },
+	{ id: 58, url: 'https://vod.canalplus.com/' },
+	{ id: 138, url: 'https://www.filmotv.fr/' },
+	{ id: 10, url: 'https://www.primevideo.com/' },
+	{ id: 61, url: 'https://video-a-la-demande.orange.fr/' },
+	{ id: 35, url: 'https://rakuten.tv/fr' },
+	{ id: 2, url: 'https://tv.apple.com/' },
+	{ id: 3, url: 'https://play.google.com/store/movies/category/MOVIE' },
+	{ id: 192, url: 'https://www.youtube.com/feed/storefront' },
+	{ id: 59, url: 'https://www.justwatch.com/fr/plateforme/bbox-vod' },
+];

@@ -10,11 +10,7 @@ import { Icon } from 'react-native-elements';
 
 export default function Wishlist({ navigation }) {
 	const { wishList } = useSelector(state => state.movie);
-
 	const dispatch = useDispatch();
-	// console.log(wishList);
-
-	// useEffect(() => {}, [wishList]);
 
 	return (
 		<ImageBackground
