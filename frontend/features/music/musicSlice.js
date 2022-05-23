@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const musicSlice = createSlice({
   name: "music",
@@ -20,17 +20,17 @@ const musicSlice = createSlice({
     },
 
     addMoodList(state, { payload }) {
+      //doublons
+      state.moodList = [];
       state.moodList = payload;
     },
 
     addMoodPlay(state, { payload }) {
+      //doublons
+      state.moodPlaylist = [];
       state.moodPlaylist = payload;
     },
 
-    removeMoodLists(state) {
-      state.moodList = [];
-      state.moodPlaylist = [];
-    },
     removeMoodFilter(state) {
       state.moodFilter = "";
     },
@@ -50,7 +50,6 @@ export const {
   addMoodFilter,
   addMoodList,
   addMoodPlay,
-  removeMoodLists,
   addAmbianceFilter,
   addGenreFilter,
   removeMoodFilter,

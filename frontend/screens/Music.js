@@ -39,27 +39,31 @@ const Music = (props, { navigation }) => {
       var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
       var top = await topRaw.json();
       setTop(top);
+    }
+    getTop();
+  }, []);
+
+  useEffect(() => {
+    async function getPlaylist() {
       var playTopRaw = await fetch(
         "http://192.168.0.19:3000/music/getPlaylist?filter=top"
       );
       var playTop = await playTopRaw.json();
       setPlaylist(playTop);
     }
-    getTop();
+    getPlaylist();
   }, []);
 
-  //useEffect pour filtre
-  //music and playlist
-  if (!moodFilter) {
-    musics = listTop.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
-    });
-    playlists = listPlayL.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
-    });
-    playlistsFilter = [];
-    musicsFilter = [];
-  } else {
+  //top
+  musics = listTop.map((e, i) => {
+    return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+  });
+  playlists = listPlayL.map((e, i) => {
+    return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+  });
+
+  //filter
+  if (moodFilter) {
     musicsFilter = moodList.map((e, i) => {
       return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
     });
@@ -134,9 +138,9 @@ const Music = (props, { navigation }) => {
         </View>
         <ScrollView style={{ marginTop: 30, width: "100%" }}>
           <View style={styles.filters}>
-            {filterMusicList.map((it, index) => {
-              const { name } = it;
-              return <Filter name={name} index key={index} />;
+            {filterMusicList.map((filter, i) => {
+              const { name } = filter;
+              return <Filter name={name} index key={filter + i} />;
             })}
           </View>
 
