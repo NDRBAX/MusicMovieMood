@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { LOCAL_IP } from "@env";
+
 import {
   ScrollView,
   View,
@@ -40,16 +42,13 @@ const Movie = (props, { navigation }) => {
   useEffect(() => {
     const getMovies = async () => {
       try {
-        const mov = await axios.get(
-          "http://192.168.1.10:3000/movie/getMovies",
-          {
-            params: {
-              genres: moodGenre,
-              adultFilter: publicFilter,
-              whereFilter: whereFilter,
-            },
-          }
-        );
+        const mov = await axios.get(`${LOCAL_IP}/movie/getMovies`, {
+          params: {
+            genres: moodGenre,
+            adultFilter: publicFilter,
+            whereFilter: whereFilter,
+          },
+        });
         console.log(mov.data);
         dispatch(addMovieFetch(mov.data));
       } catch (err) {
@@ -62,9 +61,7 @@ const Movie = (props, { navigation }) => {
   useEffect(() => {
     const getMoviesPopular = async () => {
       try {
-        const mov = await axios.get(
-          "http://192.168.1.10:3000/movie/getMoviesPopular"
-        );
+        const mov = await axios.get(`${LOCAL_IP}/movie/getMoviesPopular`);
         dispatch(addMoviePopularFetch(mov.data));
       } catch (err) {
         console.log(err);
@@ -106,10 +103,10 @@ const Movie = (props, { navigation }) => {
             onPress={() => props.navigation.navigate("Wishlist")}
           />
           <Icon
-            name="settings"
+            name="account"
+            type="material-community"
             color="white"
-            type="ionicons"
-            onPress={() => props.navigation.navigate("Settings")}
+            onPress={() => props.navigation.navigate("Signup")}
           />
         </View>
 
