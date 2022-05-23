@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
-  Text,
 } from "react-native";
 
 import { Overlay, Icon } from "react-native-elements";
@@ -23,10 +22,10 @@ import {
   removeMoodFilter,
   addMovieFetch,
   addMoviePopularFetch,
+  addToBlackList,
 } from "../features/movie/movieSlice";
 
 const Movie = (props, { navigation }) => {
-  const [isLoading, setLoading] = useState(true);
   const {
     displaySmiley,
     whereFilter,
@@ -34,6 +33,7 @@ const Movie = (props, { navigation }) => {
     moviesFetch,
     moodGenre,
     moviesPopular,
+    blackList,
   } = useSelector((state) => state.movie);
   const dispatch = useDispatch();
 
@@ -50,6 +50,7 @@ const Movie = (props, { navigation }) => {
             },
           }
         );
+        // console.log(mov.data);
         dispatch(addMovieFetch(mov.data));
       } catch (err) {
         console.log(err);
@@ -79,7 +80,12 @@ const Movie = (props, { navigation }) => {
   const displayNbMovies = (nb, list) =>
     list
       ?.slice(0, nb)
-      .map((movie, index) => <MovieHomeItem movie={movie} key={movie.id} />);
+      .map(
+        (movie, index) =>
+          !blackList.some((it) => it == movie.id) && (
+            <MovieHomeItem movie={movie} key={movie.id} />
+          )
+      );
 
   return (
     <View style={styles.container}>
@@ -105,10 +111,10 @@ const Movie = (props, { navigation }) => {
             onPress={() => props.navigation.navigate("Wishlist")}
           />
           <Icon
-            name="settings"
+            name="user"
             color="white"
-            type="ionicons"
-            onPress={() => props.navigation.navigate("Settings")}
+            type="antdesign"
+            onPress={() => props.navigation.navigate("Signup")}
           />
         </View>
 
@@ -132,7 +138,6 @@ const Movie = (props, { navigation }) => {
                   flex: 1,
                   flexDirection: "row",
                   justifyContent: "center",
-
                   flexWrap: "wrap",
                 }}
               >
@@ -172,7 +177,7 @@ const Movie = (props, { navigation }) => {
           </TextCustom>
 
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {displayNbMovies(5, moviesFetch)}
+            {displayNbMovies(10, moviesFetch)}
           </ScrollView>
 
           {/* list film partie 2 selection users*/}
@@ -182,7 +187,7 @@ const Movie = (props, { navigation }) => {
             style={{
               textAlign: "left",
               paddingLeft: 15,
-              marginTop: 60,
+              marginTop: 45,
               marginBottom: 10,
             }}
           >
@@ -190,7 +195,7 @@ const Movie = (props, { navigation }) => {
           </TextCustom>
 
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {displayNbMovies(8, moviesPopular)}
+            {displayNbMovies(15, moviesPopular)}
           </ScrollView>
         </ScrollView>
         <TouchableOpacity

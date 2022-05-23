@@ -74,6 +74,48 @@ const Music = (props, { navigation }) => {
     playlists = [];
   }
 
+  //music and playlist
+  if (!moodFilter) {
+    musics = listTop.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlists = listPlayL.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
+    playlistsFilter = [];
+    musicsFilter = [];
+  } else {
+    musicsFilter = moodList.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlistsFilter = moodPlaylist.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
+    musics = [];
+    playlists = [];
+  }
+
+  useEffect(() => {
+    async function getTop() {
+      var topRaw = await fetch("http://192.168.1.21:3000/music/getTop");
+      var top = await topRaw.json();
+      setTop(top);
+      var playTopRaw = await fetch(
+        "http://192.168.1.21:3000/music/getPlaylist?filter=top"
+      );
+      var playTop = await playTopRaw.json();
+      setPlaylist(playTop);
+    }
+    getTop();
+  }, []);
+  //music and playlist
+  var musics = listTop.map((e) => {
+    return <MusicHomeItem title={e.track} url={e.cover} />;
+  });
+  var playlists = listPlayL.map((e) => {
+    return <MusicHomeItem title={e.name} url={e.image} />;
+  });
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -136,11 +178,12 @@ const Music = (props, { navigation }) => {
             </View>
           </Overlay>
         </View>
+
         <ScrollView style={{ marginTop: 30, width: "100%" }}>
           <View style={styles.filters}>
-            {filterMusicList.map((filter, i) => {
-              const { name } = filter;
-              return <Filter name={name} index key={filter + i} />;
+            {filterMusicList.map((it, index) => {
+              const { name } = it;
+              return <Filter name={name} index key={index} />;
             })}
           </View>
 
@@ -168,6 +211,7 @@ const Music = (props, { navigation }) => {
             {playlistsFilter}
           </ScrollView>
         </ScrollView>
+
         <TouchableOpacity
           style={styles.music_btn}
           onPress={() => props.navigation.navigate("Movie")}

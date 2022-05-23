@@ -4,17 +4,15 @@ const movieSlice = createSlice({
   name: "movie",
   initialState: {
     wishList: [
-      {
-        title: "Le renard fou",
-        length: "2h10",
-        year: "2020",
-      },
-      {
-        title: "Le renard fou",
-        length: "2h10",
-        year: "2020",
-      },
+      //example
+      // backdrop_path: '/4cWLRhub0yY9VJpdw0nqoTPYyiN.jpg',
+      // genres: [[Object], [Object], [Object], [Object]],
+      // id: 862,
+      // runtime': 81,
+      // title: 'Toy Story',
+      // year: 1995,
     ],
+    blackList: [], //juste les ids
     moviesFetch: [],
     moviesNow: [],
     moviesPopular: [],
@@ -26,14 +24,13 @@ const movieSlice = createSlice({
   },
   reducers: {
     //ADD MOVIE TO WISHLIST
-    addToWishlist: (state, action) => {
-      state.movies.push(action.payload);
+    addToWishlist: (state, { payload }) => {
+      !state.wishList.includes(payload.id) &&
+        (state.wishList = [...state.wishList, payload]);
     },
     //REMOVE ITEM FROM WISHLIST
-    removeFromWishlist: (state, action) => {
-      state.movies = state.movies.filter(
-        (movie) => movie._id !== action.payload._id
-      );
+    removeFromWishlist: (state, { payload }) => {
+      state.wishList = state.wishList.filter((movie) => movie.id !== payload);
     },
 
     toggleSmiley: (state) => {
@@ -42,9 +39,7 @@ const movieSlice = createSlice({
 
     addMoodFilter(state, action) {
       //plutot un toggle
-      console.log(action.payload);
       const { name, genre } = action.payload;
-
       state.moodFilter = name;
       state.moodGenre = genre;
     },
@@ -66,6 +61,10 @@ const movieSlice = createSlice({
     addMoviePopularFetch(state, { payload }) {
       state.moviesPopular = payload;
     },
+    addToBlackList(state, { payload }) {
+      !state.blackList.includes(payload) &&
+        (state.blackList = [...state.blackList, payload]);
+    },
   },
 });
 
@@ -79,5 +78,6 @@ export const {
   removeMoodFilter,
   addMovieFetch,
   addMoviePopularFetch,
+  addToBlackList,
 } = movieSlice.actions;
 export default movieSlice.reducer;
