@@ -4,11 +4,13 @@ const musicSlice = createSlice({
   name: "music",
   initialState: {
     moodFilter: "",
+    ambianceFilter: "",
+    genreFilter: "",
     moodList: [],
     moodPlaylist: [],
-    ambianceFilter: false,
-    genreFilter: false,
     displaySmiley: false,
+    displayAmbiance: false,
+    displayGenre: false,
   },
   reducers: {
     toggleSmiley: (state) => {
@@ -20,14 +22,10 @@ const musicSlice = createSlice({
     },
 
     addMoodList(state, { payload }) {
-      //doublons
-      state.moodList = [];
       state.moodList = payload;
     },
 
     addMoodPlay(state, { payload }) {
-      //doublons
-      state.moodPlaylist = [];
       state.moodPlaylist = payload;
     },
 
@@ -35,12 +33,24 @@ const musicSlice = createSlice({
       state.moodFilter = "";
     },
     //Search by ambiance
-    addAmbianceFilter(state) {
-      state.ambianceFilter = !state.ambianceFilter;
+    addAmbianceFilter(state, { payload }) {
+      state.ambianceFilter = payload;
+    },
+    toggleAmbianceFilter: (state) => {
+      state.displayAmbiance = !state.displayAmbiance;
+    },
+    removeAmbianceFilter(state) {
+      state.ambianceFilter = "";
     },
     //Search by genre
-    addGenreFilter(state) {
-      state.genreFilter = !state.genreFilter;
+    addGenreFilter(state, { payload }) {
+      state.genreFilter = payload;
+    },
+    toggleGenreFilter: (state) => {
+      state.displayGenre = !state.displayGenre;
+    },
+    removeGenreFilter(state) {
+      state.genreFilter = "";
     },
   },
 });
@@ -51,7 +61,11 @@ export const {
   addMoodList,
   addMoodPlay,
   addAmbianceFilter,
+  toggleAmbianceFilter,
+  removeAmbianceFilter,
   addGenreFilter,
+  toggleGenreFilter,
+  removeGenreFilter,
   removeMoodFilter,
 } = musicSlice.actions;
 

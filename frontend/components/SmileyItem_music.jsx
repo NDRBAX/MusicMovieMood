@@ -11,6 +11,7 @@ import { smileyMusicMoodList } from "../data/smiley";
 
 const SmileyItem = ({ name }) => {
   const dispatch = useDispatch();
+  var filterMood = [];
   let uriImg = smileyMusicMoodList.find((item) => item.name === name).img;
   return (
     <TouchableOpacity
@@ -20,20 +21,13 @@ const SmileyItem = ({ name }) => {
           `http://192.168.0.19:3000/music/mood/${name}`
         );
         var moodMusic = await filterMoodRaw.json();
-        var filterMood = moodMusic.filter;
-        //doublons
-        console.log(filterMood.length);
-        if (filterMood.length > 10) {
-          filterMood = filterMood.splice(0, 10);
-        }
+        filterMood = moodMusic.filter;
         dispatch(addMoodList(filterMood));
         var filterMoodPLRaw = await fetch(
-          `http://192.168.0.19:3000/music/getPlaylist?filter=${name}`
+          `http://192.168.0.19:3000/music/getPlaylist/${name}`
         );
         var moodPL = await filterMoodPLRaw.json();
-        var filterPLMood = moodPL;
-        //doublons
-        console.log(filterPLMood.length);
+        var filterPLMood = moodPL.playlists;
         dispatch(addMoodPlay(filterPLMood));
         dispatch(toggleSmiley());
       }}

@@ -8,29 +8,50 @@ import {
   ImageBackground,
 } from "react-native";
 
-import { Overlay, Icon } from "react-native-elements";
+import { Overlay, Icon, Button } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 
 import Filter from "../components/Filter_music";
 import MusicHomeItem from "../components/MusicHomeItem";
 import TextCustom from "../components/TextCustom";
 import SmileyItem from "../components/SmileyItem_music";
-import { smileyMusicMoodList } from "../data/smiley";
+import {
+  smileyMusicMoodList,
+  musicAmbianceList,
+  musicGenreList,
+} from "../data/smiley";
 import { filterMusicList } from "../data/filters";
-import { toggleSmiley, removeMoodFilter } from "../features/music/musicSlice";
+import {
+  toggleSmiley,
+  toggleAmbianceFilter,
+  toggleGenreFilter,
+  removeMoodFilter,
+  addAmbianceFilter,
+  addGenreFilter,
+  removeAmbianceFilter,
+  removeGenreFilter,
+} from "../features/music/musicSlice";
 
 const Music = (props, { navigation }) => {
   const [listTop, setTop] = useState([]);
   const [listPlayL, setPlaylist] = useState([]);
-  const { displaySmiley } = useSelector((state) => state.music);
-  const { moodList, moodFilter, moodPlaylist } = useSelector(
-    (state) => state.music
-  );
+  const [ambiList, setAmbi] = useState([]);
+  const [ambiPlayL, setAmbiPL] = useState([]);
+  const [genreList, setGenre] = useState([]);
+  const [genrePlayL, setGenrePL] = useState([]);
+  const {
+    displaySmiley,
+    moodList,
+    moodFilter,
+    moodPlaylist,
+    displayAmbiance,
+    ambianceFilter,
+    displayGenre,
+    genreFilter,
+  } = useSelector((state) => state.music);
 
   var musics = [];
   var playlists = [];
-  var musicsFilter = [];
-  var playlistsFilter = [];
 
   const dispatch = useDispatch();
 
@@ -38,83 +59,45 @@ const Music = (props, { navigation }) => {
     async function getTop() {
       var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
       var top = await topRaw.json();
-      setTop(top);
+      setTop(top.search);
+      var playTopRaw = await fetch(
+        "http://192.168.0.19:3000/music/getPlaylist/top"
+      );
+      var playTop = await playTopRaw.json();
+      setPlaylist(playTop.playlists);
     }
     getTop();
   }, []);
 
-  useEffect(() => {
-    async function getPlaylist() {
-      var playTopRaw = await fetch(
-        "http://192.168.0.19:3000/music/getPlaylist?filter=top"
-      );
-      var playTop = await playTopRaw.json();
-      setPlaylist(playTop);
-    }
-    getPlaylist();
-  }, []);
-
-  //top
-  musics = listTop.map((e, i) => {
-    return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
-  });
-  playlists = listPlayL.map((e, i) => {
-    return <MusicHomeItem key={i} title={e.name} url={e.image} />;
-  });
-
-  //filter
-  if (moodFilter) {
-    musicsFilter = moodList.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
-    });
-    playlistsFilter = moodPlaylist.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
-    });
-    musics = [];
-    playlists = [];
-  }
-
-  //music and playlist
-  if (!moodFilter) {
+  if (!moodFilter && !ambianceFilter && !genreFilter) {
     musics = listTop.map((e, i) => {
       return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
     });
     playlists = listPlayL.map((e, i) => {
       return <MusicHomeItem key={i} title={e.name} url={e.image} />;
     });
-    playlistsFilter = [];
-    musicsFilter = [];
-  } else {
-    musicsFilter = moodList.map((e, i) => {
+  } else if (moodFilter) {
+    musics = moodList.map((e, i) => {
       return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
     });
-    playlistsFilter = moodPlaylist.map((e, i) => {
+    playlists = moodPlaylist.map((e, i) => {
       return <MusicHomeItem key={i} title={e.name} url={e.image} />;
     });
-    musics = [];
-    playlists = [];
+  } else if (ambianceFilter) {
+    musics = ambiList.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlists = ambiPlayL.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
+  } else if (genreFilter) {
+    musics = genreList.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+    });
+    playlists = genrePlayL.map((e, i) => {
+      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+    });
   }
-
-  useEffect(() => {
-    async function getTop() {
-      var topRaw = await fetch("http://192.168.1.21:3000/music/getTop");
-      var top = await topRaw.json();
-      setTop(top);
-      var playTopRaw = await fetch(
-        "http://192.168.1.21:3000/music/getPlaylist?filter=top"
-      );
-      var playTop = await playTopRaw.json();
-      setPlaylist(playTop);
-    }
-    getTop();
-  }, []);
-  //music and playlist
-  var musics = listTop.map((e) => {
-    return <MusicHomeItem title={e.track} url={e.cover} />;
-  });
-  var playlists = listPlayL.map((e) => {
-    return <MusicHomeItem title={e.name} url={e.image} />;
-  });
 
   return (
     <View style={styles.container}>
@@ -177,6 +160,98 @@ const Music = (props, { navigation }) => {
               </View>
             </View>
           </Overlay>
+          <Overlay
+            overlayStyle={{
+              backgroundColor: "rgba(117, 103, 129, .8)",
+              borderRadius: 10,
+              top: -130,
+              left: -10,
+            }}
+            isVisible={displayAmbiance}
+            onBackdropPress={() => {
+              dispatch(toggleAmbianceFilter());
+              dispatch(removeAmbianceFilter());
+            }}
+          >
+            <View style={{ height: 190, width: 140 }}>
+              <View>
+                {musicAmbianceList.map((ambiance, i) => (
+                  <Button
+                    key={i}
+                    size="sm"
+                    buttonStyle={{
+                      color: "white",
+                      backgroundColor: "rgba(255,0,0,0)",
+                      padding: 3,
+                    }}
+                    title={ambiance.name}
+                    onPress={async () => {
+                      dispatch(addAmbianceFilter(ambiance.name));
+                      var filterAmbianceRaw = await fetch(
+                        `http://192.168.0.19:3000/music/ambiance/${ambiance.name}`
+                      );
+                      var ambianceMusic = await filterAmbianceRaw.json();
+                      var filterAmbiance = ambianceMusic.filter;
+                      setAmbi(filterAmbiance);
+                      var filterAmbiancePLRaw = await fetch(
+                        `http://192.168.0.19:3000/music/getPlaylist/${ambiance.name}`
+                      );
+                      var ambiancePLMusic = await filterAmbiancePLRaw.json();
+                      var filterAmbiancePL = ambiancePLMusic.playlists;
+                      setAmbiPL(filterAmbiancePL);
+                      dispatch(toggleAmbianceFilter());
+                    }}
+                  />
+                ))}
+              </View>
+            </View>
+          </Overlay>
+          <Overlay
+            overlayStyle={{
+              backgroundColor: "rgba(117, 103, 129, .8)",
+              borderRadius: 10,
+              top: -130,
+              left: -10,
+            }}
+            isVisible={displayGenre}
+            onBackdropPress={() => {
+              dispatch(toggleGenreFilter());
+              dispatch(removeGenreFilter());
+            }}
+          >
+            <View style={{ height: 190, width: 140 }}>
+              <View>
+                {musicGenreList.map((genre, i) => (
+                  <Button
+                    key={i}
+                    size="sm"
+                    buttonStyle={{
+                      color: "white",
+                      backgroundColor: "rgba(255,0,0,0)",
+                      padding: 3,
+                    }}
+                    title={genre.name}
+                    onPress={async () => {
+                      dispatch(addGenreFilter(genre.name));
+                      var filterGenreRaw = await fetch(
+                        `http://192.168.0.19:3000/music/genre/${genre.name}`
+                      );
+                      var genreMusic = await filterGenreRaw.json();
+                      var filterGenre = genreMusic.filter;
+                      setGenre(filterGenre);
+                      var filterGenrePLRaw = await fetch(
+                        `http://192.168.0.19:3000/music/getPlaylist/${genre.name}`
+                      );
+                      var genrePLMusic = await filterGenrePLRaw.json();
+                      var filterGenrePL = genrePLMusic.playlists;
+                      setGenrePL(filterGenrePL);
+                      dispatch(toggleGenreFilter());
+                    }}
+                  />
+                ))}
+              </View>
+            </View>
+          </Overlay>
         </View>
 
         <ScrollView style={{ marginTop: 30, width: "100%" }}>
@@ -197,7 +272,6 @@ const Music = (props, { navigation }) => {
           </TextCustom>
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
             {musics}
-            {musicsFilter}
           </ScrollView>
           <TextCustom
             fontSize="15"
@@ -208,7 +282,6 @@ const Music = (props, { navigation }) => {
           </TextCustom>
           <ScrollView horizontal={true} style={{ marginTop: 10 }}>
             {playlists}
-            {playlistsFilter}
           </ScrollView>
         </ScrollView>
 
