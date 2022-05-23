@@ -7,6 +7,7 @@ import {
 	View,
 	Linking,
 } from 'react-native';
+import { LOCAL_IP } from '@env';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
