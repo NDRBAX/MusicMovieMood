@@ -18,13 +18,11 @@ const SmileyItem = ({ name }) => {
 			onPress={async () => {
 				dispatch(removeMoodLists());
 				dispatch(addMoodFilter(name));
-				var filterMoodRaw = await fetch(`http://192.168.1.21:3000/music/mood/${name}`);
+				var filterMoodRaw = await fetch(`${LOCAL_IP}/music/mood/${name}`);
 				var moodMusic = await filterMoodRaw.json();
 				var filterMood = moodMusic.filter;
 				dispatch(addMoodList(filterMood));
-				var filterMoodPLRaw = await fetch(
-					`http://192.168.1.21:3000/music/getPlaylist?filter=${name}`,
-				);
+				var filterMoodPLRaw = await fetch(`${LOCAL_IP}/music/getPlaylist?filter=${name}`);
 				var moodPL = await filterMoodPLRaw.json();
 				var filterPLMood = moodPL;
 				dispatch(addMoodPlay(filterPLMood));

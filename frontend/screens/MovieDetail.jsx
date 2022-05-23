@@ -35,7 +35,7 @@ const MovieDetail = ({ route, navigation }) => {
 	useEffect(() => {
 		const getMovieDetail = async () => {
 			try {
-				const mov = await axios.get(`http://192.168.1.21:3000/movie/getDetailsMovies/${id}`);
+				const mov = await axios.get(`${LOCAL_IP}/movie/getDetailsMovies/${id}`);
 				setMovie(mov.data);
 			} catch (err) {
 				console.log(err);
@@ -43,7 +43,7 @@ const MovieDetail = ({ route, navigation }) => {
 		};
 		const getMovieActors = async () => {
 			try {
-				const mov2 = await axios.get(`http://192.168.1.21:3000/movie/getActorMovies/${id}`);
+				const mov2 = await axios.get(`${LOCAL_IP}/movie/getActorMovies/${id}`);
 				setActors(mov2.data);
 			} catch (err) {
 				console.log(err);
@@ -51,7 +51,7 @@ const MovieDetail = ({ route, navigation }) => {
 		};
 		const getProv = async () => {
 			try {
-				const mov3 = await axios.get('http://192.168.1.21:3000/movie/findProvider', {
+				const mov3 = await axios.get(`${LOCAL_IP}/movie/findProvider`, {
 					params: {
 						id,
 					},
@@ -96,14 +96,11 @@ const MovieDetail = ({ route, navigation }) => {
 	const getMovies = async id => {
 		console.log('get movmov');
 		try {
-			const movie = await axios.get(
-				'http://192.168.1.21:3000/movie/getDetailsMoviesForWishlist',
-				{
-					params: {
-						id,
-					},
+			const movie = await axios.get(`${LOCAL_IP}/movie/getDetailsMoviesForWishlist`, {
+				params: {
+					id,
 				},
-			);
+			});
 
 			dispatch(
 				addToWishlist({

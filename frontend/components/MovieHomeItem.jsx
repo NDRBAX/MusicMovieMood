@@ -1,4 +1,5 @@
 import React from 'react';
+import { LOCAL_IP } from '@env';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,14 +12,11 @@ const MovieHomeItem = ({ movie }) => {
 	const getMovies = async id => {
 		console.log('get movmov');
 		try {
-			const movie = await axios.get(
-				'http://192.168.1.21:3000/movie/getDetailsMoviesForWishlist',
-				{
-					params: {
-						id,
-					},
+			const movie = await axios.get(`${LOCAL_IP}/movie/getDetailsMoviesForWishlist`, {
+				params: {
+					id,
 				},
-			);
+			});
 			// console.log(mov.data);
 			dispatch(
 				addToWishlist({
