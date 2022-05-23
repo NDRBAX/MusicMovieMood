@@ -6,6 +6,8 @@ var bcrypt = require("bcrypt");
 
 var userModel = require("../models/users");
 
+let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
 // SIGNUP
 router.post("/signup", async function (req, res, next) {
   let errors = [];
@@ -16,16 +18,19 @@ router.post("/signup", async function (req, res, next) {
   const data = await userModel.findOne({
     email: req.body.emailFromFront,
   });
+  
+  if(reg.test(data) === false)
+    errors.push("L'email est incorrecte.")
 
   if (data != null) {
-    errors.push("Il existe déjà un compte avec cet adresse email");
+    errors.push("Il existe déjà un compte avec cet adresse email.");
   }
   if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
     errors.push("Veuillez remplir tous les champs.");
   }
 
   if (req.body.passwordFromFront !== req.body.confirmPasswordFromFront) {
-    errors.push("Les mots de passe ne correspondent pas");
+    errors.push("Les mots de passe ne correspondent pas.");
   }
   var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
   if (errors.length == 0) {
