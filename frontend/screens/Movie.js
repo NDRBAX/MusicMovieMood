@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { LOCAL_IP } from '@env';
+
 import {
 	ScrollView,
 	View,
@@ -40,7 +42,7 @@ const Movie = props => {
 	useEffect(() => {
 		const getMovies = async () => {
 			try {
-				const mov = await axios.get('http://192.168.1.21:3000/movie/getMovies', {
+				const mov = await axios.get(`${LOCAL_IP}/movie/getMovies`, {
 					params: {
 						genres: moodGenre,
 						adultFilter: publicFilter,
@@ -59,7 +61,7 @@ const Movie = props => {
 	useEffect(() => {
 		const getMoviesPopular = async () => {
 			try {
-				const mov = await axios.get('http://192.168.1.21:3000/movie/getMoviesPopular');
+				const mov = await axios.get(`${LOCAL_IP}/movie/getMoviesPopular`);
 				dispatch(addMoviePopularFetch(mov.data));
 			} catch (err) {
 				console.log(err);

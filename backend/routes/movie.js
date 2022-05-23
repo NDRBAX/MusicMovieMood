@@ -8,7 +8,7 @@ const baseUrl = 'https://api.themoviedb.org/3/';
 //get movies, filtres adult, smiley, genre.
 router.get('/getMovies', async function (req, res, next) {
 	const { genres, adultFilter, whereFilter } = req.query;
-	const url = `https://api.themoviedb.org/3/discover/movie?api_key=f0929bf9c301536f2f4ad539f4689057&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
+	const url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
 
 	// const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
 

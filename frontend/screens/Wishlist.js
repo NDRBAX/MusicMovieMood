@@ -37,7 +37,9 @@ export default function Wishlist({ navigation }) {
 							<Image
 								style={styles.imgMovie}
 								resizeMode="cover"
-								source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }}
+								source={{
+									uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`,
+								}}
 							/>
 							<View style={styles.movieInfo}>
 								<View
@@ -87,7 +89,13 @@ export default function Wishlist({ navigation }) {
 									</TextCustom>
 								</View>
 
-								<View style={{ flexDirection: 'row', flexWrap: 'wrap', textAlign: 'left' }}>
+								<View
+									style={{
+										flexDirection: 'row',
+										flexWrap: 'wrap',
+										textAlign: 'left',
+									}}
+								>
 									{movie?.genres.map(el => (
 										<View
 											style={{

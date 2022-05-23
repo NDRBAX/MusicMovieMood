@@ -6,10 +6,9 @@ var bcrypt = require("bcrypt");
 
 var userModel = require("../models/users");
 
-let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-
 // SIGNUP
 router.post("/signup", async function (req, res, next) {
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
   let errors = [];
   let result = false;
   let saveUser = null;
@@ -18,20 +17,23 @@ router.post("/signup", async function (req, res, next) {
   const data = await userModel.findOne({
     email: req.body.emailFromFront,
   });
-  
-  if(reg.test(data) === false)
-    errors.push("L'email est incorrecte.")
 
-  if (data != null) {
-    errors.push("Il existe déjà un compte avec cet adresse email.");
-  }
   if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
     errors.push("Veuillez remplir tous les champs.");
   }
-
+  if (reg.test(req.body.emailFromFront) === false) {
+    errors.push("L'email est incorrecte.");
+  }
+  if (data != null) {
+    errors.push("Il existe déjà un compte avec cet adresse email.");
+  }
+  if (req.body.emailFromFront.length < 6) {
+    errors.push("Le mot de passe doit contenir au moins six caractères.");
+  }
   if (req.body.passwordFromFront !== req.body.confirmPasswordFromFront) {
     errors.push("Les mots de passe ne correspondent pas.");
   }
+
   var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
   if (errors.length == 0) {
     var newUser = new userModel({
@@ -48,6 +50,9 @@ router.post("/signup", async function (req, res, next) {
       token = saveUser.token;
     }
   }
+
+  console.log(errors);
+
   res.json({ result, saveUser, errors, token });
 });
 

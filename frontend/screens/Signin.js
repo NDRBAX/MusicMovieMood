@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { LOCAL_IP } from "@env";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../features/login/tokenSlice";
@@ -26,7 +27,7 @@ const Signin = (props, { navigation }) => {
 
   // SIGNIN
   let handleSubmitSignin = async () => {
-    const data = await fetch("http://192.168.1.10:3000/users/signin", {
+    const data = await fetch(`${LOCAL_IP}/users/signin`, {
       method: "POST",
       headers: { "Content-type": "application/x-www-form-urlencoded" },
       body: `emailFromFront=${signinEmail}&passwordFromFront=${signinPassword}`,
@@ -62,36 +63,47 @@ const Signin = (props, { navigation }) => {
           <AntDesign name="arrowleft" size={24} color="white" />
         </TouchableOpacity>
 
-        <View style={styles.login}>
+        <View style={styles.signin}>
           <Image
             source={require("../assets/images/MMM.png")}
             resizeMode="center"
             style={styles.logo}
           />
+
           <Input
             placeholder="Email"
             autoCapitalize={"none"}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputText}
             leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
-            inputStyle={{ color: "white" }}
             keyboardType="email-address"
             onChangeText={(value) => setSigninEmail(value)}
             value={signinEmail}
           />
+
           <Input
             placeholder="Mot de passe"
             leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
-            inputStyle={{ color: "white" }}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputText}
             secureTextEntry={true}
             onChangeText={(value) => setSigninPassword(value)}
             value={signinPassword}
           />
           {tabErrorsSignin}
           <Button
-            buttonStyle={{ backgroundColor: "#E74680", width: "70%" }}
+            buttonStyle={{
+              backgroundColor: "#E74680",
+              width: "110%",
+              marginTop: 10,
+            }}
             title="Se connecter"
             onPress={() => handleSubmitSignin()}
           />
-          <View style={{ flexDirection: "row" }}>
+
+          <View style={{ flexDirection: "row", marginTop: 5 }}>
             <Text style={styles.textBody}>
               Vous avez oublié votre mot de passe?{" "}
             </Text>
@@ -120,16 +132,33 @@ const styles = StyleSheet.create({
     marginTop: 40,
     width: "100%",
   },
-  login: {
-    // marginHorizontal: "10%",
-  },
   image: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+  signin: {
+    flex: 1,
+    alignItems: "center",
+  },
+  inputContainerStyle: {
+    width: "70%",
+    height: 38,
+    borderRadius: 5,
+    marginVertical: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.14)",
+  },
+  inputText: {
+    color: "white",
+    fontWeight: "300",
+    marginLeft: 5,
+    padding: 10,
+  },
   logo: {
-    width: 400,
+    width: 350,
     height: 200,
     marginVertical: 10,
   },
@@ -141,10 +170,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
     marginVertical: 5,
+    alignSelf: "center",
   },
   textBody: {
     fontSize: 12,
     color: "white",
     marginBottom: 15,
+    alignSelf: "center",
   },
 });
