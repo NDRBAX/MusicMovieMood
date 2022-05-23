@@ -21,6 +21,7 @@ const movieSlice = createSlice({
 		publicFilter: false,
 		whereFilter: false,
 		displaySmiley: false,
+		movieClickForWatch: [],
 	},
 	reducers: {
 		//ADD MOVIE TO WISHLIST
@@ -63,6 +64,13 @@ const movieSlice = createSlice({
 		addToBlackList(state, { payload }) {
 			!state.blackList.includes(payload) && (state.blackList = [...state.blackList, payload]);
 		},
+		addMovieWatched(state, { payload }) {
+			!state.movieClickForWatch.includes(payload) &&
+				(state.movieClickForWatch = [...state.movieClickForWatch, payload]);
+		},
+		removeMovieWatched(state, { payload }) {
+			state.movieClickForWatch = state.movieClickForWatch.filter(movie => movie.id !== payload);
+		},
 	},
 });
 
@@ -77,5 +85,7 @@ export const {
 	addMovieFetch,
 	addMoviePopularFetch,
 	addToBlackList,
+	addMovieWatched,
+	removeMovieWatched,
 } = movieSlice.actions;
 export default movieSlice.reducer;
