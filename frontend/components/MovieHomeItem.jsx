@@ -4,25 +4,30 @@ import { Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBlackList, addToWishlist, removeFromWishlist } from '../features/movie/movieSlice';
 import axios from 'axios';
-
+import { useNavigation } from '@react-navigation/native';
 const MovieHomeItem = ({ movie }) => {
+	const navigation = useNavigation();
 	const { wishList, blackList } = useSelector(state => state.movie);
 	const getMovies = async id => {
+		console.log('get movmov');
 		try {
-			const mov = await axios.get('http://192.168.1.21:3000/movie/getDetailsMovies', {
-				params: {
-					id,
+			const movie = await axios.get(
+				'http://192.168.1.21:3000/movie/getDetailsMoviesForWishlist',
+				{
+					params: {
+						id,
+					},
 				},
-			});
+			);
 			// console.log(mov.data);
 			dispatch(
 				addToWishlist({
-					title: mov.data.title,
-					backdrop_path: mov.data.poster_path,
-					id: mov.data.id,
-					runtime: mov.data.runtime,
-					year: new Date(mov.data.release_date).getFullYear(),
-					genres: mov.data.genres,
+					title: movie.data.title,
+					backdrop_path: movie.data.poster_path,
+					id: movie.data.id,
+					runtime: movie.data.runtime,
+					year: new Date(movie.data.release_date).getFullYear(),
+					genres: movie.data.genres,
 				}),
 			);
 		} catch (err) {
@@ -35,6 +40,7 @@ const MovieHomeItem = ({ movie }) => {
 		<View style={styles.container}>
 			<TouchableOpacity
 				style={{ height: 175, width: 112, borderRadius: 30, marginHorizontal: 10 }}
+				onPress={() => navigation.push('MovieDetail', { id: movie.id })}
 			>
 				<Text
 					style={{
@@ -52,21 +58,34 @@ const MovieHomeItem = ({ movie }) => {
 					{movie?.title}
 				</Text>
 
-				<Image
-					source={{
-						uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
-					}}
-					style={{
-						borderRadius: 10,
-						height: 175,
-						width: 112,
-					}}
-					resizeMode="cover"
-				/>
+				{movie?.backdrop_path != null ? (
+					<Image
+						source={{
+							uri: `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`,
+						}}
+						style={{
+							borderRadius: 10,
+							height: 175,
+							width: 112,
+						}}
+						resizeMode="cover"
+					/>
+				) : (
+					<Image
+						source={require('../assets/images/movie_default.jpg')}
+						style={{
+							borderRadius: 10,
+							height: 175,
+							width: 112,
+						}}
+						resizeMode="cover"
+					/>
+				)}
 			</TouchableOpacity>
 			<View style={styles.btn_action}>
 				<TouchableOpacity
 					onPress={() => {
+						console.log('coeur');
 						wishList.some(item => item.id === movie?.id)
 							? dispatch(removeFromWishlist(movie?.id))
 							: getMovies(movie?.id);
@@ -113,5 +132,6 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		with: '80%',
 		justifyContent: 'center',
+		zIndex: 99,
 	},
 });

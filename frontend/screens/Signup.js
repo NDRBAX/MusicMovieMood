@@ -4,12 +4,14 @@ import {
   Text,
   View,
   ScrollView,
+  TouchableOpacity,
   Alert,
 } from "react-native";
+import { LOCAL_IP } from "@env";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../features/login/tokenSlice";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+
 import { AntDesign } from "@expo/vector-icons";
 
 import { Button, Image, Input } from "react-native-elements";
@@ -28,7 +30,7 @@ const Signup = (props, { navigation }) => {
 
   // SIGNUP
   let handleSubmitSignup = async () => {
-    const data = await fetch("http://192.168.0.19:3000/users/signup", {
+    const data = await fetch(`${LOCAL_IP}/users/signup`, {
       method: "POST",
       headers: { "Content-type": "application/x-www-form-urlencoded" },
       body: `emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&confirmPasswordFromFront=${signupConfirmPassword}`,
@@ -39,22 +41,22 @@ const Signup = (props, { navigation }) => {
     if (body.result) {
       setUserExists(true);
       dispatch(addToken(body.token));
-      // Alert.alert(
-      //   "Votre compte a été crée !",
-      //   "Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood",
-      //   [
-      //     {
-      //       text: "Fermer",
-      //       onPress: () => console.log("Cancel Pressed"),
-      //       style: "cancel",
-      //     },
-      //     {
-      //       text: "OK",
-      //       onPress: () =>
-      //         props.navigation.navigate("Movie") && console.log("OK Pressed"),
-      //     },
-      //   ]
-      // );
+      Alert.alert(
+        "Votre compte a été crée !",
+        "Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood",
+        [
+          {
+            text: "Fermer",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () =>
+              props.navigation.navigate("Movie") && console.log("OK Pressed"),
+          },
+        ]
+      );
     } else {
       setErrorsSignup(body.errors);
     }
@@ -77,7 +79,7 @@ const Signup = (props, { navigation }) => {
           <AntDesign name="arrowleft" size={24} color="white" />
         </TouchableOpacity>
 
-        <View style={styles.login}>
+        <View style={styles.signup}>
           <Image
             source={require("../assets/images/MMM.png")}
             resizeMode="center"
@@ -90,37 +92,49 @@ const Signup = (props, { navigation }) => {
           </Text>
 
           <Input
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputText}
             placeholder="Email"
+            autoCapitalize={"none"}
+            keyboardType="email-address"
             leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
-            inputStyle={{ color: "white" }}
             onChangeText={(value) => setSignupEmail(value)}
             value={signupEmail}
           />
           <Input
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputText}
             placeholder="Mot de passe"
             leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
-            inputStyle={{ color: "white" }}
             secureTextEntry={true}
             onChangeText={(value) => setSignupPassword(value)}
             value={signupPassword}
           />
           <Input
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            containerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputText}
             placeholder="Confirmer le mot de passe"
             leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
-            inputStyle={{ color: "white" }}
             secureTextEntry={true}
             onChangeText={(value) => setSignupConfirmPassword(value)}
             value={signupConfirmPassword}
+            errorMessage={tabErrorsSignup}
           />
           {tabErrorsSignup}
-
           <Button
-            buttonStyle={{ backgroundColor: "#E74680", width: "70%" }}
+            buttonStyle={{
+              backgroundColor: "#E74680",
+              width: "100%",
+              marginTop: 10,
+            }}
             title="S'inscrire"
             onPress={() => handleSubmitSignup()}
           />
 
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", marginTop: 5 }}>
             <Text style={styles.textBody}>Vous avez déjà un compte? </Text>
             <Text
               style={[
@@ -134,6 +148,7 @@ const Signup = (props, { navigation }) => {
             </Text>
           </View>
         </View>
+
         <TouchableOpacity
           style={[styles.withoutAccount]}
           onPress={() => props.navigation.navigate("Wishlist")}
@@ -161,11 +176,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  login: {
-    // marginHorizontal: "10%",
+  signup: {
+    flex: 1,
+    alignItems: "center",
+  },
+  inputContainerStyle: {
+    width: "70%",
+    height: 38,
+    borderRadius: 5,
+    marginVertical: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.14)",
+  },
+  inputText: {
+    color: "white",
+    fontWeight: "300",
+    marginLeft: 5,
+    padding: 10,
   },
   logo: {
-    width: 400,
+    width: 350,
     height: 200,
     marginVertical: 10,
   },
@@ -177,11 +209,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
     marginVertical: 5,
+    alignSelf: "center",
   },
   textBody: {
     fontSize: 12,
     color: "white",
     marginBottom: 15,
+    alignSelf: "center",
   },
   withoutAccount: {
     height: 38,

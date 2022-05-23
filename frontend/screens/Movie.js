@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { LOCAL_IP } from "@env";
+
 import {
   ScrollView,
   View,
@@ -6,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Text,
 } from "react-native";
 
 import { Overlay, Icon } from "react-native-elements";
@@ -22,10 +25,9 @@ import {
   removeMoodFilter,
   addMovieFetch,
   addMoviePopularFetch,
-  addToBlackList,
 } from "../features/movie/movieSlice";
 
-const Movie = (props, { navigation }) => {
+const Movie = (props) => {
   const {
     displaySmiley,
     whereFilter,
@@ -40,16 +42,13 @@ const Movie = (props, { navigation }) => {
   useEffect(() => {
     const getMovies = async () => {
       try {
-        const mov = await axios.get(
-          "http://192.168.0.19:3000/movie/getMovies",
-          {
-            params: {
-              genres: moodGenre,
-              adultFilter: publicFilter,
-              whereFilter: whereFilter,
-            },
-          }
-        );
+        const mov = await axios.get(`${LOCAL_IP}/movie/getMovies`, {
+          params: {
+            genres: moodGenre,
+            adultFilter: publicFilter,
+            whereFilter: whereFilter,
+          },
+        });
         // console.log(mov.data);
         dispatch(addMovieFetch(mov.data));
       } catch (err) {
@@ -62,9 +61,7 @@ const Movie = (props, { navigation }) => {
   useEffect(() => {
     const getMoviesPopular = async () => {
       try {
-        const mov = await axios.get(
-          "http://192.168.0.19:3000/movie/getMoviesPopular"
-        );
+        const mov = await axios.get(`${LOCAL_IP}/movie/getMoviesPopular`);
         dispatch(addMoviePopularFetch(mov.data));
       } catch (err) {
         console.log(err);

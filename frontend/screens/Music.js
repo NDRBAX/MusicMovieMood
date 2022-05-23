@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { LOCAL_IP } from "@env";
 import {
   ScrollView,
   View,
@@ -57,12 +58,10 @@ const Music = (props, { navigation }) => {
 
   useEffect(() => {
     async function getTop() {
-      var topRaw = await fetch("http://192.168.0.19:3000/music/getTop");
+      var topRaw = await fetch(`${LOCAL_IP}/music/getTop`);
       var top = await topRaw.json();
       setTop(top.search);
-      var playTopRaw = await fetch(
-        "http://192.168.0.19:3000/music/getPlaylist/top"
-      );
+      var playTopRaw = await fetch(`${LOCAL_IP}/music/getPlaylist/top`);
       var playTop = await playTopRaw.json();
       setPlaylist(playTop.playlists);
     }
@@ -126,7 +125,7 @@ const Music = (props, { navigation }) => {
             name="account"
             type="material-community"
             color="white"
-            onPress={() => props.navigation.navigate("Settings")}
+            onPress={() => props.navigation.navigate("Signup")}
           />
         </View>
 
@@ -188,13 +187,13 @@ const Music = (props, { navigation }) => {
                     onPress={async () => {
                       dispatch(addAmbianceFilter(ambiance.name));
                       var filterAmbianceRaw = await fetch(
-                        `http://192.168.0.19:3000/music/ambiance/${ambiance.name}`
+                        `${LOCAL_IP}/music/ambiance/${ambiance.name}`
                       );
                       var ambianceMusic = await filterAmbianceRaw.json();
                       var filterAmbiance = ambianceMusic.filter;
                       setAmbi(filterAmbiance);
                       var filterAmbiancePLRaw = await fetch(
-                        `http://192.168.0.19:3000/music/getPlaylist/${ambiance.name}`
+                        `${LOCAL_IP}/music/getPlaylist/${ambiance.name}`
                       );
                       var ambiancePLMusic = await filterAmbiancePLRaw.json();
                       var filterAmbiancePL = ambiancePLMusic.playlists;
@@ -234,13 +233,13 @@ const Music = (props, { navigation }) => {
                     onPress={async () => {
                       dispatch(addGenreFilter(genre.name));
                       var filterGenreRaw = await fetch(
-                        `http://192.168.0.19:3000/music/genre/${genre.name}`
+                        `${LOCAL_IP}/music/genre/${genre.name}`
                       );
                       var genreMusic = await filterGenreRaw.json();
                       var filterGenre = genreMusic.filter;
                       setGenre(filterGenre);
                       var filterGenrePLRaw = await fetch(
-                        `http://192.168.0.19:3000/music/getPlaylist/${genre.name}`
+                        `${LOCAL_IP}/music/getPlaylist/${genre.name}`
                       );
                       var genrePLMusic = await filterGenrePLRaw.json();
                       var filterGenrePL = genrePLMusic.playlists;
