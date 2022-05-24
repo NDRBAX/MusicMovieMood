@@ -23,10 +23,10 @@ const Filter = (props) => {
       moodFilter != "" ? setIsActive(true) : setIsActive(false);
     }
     if (name == "ambiance") {
-      ambianceFilter ? setIsActive(true) : setIsActive(false);
+      ambianceFilter != "" ? setIsActive(true) : setIsActive(false);
     }
     if (name == "genre") {
-      genreFilter ? setIsActive(true) : setIsActive(false);
+      genreFilter != "" ? setIsActive(true) : setIsActive(false);
     }
   }, [ambianceFilter, moodFilter, genreFilter]);
 

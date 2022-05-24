@@ -199,6 +199,8 @@ const Music = (props, { navigation }) => {
                       var filterAmbiancePL = ambiancePLMusic.playlists;
                       setAmbiPL(filterAmbiancePL);
                       dispatch(toggleAmbianceFilter());
+                      dispatch(removeMoodFilter());
+                      dispatch(removeGenreFilter());
                     }}
                   />
                 ))}
@@ -245,6 +247,8 @@ const Music = (props, { navigation }) => {
                       var filterGenrePL = genrePLMusic.playlists;
                       setGenrePL(filterGenrePL);
                       dispatch(toggleGenreFilter());
+                      dispatch(removeMoodFilter());
+                      dispatch(removeAmbianceFilter());
                     }}
                   />
                 ))}

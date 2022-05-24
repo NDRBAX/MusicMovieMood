@@ -7,6 +7,8 @@ import {
   addMoodList,
   addMoodPlay,
   toggleSmiley,
+  removeAmbianceFilter,
+  removeGenreFilter,
 } from "../features/music/musicSlice";
 import { smileyMusicMoodList } from "../data/smiley";
 
@@ -29,6 +31,8 @@ const SmileyItem = ({ name }) => {
         var filterPLMood = moodPL.playlists;
         dispatch(addMoodPlay(filterPLMood));
         dispatch(toggleSmiley());
+        dispatch(removeAmbianceFilter());
+        dispatch(removeGenreFilter());
       }}
     >
       <Image style={styles.smiley} source={uriImg} />

@@ -15,7 +15,7 @@ router.get("/getMovies", async function (req, res, next) {
   try {
     const response = await request(
       "GET",
-      `https://api.themoviedb.org/3/discover/movie?api_key=f0929bf9c301536f2f4ad539f4689057&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`
     );
     const movies = JSON.parse(response.body).results;
     res.json(movies);
@@ -26,7 +26,7 @@ router.get("/getMovies", async function (req, res, next) {
 
 router.get("/getMoviesPopular", async function (req, res, next) {
   // var url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&sort_by=popularity.desc&page=1`;
-  var url = `https://api.themoviedb.org/3/discover/movie?api_key=f0929bf9c301536f2f4ad539f4689057&language=fr-FR&include_adult=false&page=1`;
+  var url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=false&page=1`;
   try {
     const response = await request("GET", url);
     const movies = JSON.parse(response.body).results;
@@ -39,7 +39,7 @@ router.get("/getMoviesPopular", async function (req, res, next) {
 //get providers rent and buy
 router.get("/findProvider", async function (req, res, next) {
   const { id } = req.query;
-  var url2 = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=f0929bf9c301536f2f4ad539f4689057`;
+  var url2 = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.API_MOVIE_KEY}`;
   try {
     const response = await request("GET", url2);
     const providers = JSON.parse(response.body);
@@ -60,7 +60,7 @@ router.get("/getNowPlaying", async function (req, res, next) {
 
 router.get("/getDetailsMoviesForWishlist", async function (req, res, next) {
   const { id } = req.query;
-  const url = `https://api.themoviedb.org/3/movie/${id}?api_key=f0929bf9c301536f2f4ad539f4689057`;
+  const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.API_MOVIE_KEY}`;
   console.log(url);
   try {
     const response = await request("GET", url);
@@ -85,7 +85,7 @@ router.get("/getDetailsMovies/:id", async function (req, res, next) {
 
 router.get("/getActorMovies/:id", async function (req, res, next) {
   const { id } = req.params;
-  const url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=f0929bf9c301536f2f4ad539f4689057`;
+  const url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.API_MOVIE_KEY}`;
   // const url = `${baseUrl}movie/${id}?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&region=FR`;
   // console.log(url);
   try {
