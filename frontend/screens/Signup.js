@@ -64,7 +64,7 @@ const Signup = (props, { navigation }) => {
   let tabErrorsSignup = listErrorsSignup.map((error, index) => {
     return <Text style={{ color: "white" }}>{error}</Text>;
   });
- 
+
   return (
     <ImageBackground
       source={require("../assets/images/movie_bg.jpg")}
@@ -98,13 +98,7 @@ const Signup = (props, { navigation }) => {
             placeholder="Email"
             autoCapitalize={"none"}
             keyboardType="email-address"
-            leftIcon={
-              <Icon
-                name="envelope"
-                size={15}
-                color={"#E74680"}
-              />
-            }
+            leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
             onChangeText={(value) => setSignupEmail(value)}
             value={signupEmail}
           />

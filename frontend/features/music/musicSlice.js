@@ -1,14 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const musicSlice = createSlice({
   name: "music",
   initialState: {
     moodFilter: "",
+    ambianceFilter: "",
+    genreFilter: "",
     moodList: [],
     moodPlaylist: [],
-    ambianceFilter: false,
-    genreFilter: false,
     displaySmiley: false,
+    displayAmbiance: false,
+    displayGenre: false,
   },
   reducers: {
     toggleSmiley: (state) => {
@@ -27,20 +29,28 @@ const musicSlice = createSlice({
       state.moodPlaylist = payload;
     },
 
-    removeMoodLists(state) {
-      state.moodList = [];
-      state.moodPlaylist = [];
-    },
     removeMoodFilter(state) {
       state.moodFilter = "";
     },
     //Search by ambiance
-    addAmbianceFilter(state) {
-      state.ambianceFilter = !state.ambianceFilter;
+    addAmbianceFilter(state, { payload }) {
+      state.ambianceFilter = payload;
+    },
+    toggleAmbianceFilter: (state) => {
+      state.displayAmbiance = !state.displayAmbiance;
+    },
+    removeAmbianceFilter(state) {
+      state.ambianceFilter = "";
     },
     //Search by genre
-    addGenreFilter(state) {
-      state.genreFilter = !state.genreFilter;
+    addGenreFilter(state, { payload }) {
+      state.genreFilter = payload;
+    },
+    toggleGenreFilter: (state) => {
+      state.displayGenre = !state.displayGenre;
+    },
+    removeGenreFilter(state) {
+      state.genreFilter = "";
     },
   },
 });
@@ -50,9 +60,12 @@ export const {
   addMoodFilter,
   addMoodList,
   addMoodPlay,
-  removeMoodLists,
   addAmbianceFilter,
+  toggleAmbianceFilter,
+  removeAmbianceFilter,
   addGenreFilter,
+  toggleGenreFilter,
+  removeGenreFilter,
   removeMoodFilter,
 } = musicSlice.actions;
 

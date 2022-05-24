@@ -13,7 +13,10 @@ router.get("/getMovies", async function (req, res, next) {
   // const url = `${baseUrl}discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`;
 
   try {
-    const response = await request("GET", url);
+    const response = await request(
+      "GET",
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_MOVIE_KEY}&language=fr-FR&include_adult=${adultFilter}&with_genres=${genres}&sort_by=vote_count.desc&page=1`
+    );
     const movies = JSON.parse(response.body).results;
     res.json(movies);
   } catch (err) {

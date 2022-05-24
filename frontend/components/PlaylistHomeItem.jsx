@@ -1,8 +1,14 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const MusicHomeItem = (props) => {
+const PlaylistHomeItem = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -12,7 +18,9 @@ const MusicHomeItem = (props) => {
         borderRadius: 30,
         marginHorizontal: 10,
       }}
-      onPress={() => navigation.push("MusicDetail", { id: props.id })}
+      onPress={() => {
+        Linking.openURL("https://www.spotify.com/fr/");
+      }}
     >
       <Text
         style={{
@@ -44,6 +52,6 @@ const MusicHomeItem = (props) => {
   );
 };
 
-export default MusicHomeItem;
+export default PlaylistHomeItem;
 
 const styles = StyleSheet.create({});

@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
   toggleSmiley,
-  addAmbianceFilter,
-  addGenreFilter,
+  toggleAmbianceFilter,
+  toggleGenreFilter,
 } from "../features/music/musicSlice";
 
 const Filter = (props) => {
@@ -23,10 +23,10 @@ const Filter = (props) => {
       moodFilter != "" ? setIsActive(true) : setIsActive(false);
     }
     if (name == "ambiance") {
-      ambianceFilter ? setIsActive(true) : setIsActive(false);
+      ambianceFilter != "" ? setIsActive(true) : setIsActive(false);
     }
     if (name == "genre") {
-      genreFilter ? setIsActive(true) : setIsActive(false);
+      genreFilter != "" ? setIsActive(true) : setIsActive(false);
     }
   }, [ambianceFilter, moodFilter, genreFilter]);
 
@@ -41,10 +41,10 @@ const Filter = (props) => {
     <TouchableOpacity
       onPress={() => {
         if (name == "ambiance") {
-          dispatch(addAmbianceFilter());
+          dispatch(toggleAmbianceFilter());
         }
         if (name == "genre") {
-          dispatch(addGenreFilter());
+          dispatch(toggleGenreFilter());
         }
 
         if (name == "mood") {
