@@ -19,8 +19,8 @@ var resGenre = [];
 //table playlists
 var playlists = [];
 
-//table music
-var musicDetails = [];
+//detail music
+var musicDetails = {};
 
 //test route
 router.get("/", function (req, res, next) {
@@ -118,7 +118,8 @@ router.get("/genre/:genre", async function (req, res, next) {
 
 //music details
 router.get("/getMusic/:id", async function (req, res, next) {
-  music = [];
+  musicDetails = {};
+  tracksTop = [];
   var musicRaw = await request(
     "GET",
     `https://spotify23.p.rapidapi.com/tracks/?ids=${req.params.id}`,
@@ -126,15 +127,22 @@ router.get("/getMusic/:id", async function (req, res, next) {
   );
   var music = await musicRaw.body;
   music = await JSON.parse(music);
-  musicDetails.push({
-    id: req.params.id,
-    title: music.tracks[0].album.name,
-    image: music.tracks[0].images[0].url,
-    link: music.tracks[0].external_urls.spotify,
-    //top titre
-    //playlists
-  });
-  res.json({ result: true, tracks: music.tracks[0] });
+  var tracksRaw = await request(
+    "GET",
+    `https://spotify23.p.rapidapi.com/artist_overview/?id=${music.tracks[0].artists[0].id}`,
+    options
+  );
+  var tracks = await tracksRaw.body;
+  tracks = await JSON.parse(tracks);
+  (musicDetails.id = req.params.id),
+    (musicDetails.title = music.tracks[0].name);
+  musicDetails.album = music.tracks[0].album.name;
+  musicDetails.artist = music.tracks[0].artists[0].name;
+  musicDetails.image = music.tracks[0].album.images[0].url;
+  musicDetails.link = music.tracks[0].external_urls.spotify;
+  //top titre
+  //playlists
+  res.json({ result: true, tracks: musicDetails });
 });
 
 //playlist search

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Filter from "../components/Filter_music";
 import MusicHomeItem from "../components/MusicHomeItem";
+import PlaylistHomeItem from "../components/PlaylistHomeItem";
 import TextCustom from "../components/TextCustom";
 import SmileyItem from "../components/SmileyItem_music";
 import {
@@ -70,31 +71,31 @@ const Music = (props, { navigation }) => {
 
   if (!moodFilter && !ambianceFilter && !genreFilter) {
     musics = listTop.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} id={e.id} />;
     });
     playlists = listPlayL.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+      return <PlaylistHomeItem key={i} title={e.name} url={e.image} />;
     });
   } else if (moodFilter) {
     musics = moodList.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} id={e.id} />;
     });
     playlists = moodPlaylist.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+      return <PlaylistHomeItem key={i} title={e.name} url={e.image} />;
     });
   } else if (ambianceFilter) {
     musics = ambiList.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} id={e.id} />;
     });
     playlists = ambiPlayL.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+      return <PlaylistHomeItem key={i} title={e.name} url={e.image} />;
     });
   } else if (genreFilter) {
     musics = genreList.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.track} url={e.cover} />;
+      return <MusicHomeItem key={i} title={e.track} url={e.cover} id={e.id} />;
     });
     playlists = genrePlayL.map((e, i) => {
-      return <MusicHomeItem key={i} title={e.name} url={e.image} />;
+      return <PlaylistHomeItem key={i} title={e.name} url={e.image} />;
     });
   }
 
@@ -114,13 +115,6 @@ const Music = (props, { navigation }) => {
             marginTop: 40,
           }}
         >
-          <Icon
-            style={{ marginRight: 5 }}
-            name="heart-circle"
-            type="ionicon"
-            color="white"
-            onPress={() => props.navigation.navigate("Wishlist")}
-          />
           <Icon
             name="account"
             type="material-community"
