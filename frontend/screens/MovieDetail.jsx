@@ -157,7 +157,6 @@ const MovieDetail = ({ route, navigation }) => {
 						uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
 					}}
 					style={{
-						borderRadius: 10,
 						height: 300,
 						width: '100%',
 					}}
@@ -243,21 +242,38 @@ const MovieDetail = ({ route, navigation }) => {
 									marginTop: 15,
 								}}
 							>
-								<Image
-									style={{
-										height: 80,
-										width: 80,
-										borderRadius: 200,
-										marginHorizontal: 5,
-										borderColor: '#ffffffb0',
-										borderWidth: 1,
-										borderColor: 'white',
-									}}
-									source={{
-										uri: `https://image.tmdb.org/t/p/w500/${actor?.profile_path}`,
-									}}
-									resizeMode="contain"
-								/>
+								{actor?.profile_path ? (
+									<Image
+										style={{
+											height: 80,
+											width: 80,
+											borderRadius: 200,
+											marginHorizontal: 5,
+											borderColor: '#ffffffb0',
+											borderWidth: 1,
+											borderColor: 'white',
+										}}
+										source={{
+											uri: `https://image.tmdb.org/t/p/w500/${actor?.profile_path}`,
+										}}
+										resizeMode="cover"
+									/>
+								) : (
+									<Image
+										style={{
+											height: 80,
+											width: 80,
+											borderRadius: 200,
+											marginHorizontal: 5,
+											borderColor: '#ffffffb0',
+											borderWidth: 1,
+											borderColor: 'white',
+										}}
+										source={require('../assets/images/movie_default.jpg')}
+										resizeMode="cover"
+									/>
+								)}
+
 								<TextCustom>{actor.name}</TextCustom>
 							</View>
 						))}

@@ -65,6 +65,8 @@ const MovieHomeItem = ({ movie }) => {
 							borderRadius: 10,
 							height: 175,
 							width: 112,
+							borderBottomLeftRadius: 10,
+							borderBottomRightRadius: 10,
 						}}
 						resizeMode="cover"
 					/>
