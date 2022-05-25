@@ -43,7 +43,7 @@ export default function Wishlist({ navigation }) {
 					{wishList.map((movie, i) => (
 						<TouchableOpacity
 							onPress={() => navigation.push('MovieDetail', { id: movie.id })}
-							key={uuid()}
+							key={uuid.v4()}
 						>
 							<View style={styles.movieItem}>
 								<Image

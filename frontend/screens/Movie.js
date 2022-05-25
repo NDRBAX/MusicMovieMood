@@ -18,6 +18,7 @@ import MovieHomeItem from '../components/MovieHomeItem';
 import TextCustom from '../components/TextCustom';
 import SmileyItem from '../components/SmileyItem';
 import axios from 'axios';
+
 import { smileyMovieList } from '../data/smiley';
 import { filterMovieList } from '../data/filters';
 import {
@@ -51,9 +52,8 @@ const Movie = props => {
 						whereFilter: whereFilter,
 					},
 				});
-				// console.log(mov.data);
+
 				dispatch(addMovieFetch(mov.data));
-				console.log(mov.data);
 			} catch (err) {
 				console.log(err);
 			}
@@ -190,7 +190,7 @@ const Movie = props => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{whereFilter ? displayNbMovies(20, moviesNow) : displayNbMovies(10, moviesFetch)}
+						{whereFilter ? displayNbMovies(15, moviesNow) : displayNbMovies(10, moviesFetch)}
 						{/* {displayNbMovies(10, moviesFetch)} */}
 					</ScrollView>
 

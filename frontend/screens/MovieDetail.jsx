@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TextCustom from '../components/TextCustom';
 import { Icon } from 'react-native-elements';
-
+import { calcEndMovie } from '../utils/calcEndMovie';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist, addMovieWatched } from '../features/movie/movieSlice';
 import { providersUrlList } from '../data/providers';
@@ -38,7 +38,6 @@ const MovieDetail = ({ route, navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log(isLoading);
 		const getMovieDetail = async () => {
 			try {
 				const mov = await axios.get(`${LOCAL_IP}/movie/getDetailsMovies/${id}`);
@@ -71,8 +70,6 @@ const MovieDetail = ({ route, navigation }) => {
 		getMovieDetail();
 		getMovieActors();
 		getProv();
-
-		console.log(isLoading);
 	}, []);
 
 	useEffect(() => {
@@ -107,7 +104,6 @@ const MovieDetail = ({ route, navigation }) => {
 	};
 
 	const getMovies = async id => {
-		console.log('get movmov');
 		try {
 			const movie = await axios.get(`${LOCAL_IP}/movie/getDetailsMoviesForWishlist`, {
 				params: {
@@ -157,7 +153,6 @@ const MovieDetail = ({ route, navigation }) => {
 						<View style={styles.btn_heart}>
 							<TouchableOpacity
 								onPress={() => {
-									console.log('coeur');
 									wishList.some(item => item.id === movie?.id)
 										? dispatch(removeFromWishlist(movie?.id))
 										: getMovies(movie?.id);
@@ -175,6 +170,7 @@ const MovieDetail = ({ route, navigation }) => {
 								/>
 							</TouchableOpacity>
 						</View>
+
 						<Image
 							source={{
 								uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
@@ -185,6 +181,26 @@ const MovieDetail = ({ route, navigation }) => {
 							}}
 							resizeMode="cover"
 						/>
+						<View
+							style={{
+								flexDirection: 'row',
+								backgroundColor: '#300021b7',
+								marginTop: -28,
+								justifyContent: 'center',
+								alignItems: 'center',
+								paddingVertical: 2,
+							}}
+						>
+							<Icon
+								style={{ marginEnd: 10 }}
+								name={'time-slot'}
+								type="entypo"
+								color="#f5f5f5"
+							/>
+							<TextCustom fontSize="16">
+								Fin du film estimée : {calcEndMovie(movie?.runtime)}
+							</TextCustom>
+						</View>
 						{providers?.buy && (
 							<ScrollView horizontal={true} style={{ marginTop: 10 }}>
 								{providers?.buy?.map(el => (
@@ -340,5 +356,8 @@ const styles = StyleSheet.create({
 		right: 20,
 		top: 80,
 		zIndex: 99,
+	},
+	timer: {
+		position: 'absolute',
 	},
 });
