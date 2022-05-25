@@ -132,7 +132,6 @@ const MovieDetail = ({ route, navigation }) => {
     }
   };
 
-<<<<<<< HEAD
 	return (
 		<ImageBackground
 			source={require('../assets/images/movie_bg.jpg')}
@@ -212,103 +211,6 @@ const MovieDetail = ({ route, navigation }) => {
 						<TextCustom>En salle actuellement</TextCustom>
 					</View>
 				)}
-=======
-  return (
-    <ImageBackground
-      source={require("../assets/images/movie_bg.jpg")}
-      style={styles.imagebg}
-      resizeMode="cover"
-    >
-      <ScrollView style={styles.container}>
-        <TouchableOpacity
-          style={styles.back_btn}
-          onPress={() => navigation.goBack()}
-        >
-          <AntDesign name="arrowleft" size={24} color="white" />
-        </TouchableOpacity>
-        <TextCustom
-          fontSize="22"
-          fontWeight="bold"
-          style={{ marginBottom: 15, marginTop: 5 }}
-        >
-          {movie.title}
-        </TextCustom>
-        <View style={styles.btn_heart}>
-          <TouchableOpacity
-            onPress={() => {
-              console.log("coeur");
-              wishList.some((item) => item.id === movie?.id)
-                ? dispatch(removeFromWishlist(movie?.id))
-                : getMovies(movie?.id);
-            }}
-          >
-            <Icon
-              style={{ marginHorizontal: 5 }}
-              name={
-                wishList.some((item) => item.id === movie?.id)
-                  ? "ios-heart"
-                  : "ios-heart-outline"
-              }
-              type="ionicon"
-              color="#E74680"
-            />
-          </TouchableOpacity>
-        </View>
-        <Image
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
-          }}
-          style={{
-            borderRadius: 10,
-            height: 300,
-            width: "100%",
-          }}
-          resizeMode="cover"
-        />
-        {providers?.buy && (
-          <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {providers?.buy?.map((el, i) => (
-              <View key={el?.provider_id}>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleProviderUrl(el?.provider_id);
-                  }}
-                >
-                  <Image
-                    style={{
-                      height: 80,
-                      width: 110,
-                      borderRadius: 10,
-                      marginHorizontal: 5,
-                    }}
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/w500/${el?.logo_path}`,
-                    }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
-        )}
-        {!providers?.buy && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 5,
-            }}
-          >
-            <Icon
-              style={{ marginRight: 10 }}
-              name="movie-filter"
-              type="Materialcommunityicons"
-              color="white"
-            />
-            <TextCustom>En salle actuellement</TextCustom>
-          </View>
-        )}
->>>>>>> db-main
 
         <View
           style={{
