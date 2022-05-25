@@ -24,7 +24,9 @@ const Signup = (props, { navigation }) => {
 
   const [userExists, setUserExists] = useState(false);
   const [listErrorsSignup, setErrorsSignup] = useState([]);
-
+  const [hasEmailFocus, setEmailFocus] = useState(false);
+  const [hasPasswordFocus, setPasswordFocus] = useState(false);
+  const [hasConfirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
   const { token } = useSelector((state) => state.token);
   const dispatch = useDispatch();
 
@@ -92,33 +94,69 @@ const Signup = (props, { navigation }) => {
           </Text>
 
           <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            containerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputText}
             placeholder="Email"
             autoCapitalize={"none"}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            onFocus={() => setEmailFocus(true)}
+            containerStyle={[
+              styles.inputContainerStyle,
+              { borderColor: hasEmailFocus ? "#E74680" : "white" },
+              { borderWidth: hasEmailFocus ? "2" : "1" },
+            ]}
+            inputStyle={styles.inputText}
+            leftIcon={
+              <Icon
+                name="envelope"
+                size={15}
+                color={hasEmailFocus ? "#E74680" : "white"}
+              />
+            }
             keyboardType="email-address"
-            leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
+            onBlur={() => setEmailFocus(false)}
             onChangeText={(value) => setSignupEmail(value)}
             value={signupEmail}
           />
           <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            containerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputText}
             placeholder="Mot de passe"
-            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            leftIcon={
+              <Icon
+                name="lock"
+                size={15}
+                color={hasPasswordFocus ? "#E74680" : "white"}
+              />
+            }
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            onFocus={() => setPasswordFocus(true)}
+            containerStyle={[
+              styles.inputContainerStyle,
+              { borderColor: hasPasswordFocus ? "#E74680" : "white" },
+              { borderWidth: hasPasswordFocus ? "2" : "1" },
+            ]}
+            inputStyle={styles.inputText}
             secureTextEntry={true}
+            onBlur={() => setPasswordFocus(false)}
             onChangeText={(value) => setSignupPassword(value)}
             value={signupPassword}
           />
           <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            containerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputText}
             placeholder="Confirmer le mot de passe"
-            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            leftIcon={
+              <Icon
+                name="lock"
+                size={15}
+                color={hasConfirmPasswordFocus ? "#E74680" : "white"}
+              />
+            }
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            onFocus={() => setConfirmPasswordFocus(true)}
+            containerStyle={[
+              styles.inputContainerStyle,
+              { borderColor: hasConfirmPasswordFocus ? "#E74680" : "white" },
+              { borderWidth: hasConfirmPasswordFocus ? "2" : "1" },
+            ]}
+            inputStyle={styles.inputText}
             secureTextEntry={true}
+            onBlur={() => setConfirmPasswordFocus(false)}
             onChangeText={(value) => setSignupConfirmPassword(value)}
             value={signupConfirmPassword}
             errorMessage={tabErrorsSignup}
@@ -127,14 +165,15 @@ const Signup = (props, { navigation }) => {
           <Button
             buttonStyle={{
               backgroundColor: "#E74680",
-              width: "100%",
               marginTop: 10,
+              height: 38,
             }}
+            containerStyle={{ width: "70%" }}
             title="S'inscrire"
             onPress={() => handleSubmitSignup()}
           />
 
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: "row", marginTop: 5, height: 38 }}>
             <Text style={styles.textBody}>Vous avez déjà un compte? </Text>
             <Text
               style={[
@@ -223,7 +262,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 50,
     alignSelf: "center",
-    // borderWidth: 0,
     backgroundColor: "rgba(255, 255, 255, 0.14)",
   },
   withoutAccountText: {
@@ -231,7 +269,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFC5DA",
     alignSelf: "center",
-    // marginVertical: 10,
     padding: 11,
   },
 });

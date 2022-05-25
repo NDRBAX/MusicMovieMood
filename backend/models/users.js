@@ -2,14 +2,14 @@ var mongoose = require("mongoose");
 
 // SUB-DOCUMENT MOVIE WISHLIST
 var movieSchema = new mongoose.Schema({
+  id: Number,
+  runtime: Number,
   title: String,
-  duration: Date,
-  genre: String,
-  year: Number,
+  genre: [[Object]],
+  backdrop_path: String,
 });
 // USERSCHEMA
 var userSchema = mongoose.Schema({
-
   email: String,
   password: String,
   token: String,

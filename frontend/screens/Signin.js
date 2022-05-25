@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { LOCAL_IP } from "@env";
 import React, { useState } from "react";
@@ -21,6 +22,8 @@ const Signin = (props, { navigation }) => {
   const [signinPassword, setSigninPassword] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [listErrorsSignin, setErrorsSignin] = useState([]);
+  const [hasEmailFocus, setEmailFocus] = useState(false);
+  const [hasPasswordFocus, setPasswordFocus] = useState(false);
 
   const { token } = useSelector((state) => state.token);
   const dispatch = useDispatch();
@@ -41,10 +44,27 @@ const Signin = (props, { navigation }) => {
     if (body.result) {
       dispatch(addToken(body.token));
       setUserExists(true);
+      Alert.alert(
+        "Vous êtes connectés !",
+        "Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood",
+        [
+          {
+            text: "Fermer",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () =>
+              props.navigation.navigate("Movie") && console.log("OK Pressed"),
+          },
+        ]
+      );
     } else {
       setErrorsSignin(body.errors);
     }
   };
+  console.log("********************TOKEN REDUX" + token);
   let tabErrorsSignin = listErrorsSignin.map((error, index) => {
     return <Text style={{ color: "white" }}>{error}</Text>;
   });
@@ -74,21 +94,45 @@ const Signin = (props, { navigation }) => {
             placeholder="Email"
             autoCapitalize={"none"}
             inputContainerStyle={{ borderBottomWidth: 0 }}
-            containerStyle={styles.inputContainerStyle}
+            onFocus={() => setEmailFocus(true)}
+            containerStyle={[
+              styles.inputContainerStyle,
+              { borderColor: hasEmailFocus ? "#E74680" : "white" },
+              { borderWidth: hasEmailFocus ? "2" : "1" },
+            ]}
             inputStyle={styles.inputText}
-            leftIcon={<Icon name="envelope" size={15} color={"#E74680"} />}
+            leftIcon={
+              <Icon
+                name="envelope"
+                size={15}
+                color={hasEmailFocus ? "#E74680" : "white"}
+              />
+            }
             keyboardType="email-address"
+            onBlur={() => setEmailFocus(false)}
             onChangeText={(value) => setSigninEmail(value)}
             value={signinEmail}
           />
 
           <Input
             placeholder="Mot de passe"
-            leftIcon={<Icon name="lock" size={15} color={"#E74680"} />}
+            leftIcon={
+              <Icon
+                name="lock"
+                size={15}
+                color={hasPasswordFocus ? "#E74680" : "white"}
+              />
+            }
             inputContainerStyle={{ borderBottomWidth: 0 }}
-            containerStyle={styles.inputContainerStyle}
+            onFocus={() => setPasswordFocus(true)}
+            containerStyle={[
+              styles.inputContainerStyle,
+              { borderColor: hasPasswordFocus ? "#E74680" : "white" },
+              { borderWidth: hasPasswordFocus ? "2" : "1" },
+            ]}
             inputStyle={styles.inputText}
             secureTextEntry={true}
+            onBlur={() => setPasswordFocus(false)}
             onChangeText={(value) => setSigninPassword(value)}
             value={signinPassword}
           />
@@ -96,14 +140,15 @@ const Signin = (props, { navigation }) => {
           <Button
             buttonStyle={{
               backgroundColor: "#E74680",
-              width: "110%",
               marginTop: 10,
+              height: 38,
             }}
+            containerStyle={{ width: "70%" }}
             title="Se connecter"
             onPress={() => handleSubmitSignin()}
           />
 
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: "row", marginTop: 5, height: 38 }}>
             <Text style={styles.textBody}>
               Vous avez oublié votre mot de passe?{" "}
             </Text>

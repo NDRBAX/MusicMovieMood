@@ -97,10 +97,12 @@ router.post("/wishlist", async function (req, res) {
     !user.wishlist.find((movie) => movie.title === req.body.title)
   ) {
     user.wishlist.push({
+      id: req.body.id,
       title: req.body.title,
-      duration: req.body.duration,
+      runtime: req.body.runtime,
       genre: req.body.genre,
-      year: req.body.year,
+    
+      backdrop_path: req.body.backdrop_path,
     });
 
     var userUpdated = await user.save();
@@ -132,9 +134,7 @@ router.delete("/wishlist", async function (req, res) {
   var user = await userModel.findOne({ token: req.body.token });
 
   if (user !== null) {
-    user.wishlist = user.wishlist.filter(
-      (movie) => movie.title !== req.body.title
-    );
+    user.wishlist = user.wishlist.filter((movie) => movie.title !== req.body.title);
 
     var userUpdated = await user.save();
     if (userUpdated) {
