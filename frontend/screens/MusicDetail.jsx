@@ -81,6 +81,7 @@ const MusicDetail = ({ route, navigation }) => {
             marginHorizontal: 5,
             borderRadius: 10,
           }}
+          key={i}
         >
           <Avatar
             source={{
@@ -137,7 +138,9 @@ const MusicDetail = ({ route, navigation }) => {
           {buttonMusic}
         </ScrollView>
         <TextCustom>Album: {musicDetail.album}</TextCustom>
-        <TextCustom>Artiste: {musicDetail.artist}</TextCustom>
+        <TextCustom style={{ marginBottom: 6 }}>
+          Artiste: {musicDetail.artist}
+        </TextCustom>
         <View>
           <TextCustom>Top des titres</TextCustom>
           <View>{topList}</View>
