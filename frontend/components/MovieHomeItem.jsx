@@ -28,7 +28,6 @@ const MovieHomeItem = ({ movie }) => {
   }, []);
 
   console.log(localToken);
-  let dataWishlist = JSON.stringify(wishList);
 
   const getMovies = async (id) => {
     console.log("get movmov");
@@ -55,6 +54,7 @@ const MovieHomeItem = ({ movie }) => {
 
       addToDBWishList(movie);
       AsyncStorage.setItem("localWishlist", JSON.stringify(wishList));
+
     } catch (err) {
       console.log(err);
     }
