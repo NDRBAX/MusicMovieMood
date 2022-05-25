@@ -27,6 +27,7 @@ const Signup = (props, { navigation }) => {
 	const [hasEmailFocus, setEmailFocus] = useState(false);
 	const [hasPasswordFocus, setPasswordFocus] = useState(false);
 	const [hasConfirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
 	const { token } = useSelector(state => state.token);
 	const dispatch = useDispatch();
 
@@ -93,7 +94,7 @@ const Signup = (props, { navigation }) => {
 						placeholder="Email"
 						autoCapitalize={'none'}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
-						onFocus={() => setEmailFocus(true)}
+						// onFocus={() => setEmailFocus(true)}
 						containerStyle={[
 							styles.inputContainerStyle,
 							{ borderColor: hasEmailFocus ? '#E74680' : 'white' },
@@ -104,7 +105,7 @@ const Signup = (props, { navigation }) => {
 							<Icon name="envelope" size={15} color={hasEmailFocus ? '#E74680' : 'white'} />
 						}
 						keyboardType="email-address"
-						onBlur={() => setEmailFocus(false)}
+						// onBlur={() => setEmailFocus(false)}
 						onChangeText={value => setSignupEmail(value)}
 						value={signupEmail}
 					/>
@@ -114,7 +115,7 @@ const Signup = (props, { navigation }) => {
 							<Icon name="lock" size={15} color={hasPasswordFocus ? '#E74680' : 'white'} />
 						}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
-						onFocus={() => setPasswordFocus(true)}
+						// onFocus={() => setPasswordFocus(true)}
 						containerStyle={[
 							styles.inputContainerStyle,
 							{ borderColor: hasPasswordFocus ? '#E74680' : 'white' },
@@ -122,7 +123,7 @@ const Signup = (props, { navigation }) => {
 						]}
 						inputStyle={styles.inputText}
 						secureTextEntry={true}
-						onBlur={() => setPasswordFocus(false)}
+						// onBlur={() => setPasswordFocus(false)}
 						onChangeText={value => setSignupPassword(value)}
 						value={signupPassword}
 					/>
@@ -136,7 +137,7 @@ const Signup = (props, { navigation }) => {
 							/>
 						}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
-						onFocus={() => setConfirmPasswordFocus(true)}
+						// onFocus={() => setConfirmPasswordFocus(true)}
 						containerStyle={[
 							styles.inputContainerStyle,
 							{ borderColor: hasConfirmPasswordFocus ? '#E74680' : 'white' },
@@ -144,7 +145,7 @@ const Signup = (props, { navigation }) => {
 						]}
 						inputStyle={styles.inputText}
 						secureTextEntry={true}
-						onBlur={() => setConfirmPasswordFocus(false)}
+						// onBlur={() => setConfirmPasswordFocus(false)}
 						onChangeText={value => setSignupConfirmPassword(value)}
 						value={signupConfirmPassword}
 						errorMessage={tabErrorsSignup}

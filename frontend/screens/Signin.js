@@ -90,7 +90,7 @@ const Signin = (props, { navigation }) => {
 						placeholder="Email"
 						autoCapitalize={'none'}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
-						onFocus={() => setEmailFocus(true)}
+						// onFocus={() => setEmailFocus(true)}
 						containerStyle={[
 							styles.inputContainerStyle,
 							{ borderColor: hasEmailFocus ? '#E74680' : 'white' },
@@ -101,7 +101,7 @@ const Signin = (props, { navigation }) => {
 							<Icon name="envelope" size={15} color={hasEmailFocus ? '#E74680' : 'white'} />
 						}
 						keyboardType="email-address"
-						onBlur={() => setEmailFocus(false)}
+						// onBlur={() => setEmailFocus(false)}
 						onChangeText={value => setSigninEmail(value)}
 						value={signinEmail}
 					/>
@@ -112,7 +112,7 @@ const Signin = (props, { navigation }) => {
 							<Icon name="lock" size={15} color={hasPasswordFocus ? '#E74680' : 'white'} />
 						}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
-						onFocus={() => setPasswordFocus(true)}
+						// onFocus={() => setPasswordFocus(true)}
 						containerStyle={[
 							styles.inputContainerStyle,
 							{ borderColor: hasPasswordFocus ? '#E74680' : 'white' },
@@ -120,7 +120,7 @@ const Signin = (props, { navigation }) => {
 						]}
 						inputStyle={styles.inputText}
 						secureTextEntry={true}
-						onBlur={() => setPasswordFocus(false)}
+						// onBlur={() => setPasswordFocus(false)}
 						onChangeText={value => setSigninPassword(value)}
 						value={signinPassword}
 					/>
