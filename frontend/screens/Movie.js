@@ -27,6 +27,8 @@ import {
 	addMoviePopularFetch,
 } from '../features/movie/movieSlice';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Movie = props => {
 	const {
 		displaySmiley,

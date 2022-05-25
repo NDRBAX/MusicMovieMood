@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LOCAL_IP } from '@env';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -6,9 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToBlackList, addToWishlist, removeFromWishlist } from '../features/movie/movieSlice';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const MovieHomeItem = ({ movie }) => {
 	const navigation = useNavigation();
 	const { wishList, blackList } = useSelector(state => state.movie);
+	const { token } = useSelector(state => state.token);
+
 	const getMovies = async id => {
 		console.log('get movmov');
 		try {
@@ -28,16 +33,48 @@ const MovieHomeItem = ({ movie }) => {
 					genres: movie.data.genres,
 				}),
 			);
+
+			addToDBWishList(movie);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
 	const dispatch = useDispatch();
+
+	// DELETE MOVIE FROM DATA BASE
+	let removeFromDBWishlist = async title => {
+		await fetch(`${LOCAL_IP}/users/wishlist`, {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: `token=${token}&title=${movie.title}`,
+		});
+	};
+	// ADD MOVIE TO DATA BASE
+	const addToDBWishList = async movie => {
+		await fetch(`${LOCAL_IP}/users/wishlist`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: `token=${token}&title=${movie.data.title}&id=${movie.data.id}&runtime=${new Date(
+				movie.data.release_date,
+			).getFullYear()}&backdrop_path=${movie.data.poster_path}&genre=${movie.data.genres}`,
+		});
+		console.log('TITLE ***   ' + movie.data.title);
+		console.log('POSTER ***   ' + movie.data.poster_path);
+		console.log('ID ***   ' + movie.data.id);
+		console.log('GENRE ***   ' + movie.data.genres);
+		console.log('DATE ***   ' + new Date(movie.data.release_date).getFullYear());
+	};
+
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
-				style={{ height: 175, width: 112, borderRadius: 30, marginHorizontal: 10 }}
+				style={{
+					height: 175,
+					width: 112,
+					borderRadius: 30,
+					marginHorizontal: 10,
+				}}
 				onPress={() => navigation.push('MovieDetail', { id: movie.id })}
 			>
 				<Text
@@ -87,7 +124,7 @@ const MovieHomeItem = ({ movie }) => {
 					onPress={() => {
 						console.log('coeur');
 						wishList.some(item => item.id === movie?.id)
-							? dispatch(removeFromWishlist(movie?.id))
+							? dispatch(removeFromWishlist(movie?.id)) && removeFromDBWishlist(movie.title)
 							: getMovies(movie?.id);
 					}}
 				>
