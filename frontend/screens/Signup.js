@@ -94,11 +94,11 @@ const Signup = (props, { navigation }) => {
 						autoCapitalize={'none'}
 						inputContainerStyle={{ borderBottomWidth: 0 }}
 						onFocus={() => setEmailFocus(true)}
-						// containerStyle={[
-						// 	styles.inputContainerStyle,
-						// 	{ borderColor: hasEmailFocus ? '#E74680' : 'white' },
-						// 	{ borderWidth: hasEmailFocus ? 2 : 1 },
-						// ]}
+						containerStyle={[
+							styles.inputContainerStyle,
+							{ borderColor: hasEmailFocus ? '#E74680' : 'white' },
+							{ borderWidth: hasEmailFocus ? 2 : 1 },
+						]}
 						inputStyle={styles.inputText}
 						leftIcon={
 							<Icon name="envelope" size={15} color={hasEmailFocus ? '#E74680' : 'white'} />
