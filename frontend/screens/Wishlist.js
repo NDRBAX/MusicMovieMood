@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   ImageBackground,
@@ -12,14 +12,27 @@ import { useDispatch, useSelector } from "react-redux";
 import TextCustom from "../components/TextCustom";
 import { removeFromWishlist } from "../features/movie/movieSlice";
 
+import { importMovies } from "../features/movie/movieSlice";
+
 import { AntDesign } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Wishlist({ navigation }) {
+  const [localWishlist, setLocalWishlist] = useState([]);
+  const { token } = useSelector((state) => state.token);
   const { wishList } = useSelector((state) => state.movie);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    let dataLocalWishlist = AsyncStorage.getItem("localWishlist");
+    console.log(dataLocalWishlist);
+    setLocalWishlist(JSON.parse(dataLocalWishlist));
+    console.log(localWishlist);
+  }, []);
+
+  console.log("LOCAL WISHLIST ------------------------------" + localWishlist);
 
   return (
     <ImageBackground
@@ -38,13 +51,13 @@ export default function Wishlist({ navigation }) {
         <TextCustom fontSize="22" fontWeight="bold">
           WishList
         </TextCustom>
-        {wishList.length == 0 && (
+        {localWishlist.length == 0 && (
           <TextCustom style={{ paddingHorizontal: 20, marginTop: 20 }}>
             Sorry, pas encore de porno gay hardcore sneakers en stock !
           </TextCustom>
         )}
         <View>
-          {wishList.map((movie, i) => (
+          {localWishlist.map((movie, i) => (
             <View style={styles.movieItem}>
               <Image
                 style={styles.imgMovie}

@@ -48,11 +48,6 @@ const Signup = (props, { navigation }) => {
         "Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood",
         [
           {
-            text: "Fermer",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          {
             text: "OK",
             onPress: () =>
               props.navigation.navigate("Movie") && console.log("OK Pressed"),
@@ -101,7 +96,7 @@ const Signup = (props, { navigation }) => {
             containerStyle={[
               styles.inputContainerStyle,
               { borderColor: hasEmailFocus ? "#E74680" : "white" },
-              { borderWidth: hasEmailFocus ? "2" : "1" },
+              { borderWidth: hasEmailFocus ? 2 : 1 },
             ]}
             inputStyle={styles.inputText}
             leftIcon={
@@ -130,7 +125,7 @@ const Signup = (props, { navigation }) => {
             containerStyle={[
               styles.inputContainerStyle,
               { borderColor: hasPasswordFocus ? "#E74680" : "white" },
-              { borderWidth: hasPasswordFocus ? "2" : "1" },
+              { borderWidth: hasPasswordFocus ? 2: 1 },
             ]}
             inputStyle={styles.inputText}
             secureTextEntry={true}
@@ -152,7 +147,7 @@ const Signup = (props, { navigation }) => {
             containerStyle={[
               styles.inputContainerStyle,
               { borderColor: hasConfirmPasswordFocus ? "#E74680" : "white" },
-              { borderWidth: hasConfirmPasswordFocus ? "2" : "1" },
+              { borderWidth: hasConfirmPasswordFocus ? 2 : 1 },
             ]}
             inputStyle={styles.inputText}
             secureTextEntry={true}

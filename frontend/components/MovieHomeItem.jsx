@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LOCAL_IP } from "@env";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
@@ -17,6 +17,18 @@ const MovieHomeItem = ({ movie }) => {
   const navigation = useNavigation();
   const { wishList, blackList } = useSelector((state) => state.movie);
   const { token } = useSelector((state) => state.token);
+  const [localToken, setLocalToken] = useState("");
+
+  useEffect(() => {
+    AsyncStorage.getItem("token", (err, value) => {
+      if (value) {
+        setLocalToken(value);
+      }
+    });
+  }, []);
+
+  console.log(localToken);
+  let dataWishlist = JSON.stringify(wishList);
 
   const getMovies = async (id) => {
     console.log("get movmov");
@@ -42,6 +54,7 @@ const MovieHomeItem = ({ movie }) => {
       );
 
       addToDBWishList(movie);
+      AsyncStorage.setItem("localWishlist", JSON.stringify(wishList));
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +67,7 @@ const MovieHomeItem = ({ movie }) => {
     await fetch(`${LOCAL_IP}/users/wishlist`, {
       method: "DELETE",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `token=${token}&title=${movie.title}`,
+      body: `token=${localToken}&title=${movie.title}`,
     });
   };
   // ADD MOVIE TO DATA BASE
@@ -62,7 +75,7 @@ const MovieHomeItem = ({ movie }) => {
     await fetch(`${LOCAL_IP}/users/wishlist`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `token=${token}&title=${movie.data.title}&id=${
+      body: `token=${localToken}&title=${movie.data.title}&id=${
         movie.data.id
       }&runtime=${new Date(
         movie.data.release_date
@@ -136,7 +149,8 @@ const MovieHomeItem = ({ movie }) => {
             console.log("coeur");
             wishList.some((item) => item.id === movie?.id)
               ? dispatch(removeFromWishlist(movie?.id)) &&
-                removeFromDBWishlist(movie.title)
+                removeFromDBWishlist(movie.title) &&
+                AsyncStorage.setItem("wishlist", dataWishlist)
               : getMovies(movie?.id);
           }}
         >

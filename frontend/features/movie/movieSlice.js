@@ -33,6 +33,10 @@ const movieSlice = createSlice({
     removeFromWishlist: (state, { payload }) => {
       state.wishList = state.wishList.filter((movie) => movie.id !== payload);
     },
+    //GET MOVIES FROM WISHLIST
+    importMovies: (state, { payload }) => {
+      state.movies = payload;
+    },
 
     toggleSmiley: (state) => {
       state.displaySmiley = !state.displaySmiley;
