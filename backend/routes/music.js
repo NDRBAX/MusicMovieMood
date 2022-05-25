@@ -138,6 +138,7 @@ router.get("/getMusic/:id", async function (req, res, next) {
   tracks = await JSON.parse(tracks);
   for (let i = 0; i < 3; i++) {
     tracksTop.push({
+      id: tracks.data.artist.discography.topTracks.items[i].track.id,
       title: tracks.data.artist.discography.topTracks.items[i].track.name,
       cover:
         tracks.data.artist.discography.topTracks.items[i].track.album.coverArt
