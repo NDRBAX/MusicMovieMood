@@ -25,9 +25,8 @@ import {
 	removeMoodFilter,
 	addMovieFetch,
 	addMoviePopularFetch,
+	addMovieNow,
 } from '../features/movie/movieSlice';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Movie = props => {
 	const {
@@ -38,6 +37,7 @@ const Movie = props => {
 		moodGenre,
 		moviesPopular,
 		blackList,
+		moviesNow,
 	} = useSelector(state => state.movie);
 	const dispatch = useDispatch();
 
@@ -53,6 +53,7 @@ const Movie = props => {
 				});
 				// console.log(mov.data);
 				dispatch(addMovieFetch(mov.data));
+				console.log(mov.data);
 			} catch (err) {
 				console.log(err);
 			}
@@ -72,9 +73,22 @@ const Movie = props => {
 		getMoviesPopular();
 	}, []);
 
-	// console.log('moviesFetch-----------------------------------------------');
+	useEffect(() => {
+		const getNowMovies = async () => {
+			try {
+				const movNow = await axios.get(`${LOCAL_IP}/movie/getNowPlaying`);
+				dispatch(addMovieNow(movNow.data));
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getNowMovies();
+	}, []);
+
+	// console.log('moviesNow-----------------------------------------------');
 	// console.log(moviesFetch);
 	// console.log(moviesFetch.length);
+	// console.log(moviesNow);
 
 	const displayNbMovies = (nb, list) =>
 		list
@@ -176,7 +190,8 @@ const Movie = props => {
 					</TextCustom>
 
 					<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-						{displayNbMovies(10, moviesFetch)}
+						{whereFilter ? displayNbMovies(20, moviesNow) : displayNbMovies(10, moviesFetch)}
+						{/* {displayNbMovies(10, moviesFetch)} */}
 					</ScrollView>
 
 					{/* list film partie 2 selection users*/}

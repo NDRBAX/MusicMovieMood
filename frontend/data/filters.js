@@ -12,7 +12,7 @@ export const filterMovieList = [
   {
     name: "ou?",
     img: require("../assets/images/movie_filter_where_white.png"),
-    activeImg: require("../assets/images/movie_filter_where_p.png"),
+    activeImg: require("../assets/images/cine.png"),
   },
 ];
 
