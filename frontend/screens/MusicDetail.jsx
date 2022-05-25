@@ -61,7 +61,7 @@ const MusicDetail = ({ route, navigation }) => {
             height: 80,
             borderWidth: 2,
             borderStyle: "solid",
-            borderColor: "rgba(156, 171, 194, 0.35)",
+            borderColor: "rgba(156, 171, 194, 0.45)",
             borderRadius: 10,
             marginHorizontal: 5,
           }}
