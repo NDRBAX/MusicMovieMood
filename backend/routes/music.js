@@ -37,6 +37,9 @@ router.get("/getTop", async function (req, res, next) {
   );
   var top = await topRaw.body;
   top = await JSON.parse(top);
+  // var imageRaw=await request("GET",`https://spotify23.p.rapidapi.com/tracks/?ids=${top.content[i].track_id}`, options);
+  // var image=await imageRaw.body;
+  // image=await JSON.parse(image);
   for (let i = 0; i < 10; i++) {
     resTop.push({
       id: top.content[i].track_id,
