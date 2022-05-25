@@ -7,6 +7,7 @@ import {
 	Image,
 	TouchableOpacity,
 } from 'react-native';
+import uuid from 'react-native-uuid';
 
 import { useDispatch, useSelector } from 'react-redux';
 import TextCustom from '../components/TextCustom';
@@ -14,8 +15,6 @@ import { removeFromWishlist } from '../features/movie/movieSlice';
 
 import { AntDesign } from '@expo/vector-icons';
 import { Icon } from 'react-native-elements';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Wishlist({ navigation }) {
 	const { wishList } = useSelector(state => state.movie);
@@ -44,6 +43,7 @@ export default function Wishlist({ navigation }) {
 					{wishList.map((movie, i) => (
 						<TouchableOpacity
 							onPress={() => navigation.push('MovieDetail', { id: movie.id })}
+							key={uuid()}
 						>
 							<View style={styles.movieItem}>
 								<Image
@@ -110,6 +110,7 @@ export default function Wishlist({ navigation }) {
 									>
 										{movie?.genres.map(el => (
 											<View
+												key={uuid.v4()}
 												style={{
 													backgroundColor: 'rgba(255,255,255,0.2)',
 													borderRadius: 10,
