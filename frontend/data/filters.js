@@ -24,12 +24,12 @@ export const filterMusicList = [
   },
   {
     name: "ambiance",
-    img: require("../assets/images/movie_filter_mood_white.png"),
-    activeImg: require("../assets/images/movie_filter_mood_p.png"),
+    img: require("../assets/images/music_filter_ambi_white.png"),
+    activeImg: require("../assets/images/music_filter_ambi_p.png"),
   },
   {
     name: "genre",
-    img: require("../assets/images/movie_filter_mood_white.png"),
-    activeImg: require("../assets/images/movie_filter_mood_p.png"),
+    img: require("../assets/images/music_filter_genre_white.png"),
+    activeImg: require("../assets/images/music_filter_genre_p.png"),
   },
 ];

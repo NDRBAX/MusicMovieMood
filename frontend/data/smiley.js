@@ -121,7 +121,7 @@ export const smileyMusicMoodList = [
   },
   {
     name: "chill",
-    img: require("../assets/images/smiley/concern.png"),
+    img: require("../assets/images/smiley/chill.png"),
   },
   {
     name: "love",
@@ -133,7 +133,7 @@ export const smileyMusicMoodList = [
   },
   {
     name: "dance",
-    img: require("../assets/images/smiley/concern.png"),
+    img: require("../assets/images/smiley/party.png"),
   },
 ];
 

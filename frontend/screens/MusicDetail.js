@@ -11,19 +11,21 @@ import { LOCAL_IP } from "@env";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import TextCustom from "../components/TextCustom";
-import { Button, Icon } from "react-native-elements";
-import MusicHomeItem from "../components/MusicHomeItem";
+import { Button, Icon, ListItem, Avatar } from "react-native-elements";
 import PlaylistHomeItem from "../components/PlaylistHomeItem";
 
 const MusicDetail = ({ route, navigation }) => {
   const [musicDetail, setDetail] = useState({});
+  const [topTracks, setTop] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const { id } = route.params;
   useEffect(() => {
     const getMusicDetail = async () => {
       var musicRaw = await fetch(`${LOCAL_IP}/music/getMusic/${id}`);
       var music = await musicRaw.json();
-      var details = music.tracks;
-      setDetail(details);
+      setDetail(music.tracks);
+      setTop(music.top);
+      setAlbums(music.albums);
     };
     getMusicDetail();
   }, []);
@@ -66,6 +68,37 @@ const MusicDetail = ({ route, navigation }) => {
       </View>
     );
   });
+  if (topTracks && albums) {
+    var topList = topTracks.map((e, i) => {
+      return (
+        <ListItem
+          containerStyle={{
+            backgroundColor: "rgba(255, 255, 255, 0.19)",
+            marginVertical: 5,
+            marginHorizontal: 5,
+            borderRadius: 10,
+          }}
+        >
+          <Avatar
+            source={{
+              uri: e.cover,
+            }}
+          />
+          <ListItem.Content>
+            <ListItem.Title>
+              <TextCustom>{e.title}</TextCustom>
+            </ListItem.Title>
+            <ListItem.Subtitle>
+              <TextCustom>{e.artist}</TextCustom>
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      );
+    });
+    var albumList = albums.map((e, i) => {
+      return <PlaylistHomeItem key={i} title={e.name} url={e.cover} />;
+    });
+  }
   return (
     <ImageBackground
       source={require("../assets/images/music_bg.jpg")}
@@ -103,13 +136,11 @@ const MusicDetail = ({ route, navigation }) => {
         <TextCustom>Album: {musicDetail.album}</TextCustom>
         <TextCustom>Artiste: {musicDetail.artist}</TextCustom>
         <View>
-          <ScrollView horizontal={true}>
-            <TextCustom>Titre 1</TextCustom>
-            <TextCustom>Titre 2</TextCustom>
-          </ScrollView>
-          <ScrollView horizontal={true}>
-            <TextCustom>Playlist 1</TextCustom>
-            <TextCustom>Playlist 2</TextCustom>
+          <TextCustom>Top des titres</TextCustom>
+          <View>{topList}</View>
+          <TextCustom>Albums de l'artiste</TextCustom>
+          <ScrollView horizontal={true} style={{ marginTop: 10 }}>
+            {albumList}
           </ScrollView>
         </View>
       </ScrollView>
