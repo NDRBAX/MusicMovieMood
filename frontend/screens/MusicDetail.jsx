@@ -13,11 +13,13 @@ import React, { useEffect, useState } from "react";
 import TextCustom from "../components/TextCustom";
 import { Button, Icon, ListItem, Avatar } from "react-native-elements";
 import PlaylistHomeItem from "../components/PlaylistHomeItem";
+import Loader from "../components/Loader";
 
 const MusicDetail = ({ route, navigation }) => {
   const [musicDetail, setDetail] = useState({});
   const [topTracks, setTop] = useState([]);
   const [albums, setAlbums] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = route.params;
   useEffect(() => {
     const getMusicDetail = async () => {
@@ -30,6 +32,14 @@ const MusicDetail = ({ route, navigation }) => {
     getMusicDetail();
   }, []);
 
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, []);
   const streamingMusic = [
     { name: "spotify", url: musicDetail.link },
     { name: "deezer", url: "https://www.deezer.com/fr/" },
@@ -82,6 +92,7 @@ const MusicDetail = ({ route, navigation }) => {
             borderRadius: 10,
           }}
           key={i}
+          onPress={() => navigation.push("MusicDetail", { id: e.id })}
         >
           <Avatar
             source={{
@@ -116,39 +127,44 @@ const MusicDetail = ({ route, navigation }) => {
         >
           <AntDesign name="arrowleft" size={24} color="white" />
         </TouchableOpacity>
-        <TextCustom
-          fontSize="22"
-          fontWeight="bold"
-          style={{ marginBottom: 15, marginTop: 5 }}
-        >
-          {musicDetail.title}
-        </TextCustom>
-        <Image
-          source={{
-            uri: musicDetail.image,
-          }}
-          style={{
-            borderRadius: 10,
-            height: 300,
-            width: "100%",
-          }}
-          resizeMode="cover"
-        />
-        <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-          {buttonMusic}
-        </ScrollView>
-        <TextCustom>Album: {musicDetail.album}</TextCustom>
-        <TextCustom style={{ marginBottom: 6 }}>
-          Artiste: {musicDetail.artist}
-        </TextCustom>
-        <View>
-          <TextCustom>Top des titres</TextCustom>
-          <View>{topList}</View>
-          <TextCustom>Albums de l'artiste</TextCustom>
-          <ScrollView horizontal={true} style={{ marginTop: 10 }}>
-            {albumList}
-          </ScrollView>
-        </View>
+        {isLoading && <Loader />}
+        {!isLoading && (
+          <>
+            <TextCustom
+              fontSize="22"
+              fontWeight="bold"
+              style={{ marginBottom: 15, marginTop: 5 }}
+            >
+              {musicDetail.title}
+            </TextCustom>
+            <Image
+              source={{
+                uri: musicDetail.image,
+              }}
+              style={{
+                borderRadius: 10,
+                height: 300,
+                width: "100%",
+              }}
+              resizeMode="cover"
+            />
+            <ScrollView horizontal={true} style={{ marginTop: 10 }}>
+              {buttonMusic}
+            </ScrollView>
+            <TextCustom>Album: {musicDetail.album}</TextCustom>
+            <TextCustom style={{ marginBottom: 6 }}>
+              Artiste: {musicDetail.artist}
+            </TextCustom>
+            <View>
+              <TextCustom>Top des titres</TextCustom>
+              <View>{topList}</View>
+              <TextCustom>Albums de l'artiste</TextCustom>
+              <ScrollView horizontal={true} style={{ marginTop: 10 }}>
+                {albumList}
+              </ScrollView>
+            </View>
+          </>
+        )}
       </ScrollView>
     </ImageBackground>
   );
