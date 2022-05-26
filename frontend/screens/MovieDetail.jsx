@@ -38,7 +38,6 @@ const MovieDetail = ({ route, navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log(isLoading);
 		const getMovieDetail = async () => {
 			try {
 				const mov = await axios.get(`${LOCAL_IP}/movie/getDetailsMovies/${id}`);
@@ -71,8 +70,6 @@ const MovieDetail = ({ route, navigation }) => {
 		getMovieDetail();
 		getMovieActors();
 		getProv();
-
-		console.log(isLoading);
 	}, []);
 
 	useEffect(() => {
@@ -107,7 +104,6 @@ const MovieDetail = ({ route, navigation }) => {
 	};
 
 	const getMovies = async id => {
-		console.log('get movmov');
 		try {
 			const movie = await axios.get(`${LOCAL_IP}/movie/getDetailsMoviesForWishlist`, {
 				params: {

@@ -36,14 +36,14 @@ export default function Wishlist({ navigation }) {
 				</TextCustom>
 				{wishList.length == 0 && (
 					<TextCustom style={{ paddingHorizontal: 20, marginTop: 20 }}>
-						Sorry, pas encore de porno gay hardcore sneakers en stock !
+						Pas encore de film dans la wishlist...
 					</TextCustom>
 				)}
 				<View>
-					{wishList.map((movie, i) => (
+					{wishList?.map((movie, i) => (
 						<TouchableOpacity
 							onPress={() => navigation.push('MovieDetail', { id: movie.id })}
-							key={uuid()}
+							key={uuid.v4()}
 						>
 							<View style={styles.movieItem}>
 								<Image
