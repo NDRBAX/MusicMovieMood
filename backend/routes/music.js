@@ -32,16 +32,17 @@ router.get("/getTop", async function (req, res, next) {
   resTop = [];
   var topRaw = await request(
     "GET",
-    "https://spotify23.p.rapidapi.com/charts/?type=regional&country=global&recurrence=daily&date=latest",
+    "https://spotify23.p.rapidapi.com/playlist_tracks/?id=37i9dQZEVXbNG2KDcFcKOF&offset=0&limit=10",
     options
   );
   var top = await topRaw.body;
   top = await JSON.parse(top);
-  for (let i = 0; i < 10; i++) {
+
+  for (let i = 0; i < top.items.length; i++) {
     resTop.push({
-      id: top.content[i].track_id,
-      track: top.content[i].track_title,
-      cover: top.content[i].thumbnail,
+      id: top.items[i].track.id,
+      track: top.items[i].track.name,
+      cover: top.items[i].track.album.images[1].url,
     });
   }
   res.json({ result: true, search: resTop });
@@ -120,6 +121,7 @@ router.get("/genre/:genre", async function (req, res, next) {
 router.get("/getMusic/:id", async function (req, res, next) {
   musicDetails = {};
   tracksTop = [];
+  albums = [];
   var musicRaw = await request(
     "GET",
     `https://spotify23.p.rapidapi.com/tracks/?ids=${req.params.id}`,
@@ -134,15 +136,32 @@ router.get("/getMusic/:id", async function (req, res, next) {
   );
   var tracks = await tracksRaw.body;
   tracks = await JSON.parse(tracks);
-  (musicDetails.id = req.params.id),
-    (musicDetails.title = music.tracks[0].name);
+  for (let i = 0; i < 3; i++) {
+    tracksTop.push({
+      id: tracks.data.artist.discography.topTracks.items[i].track.id,
+      title: tracks.data.artist.discography.topTracks.items[i].track.name,
+      cover:
+        tracks.data.artist.discography.topTracks.items[i].track.album.coverArt
+          .sources[1].url,
+      artist: music.tracks[0].artists[0].name,
+    });
+  }
+  for (let i = 0; i < tracks.data.artist.discography.albums.items.length; i++) {
+    albums.push({
+      title:
+        tracks.data.artist.discography.albums.items[i].releases.items[0].name,
+      cover:
+        tracks.data.artist.discography.albums.items[i].releases.items[0]
+          .coverArt.sources[0].url,
+      artist: music.tracks[0].artists[0].name,
+    });
+  }
+  musicDetails.title = music.tracks[0].name;
   musicDetails.album = music.tracks[0].album.name;
   musicDetails.artist = music.tracks[0].artists[0].name;
   musicDetails.image = music.tracks[0].album.images[0].url;
   musicDetails.link = music.tracks[0].external_urls.spotify;
-  //top titre
-  //playlists
-  res.json({ result: true, tracks: musicDetails });
+  res.json({ result: true, tracks: musicDetails, top: tracksTop, albums });
 });
 
 //playlist search
@@ -158,7 +177,6 @@ router.get("/getPlaylist/:filter", async function (req, res, next) {
   for (let i = 0; i < playL.playlists.items.length; i++) {
     if (playL.playlists.items[i].data.images) {
       playlists.push({
-        url: playL.playlists.items[i].data.uri, //url menant à l'app spotify
         name: playL.playlists.items[i].data.name,
         image: playL.playlists.items[i].data.images.items[0].sources[0].url,
       });
