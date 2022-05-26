@@ -8,7 +8,7 @@ import {
 	Alert,
 } from 'react-native';
 import { LOCAL_IP } from '@env';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToken } from '../features/login/tokenSlice';
 
@@ -16,6 +16,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { Button, Image, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signin = (props, { navigation }) => {
 	const [signinEmail, setSigninEmail] = useState('');
@@ -26,8 +27,15 @@ const Signin = (props, { navigation }) => {
 	const [hasPasswordFocus, setPasswordFocus] = useState(false);
 
 	const { token } = useSelector(state => state.token);
+	const [localToken, setLocalToken] = useState('');
 	const dispatch = useDispatch();
-
+	useEffect(() => {
+		AsyncStorage.getItem('token', (err, value) => {
+			if (value) {
+				setLocalToken(value);
+			}
+		});
+	}, []);
 	// SIGNIN
 	let handleSubmitSignin = async () => {
 		const data = await fetch(`${LOCAL_IP}/users/signin`, {
@@ -43,16 +51,13 @@ const Signin = (props, { navigation }) => {
 
 		if (body.result) {
 			dispatch(addToken(body.token));
+			// SAVE TOKEN TO LOCAL STORAGE
+			AsyncStorage.setItem('token', token);
 			setUserExists(true);
 			Alert.alert(
 				'Vous êtes connectés !',
 				'Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood',
 				[
-					{
-						text: 'Fermer',
-						onPress: () => console.log('Cancel Pressed'),
-						style: 'cancel',
-					},
 					{
 						text: 'OK',
 						onPress: () => props.navigation.navigate('Movie') && console.log('OK Pressed'),
@@ -63,6 +68,18 @@ const Signin = (props, { navigation }) => {
 			setErrorsSignin(body.errors);
 		}
 	};
+	// IF USER SIGNED IN => IMPORT WISHLIST FROM DB
+	if (userExists) {
+		const getMoviesFromWishlist = async () => {
+			const data = await fetch(`${LOCAL_IP}/users/wishlist/${localToken}`);
+
+			const body = await data.json();
+			if (body.result && body.movies) {
+				importMovies(body.movies);
+			}
+		};
+	}
+	getMoviesFromWishlist();
 	console.log('********************TOKEN REDUX' + token);
 	let tabErrorsSignin = listErrorsSignin.map((error, index) => {
 		return <Text style={{ color: 'white' }}>{error}</Text>;
