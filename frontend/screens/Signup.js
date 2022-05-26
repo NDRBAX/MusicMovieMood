@@ -27,6 +27,7 @@ const Signup = (props, { navigation }) => {
 	const [hasEmailFocus, setEmailFocus] = useState(false);
 	const [hasPasswordFocus, setPasswordFocus] = useState(false);
 	const [hasConfirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
 	const { token } = useSelector(state => state.token);
 	const dispatch = useDispatch();
 
@@ -47,6 +48,11 @@ const Signup = (props, { navigation }) => {
 				'Votre compte a été crée !',
 				'Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood',
 				[
+					{
+						text: 'Fermer',
+						onPress: () => console.log('Cancel Pressed'),
+						style: 'cancel',
+					},
 					{
 						text: 'OK',
 						onPress: () => props.navigation.navigate('Movie') && console.log('OK Pressed'),

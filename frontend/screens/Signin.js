@@ -45,9 +45,9 @@ const Signin = (props, { navigation }) => {
 		});
 
 		const body = await data.json();
-		console.log('USER ------------' + body.user);
-		console.log('RESULT ------------' + body.result);
-		console.log('TOKEN *************' + body.token);
+		// console.log('USER ------------' + body.user);
+		// console.log('RESULT ------------' + body.result);
+		// console.log('TOKEN *************' + body.token);
 
 		if (body.result) {
 			dispatch(addToken(body.token));
@@ -58,6 +58,11 @@ const Signin = (props, { navigation }) => {
 				'Vous êtes connectés !',
 				'Vous pouvez maintenant profiter de toutes les fonctionnalités de MusicMovieMood',
 				[
+					{
+						text: 'Fermer',
+						// onPress: () => console.log('Cancel Pressed'),
+						style: 'cancel',
+					},
 					{
 						text: 'OK',
 						onPress: () => props.navigation.navigate('Movie') && console.log('OK Pressed'),

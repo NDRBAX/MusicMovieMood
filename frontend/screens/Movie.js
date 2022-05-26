@@ -40,6 +40,9 @@ const Movie = props => {
 		blackList,
 		moviesNow,
 	} = useSelector(state => state.movie);
+
+	const { token } = useSelector(state => state.token);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -85,11 +88,6 @@ const Movie = props => {
 		getNowMovies();
 	}, []);
 
-	// console.log('moviesNow-----------------------------------------------');
-	// console.log(moviesFetch);
-	// console.log(moviesFetch.length);
-	// console.log(moviesNow);
-
 	const displayNbMovies = (nb, list) =>
 		list
 			?.slice(0, nb)
@@ -127,7 +125,7 @@ const Movie = props => {
 						name="user"
 						color="white"
 						type="antdesign"
-						onPress={() => props.navigation.navigate('Signup')}
+						onPress={() => props.navigation.navigate(token == '' ? 'Signup' : 'Settings')}
 					/>
 				</View>
 

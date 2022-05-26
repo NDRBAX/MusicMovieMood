@@ -15,7 +15,6 @@ const MovieHomeItem = ({ movie }) => {
 	const { token } = useSelector(state => state.token);
 
 	const getMovies = async id => {
-		console.log('get movmov');
 		try {
 			const movie = await axios.get(`${LOCAL_IP}/movie/getDetailsMoviesForWishlist`, {
 				params: {
@@ -56,7 +55,7 @@ const MovieHomeItem = ({ movie }) => {
 		await movie.data.genres.map(genre => {
 			genresArray.push(genre.name);
 		});
-		console.log(genresArray);
+
 		await fetch(`${LOCAL_IP}/users/wishlist`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -64,12 +63,12 @@ const MovieHomeItem = ({ movie }) => {
 				movie.data.release_date,
 			).getFullYear()}&backdrop_path=${movie.data.poster_path}&genre=${genresArray}`,
 		});
-		console.log('TITLE ***   ' + movie.data.title);
-		console.log('POSTER ***   ' + movie.data.poster_path);
-		console.log('ID ***   ' + movie.data.id);
-		console.log('GENRE ***   ');
-		console.log(movie.data.genres);
-		console.log('DATE ***   ' + new Date(movie.data.release_date).getFullYear());
+		// console.log('TITLE ***   ' + movie.data.title);
+		// console.log('POSTER ***   ' + movie.data.poster_path);
+		// console.log('ID ***   ' + movie.data.id);
+		// console.log('GENRE ***   ');
+		// console.log(movie.data.genres);
+		// console.log('DATE ***   ' + new Date(movie.data.release_date).getFullYear());
 	};
 
 	return (

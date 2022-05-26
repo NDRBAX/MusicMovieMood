@@ -1,6 +1,10 @@
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
 import React, { useCallback, useEffect, useState } from 'react';
+<<<<<<< HEAD
+=======
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+>>>>>>> settings
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,8 +18,6 @@ import Signup from './screens/Signup';
 import Signin from './screens/Signin';
 import MovieDetail from './screens/MovieDetail';
 import MusicDetail from './screens/MusicDetail';
-
-import * as SplashScreen from 'expo-splash-screen';
 
 //REDUX
 import store from './store';
