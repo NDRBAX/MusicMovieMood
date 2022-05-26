@@ -180,7 +180,7 @@ const MovieDetail = ({ route, navigation }) => {
 							}}
 							resizeMode="cover"
 						/>
-						<View
+						{/* <View
 							style={{
 								flexDirection: 'row',
 								backgroundColor: '#300021b7',
@@ -199,32 +199,54 @@ const MovieDetail = ({ route, navigation }) => {
 							<TextCustom fontSize="16">
 								Fin du film estimée : {calcEndMovie(movie?.runtime)}
 							</TextCustom>
-						</View>
+						</View> */}
 						{providers?.buy && (
-							<ScrollView horizontal={true} style={{ marginTop: 10 }}>
-								{providers?.buy?.map(el => (
-									<View key={uuid.v4()}>
-										<TouchableOpacity
-											onPress={() => {
-												handleProviderUrl(el?.provider_id);
-											}}
-										>
-											<Image
-												style={{
-													height: 80,
-													width: 110,
-													borderRadius: 10,
-													marginHorizontal: 5,
+							<>
+								<View
+									style={{
+										flexDirection: 'row',
+										backgroundColor: '#300021b7',
+										marginTop: -28,
+										justifyContent: 'center',
+										alignItems: 'center',
+										paddingVertical: 2,
+									}}
+								>
+									<Icon
+										style={{ marginEnd: 10 }}
+										name={'time-slot'}
+										type="entypo"
+										color="#f5f5f5"
+									/>
+									<TextCustom fontSize="16">
+										Fin du film estimée : {calcEndMovie(movie?.runtime)}
+									</TextCustom>
+								</View>
+								<ScrollView horizontal={true} style={{ marginTop: 10 }}>
+									{providers?.buy?.map(el => (
+										<View key={uuid.v4()}>
+											<TouchableOpacity
+												onPress={() => {
+													handleProviderUrl(el?.provider_id);
 												}}
-												source={{
-													uri: `https://image.tmdb.org/t/p/w500/${el?.logo_path}`,
-												}}
-												resizeMode="contain"
-											/>
-										</TouchableOpacity>
-									</View>
-								))}
-							</ScrollView>
+											>
+												<Image
+													style={{
+														height: 80,
+														width: 110,
+														borderRadius: 10,
+														marginHorizontal: 5,
+													}}
+													source={{
+														uri: `https://image.tmdb.org/t/p/w500/${el?.logo_path}`,
+													}}
+													resizeMode="contain"
+												/>
+											</TouchableOpacity>
+										</View>
+									))}
+								</ScrollView>
+							</>
 						)}
 						{!providers?.buy && (
 							<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>

@@ -15,6 +15,13 @@ export const calcEndMovie = min => {
 	if (totHours >= 24) {
 		totHours = totHours - 24;
 	}
+	if (totMinutes >= 60) {
+		totMinutes = totMinutes - 60;
+		totHours = totHours + 1;
+	}
+	if (totMinutes < 10) {
+		totMinutes = '0' + totMinutes;
+	}
 
 	return `${totHours}h${totMinutes}`;
 };
