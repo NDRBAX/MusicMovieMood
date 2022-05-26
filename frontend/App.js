@@ -1,6 +1,6 @@
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 import React, { useCallback, useEffect, useState } from 'react';
-import { LogBox, StyleSheet, TouchableOpacity, View } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...']);
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

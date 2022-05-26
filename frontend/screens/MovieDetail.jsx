@@ -131,7 +131,6 @@ const MovieDetail = ({ route, navigation }) => {
 			source={require('../assets/images/movie_bg.jpg')}
 			style={styles.imagebg}
 			resizeMode="cover"
-			key={uuid.v4()}
 		>
 			<ScrollView style={styles.container}>
 				<TouchableOpacity style={styles.back_btn} onPress={() => navigation.goBack()}>
