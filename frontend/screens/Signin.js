@@ -84,7 +84,7 @@ const Signin = (props, { navigation }) => {
 			}
 		};
 	}
-	getMoviesFromWishlist();
+
 	console.log('********************TOKEN REDUX' + token);
 	let tabErrorsSignin = listErrorsSignin.map((error, index) => {
 		return <Text style={{ color: 'white' }}>{error}</Text>;

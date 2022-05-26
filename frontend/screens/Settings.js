@@ -5,6 +5,8 @@ import TextCustom from '../components/TextCustom';
 
 import { AntDesign } from '@expo/vector-icons';
 import { Button, Input, ListItem, Icon } from 'react-native-elements';
+import { removeToken } from '../features/login/tokenSlice';
+import { useDispatch } from 'react-redux';
 
 const Settings = ({ navigation }) => {
 	const [compteEmail, setCompteEmail] = useState('');
@@ -17,6 +19,8 @@ const Settings = ({ navigation }) => {
 	const [affMenu, setAffMenu] = useState(false);
 	const [plateform, setChoice] = useState('Plateformes');
 	const [comptes, setCompte] = useState([]);
+
+	const dispatch = useDispatch();
 
 	const streaming = [
 		'Netflix',
@@ -185,6 +189,14 @@ const Settings = ({ navigation }) => {
 					/>
 				</View>
 				{form}
+				<TouchableOpacity
+					onPress={() => {
+						dispatch(removeToken());
+						navigation.navigate('Movie');
+					}}
+				>
+					<TextCustom style={{ marginTop: 50 }}>Deconnexion</TextCustom>
+				</TouchableOpacity>
 			</ScrollView>
 		</ImageBackground>
 	);
