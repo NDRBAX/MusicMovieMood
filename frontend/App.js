@@ -1,10 +1,6 @@
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
 import React, { useCallback, useEffect, useState } from 'react';
-<<<<<<< HEAD
-=======
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
->>>>>>> settings
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

@@ -23,11 +23,7 @@ const MusicDetail = ({ route, navigation }) => {
 	const { id } = route.params;
 	useEffect(() => {
 		const getMusicDetail = async () => {
-<<<<<<< HEAD
 			var musicRaw = await fetch(`${LOCAL_IP}/music/getMusic/${id}`);
-=======
-			var musicRaw = await fetch(`http://192.168.1.21:3000/music/getMusic/${id}`);
->>>>>>> settings
 			var music = await musicRaw.json();
 			setDetail(music.tracks);
 			setTop(music.top);
