@@ -27,7 +27,7 @@ router.post("/signup", async function (req, res, next) {
   if (data != null) {
     errors.push("Il existe déjà un compte avec cet adresse email.");
   }
-  if (req.body.emailFromFront.length < 6) {
+  if (req.body.passwordFromFront.length < 6) {
     errors.push("Le mot de passe doit contenir au moins six caractères.");
   }
   if (req.body.passwordFromFront !== req.body.confirmPasswordFromFront) {
@@ -101,7 +101,7 @@ router.post("/wishlist", async function (req, res) {
       title: req.body.title,
       runtime: req.body.runtime,
       genre: req.body.genre,
-    
+
       backdrop_path: req.body.backdrop_path,
     });
 
@@ -134,7 +134,9 @@ router.delete("/wishlist", async function (req, res) {
   var user = await userModel.findOne({ token: req.body.token });
 
   if (user !== null) {
-    user.wishlist = user.wishlist.filter((movie) => movie.title !== req.body.title);
+    user.wishlist = user.wishlist.filter(
+      (movie) => movie.title !== req.body.title
+    );
 
     var userUpdated = await user.save();
     if (userUpdated) {
