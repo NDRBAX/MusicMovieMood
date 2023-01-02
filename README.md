@@ -83,7 +83,7 @@ MusicMovieMood a été codé avec les meilleures techniques à la pointe de la t
 
 </br>
 
-Pour utiliser l'application il vous foit des doigts en bonne santé et un peu de vue.
+Pour utiliser l'application il vous faut des doigts en bonne santé et un peu de vue.
 
 </br>
 
